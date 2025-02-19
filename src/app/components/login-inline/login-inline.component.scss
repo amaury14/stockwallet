@@ -1,0 +1,56 @@
+@use '../styles/index.scss' as ldVariables;
+
+:host {
+    display: flex;
+    height: 40px;
+    width: 100%;
+
+    .ld-login-container {
+        align-items: center;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 200px;
+
+        * {
+            margin: 0 3px;
+        }
+
+        .google-button {
+            @include ldVariables.button-style-shared();
+
+            .google-icon {
+                margin-right: 10px;
+            }
+        }
+
+        .ld-action-buttons {
+            @include ldVariables.button-style-shared();
+        }
+
+        .login-or {
+            font-size: 15px;
+            font-weight: bolder;
+            margin: 0 10px;
+        }
+
+        .ld-input-group {
+            @include ldVariables.button-style-shared();
+            padding: 0;
+
+            .ld-form-control {
+                @include ldVariables.button-style-shared();
+                border-radius: 6px;
+                width: 200px;
+            }
+        }
+
+        .ld-forgot a {
+            color: ldVariables.$white;
+            cursor: pointer;
+            display: inline-block;
+            font-size: 12px;
+            line-height: 1.2;
+        }
+    }
+}

@@ -1,0 +1,52 @@
+{
+  "name": "stockwallet",
+  "version": "0.0.0",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve --open",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test",
+    "lint": "ng lint"
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/animations": "^19.1.6",
+    "@angular/common": "^19.1.6",
+    "@angular/compiler": "^19.1.6",
+    "@angular/core": "^19.1.6",
+    "@angular/forms": "^19.1.6",
+    "@angular/platform-browser": "^19.1.6",
+    "@angular/platform-browser-dynamic": "^19.1.6",
+    "@angular/router": "^19.1.6",
+    "@ngrx/effects": "^19.0.1",
+    "@ngrx/entity": "^19.0.1",
+    "@ngrx/operators": "^19.0.1",
+    "@ngrx/store": "^19.0.1",
+    "@ngrx/store-devtools": "^19.0.1",
+    "@primeng/themes": "^19.0.6",
+    "eslint-plugin-angular": "^4.1.0",
+    "firebase": "^10.14.1",
+    "font-awesome": "^4.7.0",
+    "primeng": "^19.0.6",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0",
+    "zone.js": "~0.15.0"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "^19.1.7",
+    "@angular/cli": "^19.1.7",
+    "@angular/compiler-cli": "^19.1.6",
+    "@types/jasmine": "~5.1.0",
+    "angular-eslint": "18.3.1",
+    "eslint": "^9.9.1",
+    "jasmine-core": "~5.2.0",
+    "karma": "~6.4.0",
+    "karma-chrome-launcher": "~3.2.0",
+    "karma-coverage": "~2.2.0",
+    "karma-jasmine": "~5.1.0",
+    "karma-jasmine-html-reporter": "~2.1.0",
+    "typescript": "~5.5.2",
+    "typescript-eslint": "8.2.0"
+  }
+}

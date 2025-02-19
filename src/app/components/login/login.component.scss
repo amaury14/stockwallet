@@ -1,0 +1,42 @@
+$alert-heigth: 42px;
+
+:host {
+    background-color: #f0f3f6;
+    display: block;
+    height: 100%;
+    width: 100%;
+}
+
+.alert {
+    height: $alert-heigth;
+    margin-bottom: 0;
+    padding: 10px 15px;
+}
+
+.login-img3-body {
+    display: block;
+    height: 100%;
+    width: 100%;
+    &.login-error {
+        height: calc(100% - $alert-heigth);
+    }
+}
+
+.google-button {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    .google-icon {
+        margin-right: 10px;
+    }
+}
+
+.login-or {
+    font-size: 15px;
+    font-weight: bolder;
+    margin: 10px 0;
+}
+
+.form-error {
+    color: #e54747;
+}

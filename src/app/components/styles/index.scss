@@ -1,0 +1,31 @@
+// Colors
+$white: #FFFFFF;
+$black: #000000;
+$gray: #f0f3f6;
+$blue: #3498db;
+$green: #28a745;
+$light-green: #d4edda;
+$dark-green: #155724;
+$red: #dc3545;
+$light-red: #f8d7da;
+$dark-red: #721c24;
+$light-blue: #17a2b8;
+$lighter-blue: #d1ecf1;
+$dark-blue: #0c5460;
+$yellow: #ffc107;
+$light-yellow: #fff3cd;
+$dark-yellow: #856404;
+
+// Variables
+$ld-components-shared-height: 28px;
+$ld-header-height: 40px;
+
+@mixin button-style-shared {
+    align-items: center;
+    display: flex;
+    font-size: 15px;
+    font-weight: 500;
+    height: $ld-components-shared-height;
+    justify-content: center;
+    padding: 0 5px;
+}

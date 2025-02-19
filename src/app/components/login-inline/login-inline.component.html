@@ -1,0 +1,50 @@
+<!-- eslint-disable @angular-eslint/template/interactive-supports-focus -->
+<!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
+<form class="ld-login-container" [formGroup]="loginForm" *ngIf="showLogin()">
+    <button
+        class="btn btn-primary btn-lg btn-block google-button"
+        (click)="loginWithGoogle()"
+    >
+        <i class="fa fa-google fa-1x google-icon"></i>
+        Entrar con Google
+    </button>
+    <p class="login-or">O</p>
+    <div class="ld-input-group">
+        <i class="fa fa-at"></i>
+        <input
+            class="ld-form-control"
+            placeholder="Correo"
+            type="email"
+            id="email"
+            formControlName="email"
+            required
+        />
+    </div>
+    <div class="ld-input-group">
+        <i class="fa fa-key"></i>
+        <input
+            type="password"
+            class="ld-form-control"
+            placeholder="Contraseña"
+            id="password"
+            formControlName="password"
+            required
+        />
+    </div>
+    <span class="ld-forgot">
+        <a (click)="sendPasswordResetEmail()">Olvidó la Contraseña?</a>
+    </span>
+    <button
+        class="btn btn-primary btn-lg btn-block ld-action-buttons"
+        (click)="loginWithEmailPassword()"
+    >
+        Entrar
+    </button>
+    <button
+        class="btn btn-info btn-lg btn-block ld-action-buttons"
+        (click)="createWithEmailPassword()"
+    >
+        Regístrame
+    </button>
+    <app-ui-loader *ngIf="loading()"></app-ui-loader>
+</form>

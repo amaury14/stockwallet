@@ -1,0 +1,12 @@
+@use '../styles/index.scss' as ldVariables;
+
+:host {
+    background-color: ldVariables.$gray;
+    display: block;
+    height: 100%;
+    width: 100%;
+}
+
+section#main-content {
+    height: calc(100% - #{ldVariables.$ld-header-height});
+}

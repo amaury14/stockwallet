@@ -1,0 +1,50 @@
+@use '../styles/index.scss' as ldVariables;
+
+:host {
+    width: 100%;
+}
+
+.ld-header {
+    display: grid;
+    grid-template-columns: 30% 70%;
+    height: 40px;
+    min-height: ldVariables.$ld-header-height;
+    width: 100%;
+
+    .ld-logo {
+        font-weight: 600;
+        margin: 0 10px;
+    }
+
+    .ld-section {
+        align-items: center;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+
+        &.left {
+            justify-content: flex-start;
+        }
+
+        &.right {
+            justify-content: flex-end;
+        }
+
+        .ld-action-container {
+            cursor: pointer;
+            margin: 0 10px;
+
+            .ld-action-item {
+                color: ldVariables.$white;
+                font-size: 15px;
+                margin: 0 5px;
+            }
+        }
+    }
+
+}
+
+.dark-bg {
+    border-bottom: unset;
+}

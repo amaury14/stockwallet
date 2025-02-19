@@ -1,0 +1,62 @@
+@use '../../styles/index.scss' as ldVariables;
+
+.ld-toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    z-index: 10000;
+    min-width: 300px;
+    transition: opacity 0.3s ease-in-out, bottom 0.3s ease-in-out;
+}
+
+.ld-toast-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+
+    .ld-toast-title {
+        font-size: 15px;
+    }
+}
+
+.ld-toast-body {
+    font-size: 17px;
+    padding-top: 10px;
+}
+
+.ld-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.ld-toast.success {
+    border-color: ldVariables.$green;
+    background-color: ldVariables.$light-green;
+    color: ldVariables.$dark-green;
+}
+
+.ld-toast.error {
+    border-color: ldVariables.$red;
+    background-color: ldVariables.$light-red;
+    color: ldVariables.$dark-red;
+}
+
+.ld-toast.info {
+    border-color: ldVariables.$light-blue;
+    background-color: ldVariables.$lighter-blue;
+    color: ldVariables.$dark-blue;
+}
+
+.ld-toast.warning {
+    border-color: ldVariables.$yellow;
+    background-color: ldVariables.$light-yellow;
+    color: ldVariables.$dark-yellow;
+}
