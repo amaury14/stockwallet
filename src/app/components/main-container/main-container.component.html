@@ -4,7 +4,11 @@
         <app-sidebar></app-sidebar>
     </aside>
     <section id="main-content">
-        <p-table [value]="portfolio()" [tableStyle]="{ 'min-width': '50rem' }">
+        <p-table
+            [loading]="isLoading()"
+            [tableStyle]="{ 'min-width': '50rem' }"
+            [value]="portfolio()"
+        >
             <ng-template #header>
                 <tr>
                     <th>Name</th>

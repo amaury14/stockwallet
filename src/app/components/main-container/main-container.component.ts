@@ -27,6 +27,7 @@ import { mainContainerActions } from './main-container.actions';
 export class MainContainerComponent implements OnInit {
 
     portfolio: Signal<Portfolio[]> = signal([]);
+    isLoading: Signal<boolean> = signal(false);
 
     constructor(private _store: Store) { }
 
@@ -34,5 +35,6 @@ export class MainContainerComponent implements OnInit {
         this._store.dispatch(mainContainerActions.appStarted());
 
         this.portfolio = this._store.selectSignal(portfolioSelectors.getData);
+        this.isLoading = this._store.selectSignal(portfolioSelectors.isLoading);
     }
 }
