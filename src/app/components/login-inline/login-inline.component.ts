@@ -105,7 +105,7 @@ export class LoginInlineComponent {
             this.loading.set(true);
             const email = this.loginForm.value.email;
             sendPasswordResetEmail(getAuth(), email).then(() => {
-                this._toastService.showToast('¡El correo electrónico de restablecimiento se envió correctamente!', 'success', 'Información', 5000);
+                this._toastService.showToast('The reset email was sent successfully!', 'success', 'Information', 5000);
                 this.loginForm.get('password')?.markAsTouched();
                 this.loading.set(false);
             }).catch(() => {
@@ -117,37 +117,37 @@ export class LoginInlineComponent {
 
     private _error(): void {
         this.loading.set(false);
-        this._toastService.showToast('¡Ha habido un fallo, intente de nuevo!', 'error', 'Error', 3000);
+        this._toastService.showToast('There was an error, please try again!', 'error', 'Error', 3000);
     }
 
     private _success(): void {
         this.loading.set(false);
-        this._toastService.showToast('¡Logueado correctamente!', 'success', 'Información', 3000);
+        this._toastService.showToast('Logged in successfully!', 'success', 'Information', 3000);
     }
 
     private _checkLoginForm(): void {
         const messages = [];
         if (this.loginForm.get('email')?.touched) {
             if (this.loginForm.get('email')?.hasError('required')) {
-                messages.push('Se requiere correo electrónico.');
+                messages.push('Email is required.');
             }
             if (this.loginForm.get('email')?.hasError('email')) {
-                messages.push('Por favor, introduce una dirección de correo electrónico válida.');
+                messages.push('Please enter a valid email address.');
             }
         }
         if (this.loginForm.get('password')?.touched) {
             if (this.loginForm.get('password')?.hasError('required')) {
-                messages.push('Se requiere contraseña.');
+                messages.push('Password required.');
             }
             if (this.loginForm.get('password')?.hasError('minlength')) {
-                messages.push('La contraseña debe tener al menos 8 caracteres.');
+                messages.push('The password must be at least 8 characters.');
             }
             if (this.loginForm.get('password')?.hasError('pattern')) {
-                messages.push('La contraseña debe contener al menos una letra mayúscula, una letra minúscula y un carácter especial.');
+                messages.push('The password must contain at least one uppercase letter, one lowercase letter and one special character.');
             }
         }
         if (messages?.length) {
-            this._toastService.showToast(messages.join('<br>'), 'error', 'Errores', 8000);
+            this._toastService.showToast(messages.join('<br>'), 'error', 'Errors', 8000);
         }
     }
 

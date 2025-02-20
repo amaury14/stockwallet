@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 
-import { SectionView, SectionViewModel } from '../../store/models';
+import { SectionViewModel } from '../../store/models';
 import { sidebarConfig } from './sidebar.metadata';
 import { sidebarActions } from './sidebar.actions';
 
@@ -20,8 +20,10 @@ export class SidebarComponent {
 
     constructor(private _store: Store) { }
 
-    onSectionSelected(section: SectionView): void {
-        this._store.dispatch(sidebarActions.sectionSelected({ section }));
+    onSectionSelected(section: SectionViewModel): void {
+        if (!section?.disabled) {
+            this._store.dispatch(sidebarActions.sectionSelected({ section: section.key }));
+        }
     }
 
 }

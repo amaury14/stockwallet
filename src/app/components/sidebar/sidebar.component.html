@@ -11,7 +11,7 @@
         <!-- <li class="active"></li> -->
         <!-- <li class="sub-menu"></li> -->
         <li *ngFor="let section of sections">
-            <a (click)="onSectionSelected(section.key)">
+            <a (click)="onSectionSelected(section)" [class.disabled]="section.disabled">
                 <i [class]="section.iconClass"></i>
                 <span>{{section.name}}</span>
             </a>
