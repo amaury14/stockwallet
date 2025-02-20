@@ -3,24 +3,46 @@ import { SectionView } from '../../store/models';
 export const sidebarConfig = {
     sections: [
         {
-            name: 'Cartas sueltas',
+            disabled: false,
+            name: 'Dashboard',
             iconClass: 'fa fa-database',
-            key: SectionView.SINGLES
+            key: SectionView.DASHBOARD
         },
         {
-            name: 'Boosters',
+            disabled: false,
+            name: 'Portfolios',
             iconClass: 'fa fa-cube',
-            key: SectionView.BOOSTERS
+            key: SectionView.PORTFOLIOS
         },
         {
-            name: 'Cajas de Booster',
-            iconClass: 'fa fa-cubes',
-            key: SectionView.BOOSTER_BOXES
+            disabled: true,
+            name: 'Watchlist (coming soon)',
+            iconClass: 'fa fa-lock', //fa-cubes
+            key: SectionView.WATCHLIST
         },
         {
-            name: 'Producto Sellado',
+            disabled: true,
+            name: 'Calendar (coming soon)',
             iconClass: 'fa fa-lock',
-            key: SectionView.SEALED_PRODUCTS
+            key: SectionView.CALENDAR
+        },
+        {
+            disabled: true,
+            name: 'Calculators (coming soon)',
+            iconClass: 'fa fa-lock',
+            key: SectionView.CALCULATORS
+        },
+        {
+            disabled: true,
+            name: 'Ai Ideas (coming soon)',
+            iconClass: 'fa fa-lock',
+            key: SectionView.AI_IDEAS
+        },
+        {
+            disabled: true,
+            name: 'News (coming soon)',
+            iconClass: 'fa fa-lock',
+            key: SectionView.NEWS
         }
     ]
 };

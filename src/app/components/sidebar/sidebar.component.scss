@@ -1,7 +1,19 @@
 ul.sidebar-menu {
-    margin-top: 20px;
+    margin-top: 0px;
 }
 
 li {
     cursor: pointer;
+
+    a {
+        display: flex;
+
+        &.disabled {
+            cursor: not-allowed;
+        }
+    }
+
+    a:hover {
+        display: flex;
+    }
 }

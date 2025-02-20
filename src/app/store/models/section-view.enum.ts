@@ -1,6 +1,9 @@
 export enum SectionView {
-    SINGLES = 'singles',
-    BOOSTERS = 'boosters',
-    BOOSTER_BOXES = 'booster_boxes',
-    SEALED_PRODUCTS = 'sealed_products'
+    DASHBOARD = 'dashboard',
+    PORTFOLIOS = 'portfolios',
+    WATCHLIST = 'watchlist',
+    CALENDAR = 'calendar',
+    CALCULATORS = 'calculators',
+    AI_IDEAS = 'ai_ideas',
+    NEWS = 'news'
 }

@@ -6,14 +6,14 @@
         (click)="loginWithGoogle()"
     >
         <i class="fa fa-google fa-1x google-icon"></i>
-        Entrar con Google
+        Login with Google
     </button>
-    <p class="login-or">O</p>
+    <p class="login-or">OR</p>
     <div class="ld-input-group">
         <i class="fa fa-at"></i>
         <input
             class="ld-form-control"
-            placeholder="Correo"
+            placeholder="Mail"
             type="email"
             id="email"
             formControlName="email"
@@ -25,26 +25,26 @@
         <input
             type="password"
             class="ld-form-control"
-            placeholder="Contraseña"
+            placeholder="Password"
             id="password"
             formControlName="password"
             required
         />
     </div>
     <span class="ld-forgot">
-        <a (click)="sendPasswordResetEmail()">Olvidó la Contraseña?</a>
+        <a (click)="sendPasswordResetEmail()">Forgot Password?</a>
     </span>
     <button
         class="btn btn-primary btn-lg btn-block ld-action-buttons"
         (click)="loginWithEmailPassword()"
     >
-        Entrar
+        Login
     </button>
     <button
         class="btn btn-info btn-lg btn-block ld-action-buttons"
         (click)="createWithEmailPassword()"
     >
-        Regístrame
+        Signup
     </button>
     <app-ui-loader *ngIf="loading()"></app-ui-loader>
 </form>
