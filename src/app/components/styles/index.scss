@@ -17,15 +17,15 @@ $light-yellow: #fff3cd;
 $dark-yellow: #856404;
 
 // Variables
-$ld-components-shared-height: 28px;
-$ld-header-height: 40px;
+$components-shared-height: 28px;
+$header-height: 40px;
 
 @mixin button-style-shared {
     align-items: center;
     display: flex;
     font-size: 15px;
     font-weight: 500;
-    height: $ld-components-shared-height;
+    height: $components-shared-height;
     justify-content: center;
     padding: 0 5px;
 }

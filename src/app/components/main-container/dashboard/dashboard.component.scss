@@ -1,0 +1,8 @@
+@use '../../styles/index.scss' as cssVariables;
+
+:host {
+    background-color: cssVariables.$gray;
+    display: block;
+    height: 100%;
+    width: 100%;
+}

@@ -1,4 +1,4 @@
-@use '../../styles/index.scss' as ldVariables;
+@use '../../styles/index.scss' as cssVariables;
 
 .ld-toast {
     position: fixed;
@@ -38,25 +38,25 @@
 }
 
 .ld-toast.success {
-    border-color: ldVariables.$green;
-    background-color: ldVariables.$light-green;
-    color: ldVariables.$dark-green;
+    border-color: cssVariables.$green;
+    background-color: cssVariables.$light-green;
+    color: cssVariables.$dark-green;
 }
 
 .ld-toast.error {
-    border-color: ldVariables.$red;
-    background-color: ldVariables.$light-red;
-    color: ldVariables.$dark-red;
+    border-color: cssVariables.$red;
+    background-color: cssVariables.$light-red;
+    color: cssVariables.$dark-red;
 }
 
 .ld-toast.info {
-    border-color: ldVariables.$light-blue;
-    background-color: ldVariables.$lighter-blue;
-    color: ldVariables.$dark-blue;
+    border-color: cssVariables.$light-blue;
+    background-color: cssVariables.$lighter-blue;
+    color: cssVariables.$dark-blue;
 }
 
 .ld-toast.warning {
-    border-color: ldVariables.$yellow;
-    background-color: ldVariables.$light-yellow;
-    color: ldVariables.$dark-yellow;
+    border-color: cssVariables.$yellow;
+    background-color: cssVariables.$light-yellow;
+    color: cssVariables.$dark-yellow;
 }

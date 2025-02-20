@@ -1,4 +1,4 @@
-@use '../styles/index.scss' as ldVariables;
+@use '../styles/index.scss' as cssVariables;
 
 :host {
     width: 100%;
@@ -8,7 +8,7 @@
     display: grid;
     grid-template-columns: 30% 70%;
     height: 40px;
-    min-height: ldVariables.$ld-header-height;
+    min-height: cssVariables.$header-height;
     width: 100%;
 
     .ld-logo {
@@ -36,7 +36,7 @@
             margin: 0 10px;
 
             .ld-action-item {
-                color: ldVariables.$white;
+                color: cssVariables.$white;
                 font-size: 15px;
                 margin: 0 5px;
             }

@@ -1,4 +1,4 @@
-@use '../styles/index.scss' as ldVariables;
+@use '../styles/index.scss' as cssVariables;
 
 :host {
     display: flex;
@@ -17,7 +17,7 @@
         }
 
         .google-button {
-            @include ldVariables.button-style-shared();
+            @include cssVariables.button-style-shared();
 
             .google-icon {
                 margin-right: 10px;
@@ -25,7 +25,7 @@
         }
 
         .ld-action-buttons {
-            @include ldVariables.button-style-shared();
+            @include cssVariables.button-style-shared();
         }
 
         .login-or {
@@ -35,18 +35,18 @@
         }
 
         .ld-input-group {
-            @include ldVariables.button-style-shared();
+            @include cssVariables.button-style-shared();
             padding: 0;
 
             .ld-form-control {
-                @include ldVariables.button-style-shared();
+                @include cssVariables.button-style-shared();
                 border-radius: 6px;
                 width: 200px;
             }
         }
 
         .ld-forgot a {
-            color: ldVariables.$white;
+            color: cssVariables.$white;
             cursor: pointer;
             display: inline-block;
             font-size: 12px;
