@@ -4,5 +4,23 @@
         <app-sidebar></app-sidebar>
     </aside>
     <section id="main-content">
+        <p-table
+            [loading]="isLoading()"
+            [tableStyle]="{ 'min-width': '50rem' }"
+            [value]="portfolio()"
+        >
+            <ng-template #header>
+                <tr>
+                    <th>Name</th>
+                    <th>Created At</th>
+                </tr>
+            </ng-template>
+            <ng-template #body let-product>
+                <tr>
+                    <td>{{ product.name }}</td>
+                    <td>{{ product.createdAt | date: 'MM/dd/yyyy' }}</td>
+                </tr>
+            </ng-template>
+        </p-table>
     </section>
 </section>

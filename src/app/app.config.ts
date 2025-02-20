@@ -9,14 +9,14 @@ import { provideEffects } from '@ngrx/effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 
 import { routes } from './app.routes';
-import { LD_FEATURE_STATE_KEY, ldEffects, ldReducers, ldServices } from './store';
+import { STOCK_WALLET_FEATURE_STATE_KEY, swEffects, swReducers, swServices } from './store';
 
 export const appConfig: ApplicationConfig = {
     providers: [
         provideStore(),
-        provideState(LD_FEATURE_STATE_KEY, ldReducers),
+        provideState(STOCK_WALLET_FEATURE_STATE_KEY, swReducers),
         provideHttpClient(),
-        provideEffects(ldEffects),
+        provideEffects(swEffects),
         provideRouter(routes),
         provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
         provideZoneChangeDetection({ eventCoalescing: true }),
@@ -26,6 +26,6 @@ export const appConfig: ApplicationConfig = {
                 preset: Aura
             }
         }),
-        ...ldServices
+        ...swServices
     ]
 };

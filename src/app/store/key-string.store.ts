@@ -1,5 +1,7 @@
-const PRINTERS_COLLECTION_KEY = 'printers';
+const PORTFOLIO_COLLECTION_KEY = 'portfolios';
+const USERS_COLLECTION_KEY = 'users';
 
-export const ldKeys = {
-    PRINTERS_COLLECTION_KEY
+export const dbCollectionKeys = {
+    PORTFOLIO_COLLECTION_KEY,
+    USERS_COLLECTION_KEY
 };

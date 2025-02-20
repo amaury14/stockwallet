@@ -1,4 +1,4 @@
-export interface PwmUserInfo {
+export interface UserInfo {
     /**
      * The display name of the user.
      */
