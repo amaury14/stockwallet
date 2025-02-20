@@ -5,11 +5,13 @@ import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { TableModule } from 'primeng/table';
 
-import { Portfolio } from '../../store/portfolio/models';
-import { portfolioSelectors } from '../../store/portfolio/portfolio.selector';
+import { mainSelectors } from '../../store/main/main.selector';
+import { SectionView } from '../../store/models';
 import { HeaderComponent } from '../header/header.component';
 import { SidebarComponent } from '../sidebar/sidebar.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 import { mainContainerActions } from './main-container.actions';
+import { PortfolioComponent } from './portfolio/portfolio.component';
 
 @Component({
     selector: 'app-main-container',
@@ -17,7 +19,9 @@ import { mainContainerActions } from './main-container.actions';
         ButtonModule,
         CardModule,
         CommonModule,
+        DashboardComponent,
         HeaderComponent,
+        PortfolioComponent,
         SidebarComponent,
         TableModule
     ],
@@ -26,15 +30,14 @@ import { mainContainerActions } from './main-container.actions';
 })
 export class MainContainerComponent implements OnInit {
 
-    portfolio: Signal<Portfolio[]> = signal([]);
-    isLoading: Signal<boolean> = signal(false);
+    sectionInView: Signal<SectionView> = signal(SectionView.DASHBOARD);
+    sections = SectionView;
 
     constructor(private _store: Store) { }
 
     ngOnInit(): void {
         this._store.dispatch(mainContainerActions.appStarted());
 
-        this.portfolio = this._store.selectSignal(portfolioSelectors.getData);
-        this.isLoading = this._store.selectSignal(portfolioSelectors.isLoading);
+        this.sectionInView = this._store.selectSignal(mainSelectors.getSectionInView);
     }
 }

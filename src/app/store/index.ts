@@ -1,6 +1,7 @@
 import { AuthEffects } from './auth/auth.effects';
 import { authReducer } from './auth/auth.reducer';
 import { FirebaseService } from './firebase.service';
+import { mainReducer } from './main/main.reducer';
 import { PortfolioEffects } from './portfolio/portfolio.effects';
 import { portfolioReducer } from './portfolio/portfolio.reducer';
 
@@ -8,6 +9,7 @@ export * from './sw.state';
 
 export const swReducers = {
     auth: authReducer,
+    main: mainReducer,
     portfolio: portfolioReducer
 };
 

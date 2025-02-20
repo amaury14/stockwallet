@@ -1,12 +1,12 @@
-@use '../styles/index.scss' as ldVariables;
+@use '../styles/index.scss' as cssVariables;
 
 :host {
-    background-color: ldVariables.$gray;
+    background-color: cssVariables.$gray;
     display: block;
     height: 100%;
     width: 100%;
 }
 
 section#main-content {
-    height: calc(100% - #{ldVariables.$ld-header-height});
+    height: calc(100% - #{cssVariables.$header-height});
 }
