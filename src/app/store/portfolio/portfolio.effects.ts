@@ -52,7 +52,7 @@ export class PortfolioEffects {
         concatLatestFrom(() => this._store.select(authSelectors.getUser)),
         mergeMap(([action, user]) =>
             this._firebaseService.addDocument(`${dbCollectionKeys.USERS_COLLECTION_KEY}/${user?.uid}/${dbCollectionKeys.PORTFOLIO_COLLECTION_KEY}`, action.data).pipe(
-                map(response => portfolioEffectsActions.portfolioAddedSuccess({ data: { ...action.data, id: (response as DocumentReference<any>).id } })),
+                map(response => portfolioEffectsActions.portfolioAddedSuccess({ data: { ...action.data, id: (response as DocumentReference<unknown>).id } })),
                 catchError(() =>
                     of(portfolioEffectsActions.portfolioAddedFailed({ error: 'Portfolio failed to save' }))
                 )

@@ -34,7 +34,7 @@ export class FirebaseService {
     }
 
     getDocuments(collectionName: string): Observable<DocumentData[] | RequestStatus> {
-        if (!!this.auth?.currentUser) {
+        if (this.auth?.currentUser) {
             return from(
                 getDocs(
                     query(
@@ -51,7 +51,7 @@ export class FirebaseService {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     addDocument(collectionName: string, data: any): Observable<DocumentReference<any> | RequestStatus> {
-        if (!!this.auth?.currentUser) {
+        if (this.auth?.currentUser) {
             return from(
                 addDoc(
                     collection(this.firestore, collectionName), data
@@ -62,7 +62,7 @@ export class FirebaseService {
     }
 
     deleteDocument(collectionName: string, id: string): Observable<RequestStatus> {
-        if (!!this.auth?.currentUser) {
+        if (this.auth?.currentUser) {
             return from(
                 deleteDoc(
                     doc(this.firestore, collectionName, id)
@@ -75,7 +75,7 @@ export class FirebaseService {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     updateDocument(collectionName: string, id: string, data: any): Observable<RequestStatus> {
-        if (!!this.auth?.currentUser) {
+        if (this.auth?.currentUser) {
             return from(
                 updateDoc(
                     doc(this.firestore, collectionName, id), data
