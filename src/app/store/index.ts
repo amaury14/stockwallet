@@ -1,21 +1,21 @@
 import { AuthEffects } from './auth/auth.effects';
 import { authReducer } from './auth/auth.reducer';
 import { FirebaseService } from './firebase.service';
-import { PrinterEffects } from './printer/printer.effects';
-import { printerReducer } from './printer/printer.reducer';
+import { PortfolioEffects } from './portfolio/portfolio.effects';
+import { portfolioReducer } from './portfolio/portfolio.reducer';
 
-export * from './ld.state';
+export * from './sw.state';
 
-export const ldReducers = {
+export const swReducers = {
     auth: authReducer,
-    printer: printerReducer
+    portfolio: portfolioReducer
 };
 
-export const ldEffects = [
+export const swEffects = [
     AuthEffects,
-    PrinterEffects
+    PortfolioEffects
 ];
 
-export const ldServices = [
+export const swServices = [
     FirebaseService
 ];

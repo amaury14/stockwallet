@@ -1,9 +1,9 @@
 import { createSelector } from '@ngrx/store';
 
-import { ldSelectors } from '../ld.selectors';
+import { swSelectors } from '../sw.selectors';
 
 const authFeatureSelector = createSelector(
-    ldSelectors.getLdState,
+    swSelectors.getSWState,
     state => state?.auth
 );
 

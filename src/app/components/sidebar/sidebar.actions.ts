@@ -3,7 +3,7 @@ import { createActionGroup, props } from '@ngrx/store';
 import { SectionView } from '../../store/models';
 
 export const sidebarActions = createActionGroup({
-    source: 'LD Sidebar Component',
+    source: 'Sidebar Component',
     events: {
         sectionSelected: props<{ section: SectionView }>()
     }

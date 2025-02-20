@@ -1,9 +1,9 @@
 import { createActionGroup, emptyProps } from '@ngrx/store';
 
 export const mainContainerActions = createActionGroup({
-    source: 'LD Main Container Component',
+    source: 'Main Container Component',
     events: {
-        ldStarted: emptyProps()
+        appStarted: emptyProps()
     }
 });
 

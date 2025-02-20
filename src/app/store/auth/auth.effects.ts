@@ -16,7 +16,7 @@ export class AuthEffects {
     constructor(private _actions$: Actions, private _store: Store) { }
 
     loadUserInfo$ = createEffect(() => this._actions$.pipe(
-        ofType(mainContainerActions.ldStarted),
+        ofType(mainContainerActions.appStarted),
         concatLatestFrom(() => this._store.select(authSelectors.getUser)),
         filter(([, user]) => !user),
         switchMap(() => {
@@ -29,7 +29,12 @@ export class AuthEffects {
         }),
         map((userInfo: User | null) => {
             if (userInfo) {
-                return authEffectsActions.userLoggedIn({ user: userInfo?.providerData?.[0] });
+                return authEffectsActions.userLoggedIn({
+                    user: {
+                        ...userInfo?.providerData?.[0],
+                        uid: userInfo?.uid
+                    }
+                });
             } else {
                 return authEffectsActions.userLoggedOut();
             }
