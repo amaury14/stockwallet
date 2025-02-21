@@ -1,22 +1,22 @@
 <!-- eslint-disable @angular-eslint/template/interactive-supports-focus -->
 <!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
-<header class="dark-bg ld-header">
-    <div class="ld-section">
-        <a class="logo ld-logo">Stock <span class="lite">Wallet</span></a>
-    </div>
-    <div class="ld-section right">
+<p-toolbar>
+    <ng-template #start>
+        <a class="logo sw-logo">Stock <span class="lite">Wallet</span></a>
+    </ng-template>
+    <ng-template #center>
         <app-login-inline *ngIf="!isUserLogged()"></app-login-inline>
+    </ng-template>
+    <ng-template #end>
         <ng-container *ngIf="isUserLogged()">
-            <div class="ld-action-container">
-                <i class="fa fa-user"></i>
-                <span class="ld-action-item">{{
-                    user()?.displayName ?? user()?.email
-                }}</span>
+            <div class="sw-action-container">
+                <i class="pi pi-user" style="font-size: 1.2rem"></i>
+                <span class="sw-action-item">{{ user()?.displayName ?? user()?.email }}</span>
             </div>
-            <div class="ld-action-container" (click)="logout()">
-                <i class="fa fa-times-circle"></i>
-                <a class="ld-action-item">Log out</a>
+            <div class="sw-action-container" (click)="logout()">
+                <i class="pi pi-power-off" style="font-size: 1.2rem"></i>
+                <a class="sw-action-item">Log out</a>
             </div>
         </ng-container>
-    </div>
-</header>
+    </ng-template>
+</p-toolbar>

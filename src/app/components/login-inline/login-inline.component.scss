@@ -5,12 +5,12 @@
     height: 40px;
     width: 100%;
 
-    .ld-login-container {
+    form.sw-login-container {
         align-items: center;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        width: 200px;
+        width: 100%;
 
         * {
             margin: 0 3px;
@@ -24,7 +24,7 @@
             }
         }
 
-        .ld-action-buttons {
+        .sw-action-buttons {
             @include cssVariables.button-style-shared();
         }
 
@@ -34,18 +34,18 @@
             margin: 0 10px;
         }
 
-        .ld-input-group {
+        .sw-input-group {
             @include cssVariables.button-style-shared();
             padding: 0;
 
-            .ld-form-control {
+            .sw-form-control {
                 @include cssVariables.button-style-shared();
                 border-radius: 6px;
                 width: 200px;
             }
         }
 
-        .ld-forgot a {
+        .sw-forgot a {
             color: cssVariables.$white;
             cursor: pointer;
             display: inline-block;

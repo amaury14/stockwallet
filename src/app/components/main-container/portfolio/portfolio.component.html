@@ -1,18 +1,15 @@
-<p-table
-    [loading]="isLoading()"
-    [tableStyle]="{ 'min-width': '50rem' }"
-    [value]="portfolio()"
->
-    <ng-template #header>
-        <tr>
-            <th>Name</th>
-            <th>Created At</th>
-        </tr>
+<p-toolbar>
+    <ng-template #start>
+        <app-ui-loader *ngIf="isLoading()"></app-ui-loader>
+        @for (item of portfolio(); track $index) {
+            <p-chip
+                [class.selected]="portfolioSelected()?.id === item.id"
+                [label]="item.name"
+                icon="pi pi-wallet"
+                (click)="onPortfolioSelected(item)"
+            />
+        }
     </ng-template>
-    <ng-template #body let-product>
-        <tr>
-            <td>{{ product.name }}</td>
-            <td>{{ product.createdAt | date: 'MM/dd/yyyy' }}</td>
-        </tr>
-    </ng-template>
-</p-table>
+    <ng-template #center></ng-template>
+    <ng-template #end></ng-template>
+</p-toolbar>

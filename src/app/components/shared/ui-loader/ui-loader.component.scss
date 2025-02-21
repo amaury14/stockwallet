@@ -1,5 +1,11 @@
 @use '../../styles/index.scss' as cssVariables;
 
+p-progress-spinner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .loader-overlay {
     align-items: center;
     display: flex;

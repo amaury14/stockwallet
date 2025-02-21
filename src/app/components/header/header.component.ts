@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit, signal, Signal } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { UserInfo, getAuth, signOut } from 'firebase/auth';
+import { ToolbarModule } from 'primeng/toolbar';
 
 import { authSelectors } from '../../store/auth/auth.selector';
 import { LoginInlineComponent } from '../login-inline/login-inline.component';
@@ -11,7 +12,8 @@ import { headerActions } from './header.actions';
     selector: 'app-header',
     imports: [
         CommonModule,
-        LoginInlineComponent
+        LoginInlineComponent,
+        ToolbarModule
     ],
     templateUrl: './header.component.html',
     styleUrls: ['./header.component.scss']

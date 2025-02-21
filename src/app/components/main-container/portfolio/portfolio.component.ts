@@ -1,16 +1,21 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, signal, Signal } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { TableModule } from 'primeng/table';
+import { ChipModule } from 'primeng/chip';
+import { ToolbarModule } from 'primeng/toolbar';
 
 import { Portfolio } from '../../../store/portfolio/models';
 import { portfolioSelectors } from '../../../store/portfolio/portfolio.selector';
+import { UiLoaderComponent } from '../../shared/ui-loader/ui-loader.component';
+import { portfolioActions } from './portfolio.actions';
 
 @Component({
     selector: 'app-portfolio',
     imports: [
+        ChipModule,
         CommonModule,
-        TableModule
+        ToolbarModule,
+        UiLoaderComponent
     ],
     templateUrl: './portfolio.component.html',
     styleUrls: ['./portfolio.component.scss']
@@ -19,11 +24,17 @@ export class PortfolioComponent implements OnInit {
 
     portfolio: Signal<Portfolio[]> = signal([]);
     isLoading: Signal<boolean> = signal(false);
+    portfolioSelected: Signal<Portfolio | null> = signal(null);
 
     constructor(private _store: Store) { }
 
     ngOnInit(): void {
         this.portfolio = this._store.selectSignal(portfolioSelectors.getData);
         this.isLoading = this._store.selectSignal(portfolioSelectors.isLoading);
+        this.portfolioSelected = this._store.selectSignal(portfolioSelectors.getSelected);
+    }
+
+    onPortfolioSelected(data: Portfolio): void {
+        this._store.dispatch(portfolioActions.portfolioSelected({ data }));
     }
 }

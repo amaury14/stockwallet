@@ -1,6 +1,7 @@
 import { ActionReducer, createReducer, on } from '@ngrx/store';
 
 import { headerActions } from '../../components/header/header.actions';
+import { portfolioActions } from '../../components/main-container/portfolio/portfolio.actions';
 import { loginInlineActions } from '../../components/login-inline/login-inline.actions';
 import { loginActions } from '../../components/login/login.actions';
 import { authEffectsActions } from '../auth/auth.actions';
@@ -12,7 +13,8 @@ export const initialState: PortfolioState = {
     error: null,
     data: [],
     loading: false,
-    loadingState: LoadingState.Initial
+    loadingState: LoadingState.Initial,
+    selected: null
 };
 
 export const portfolioReducer: ActionReducer<PortfolioState> = createReducer(
@@ -51,6 +53,12 @@ export const portfolioReducer: ActionReducer<PortfolioState> = createReducer(
         return {
             ...state,
             error: action.error
+        };
+    }),
+    on(portfolioActions.portfolioSelected, (state, action) => {
+        return {
+            ...state,
+            selected: action.data
         };
     })
 );

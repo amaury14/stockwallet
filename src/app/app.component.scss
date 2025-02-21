@@ -1,6 +1,20 @@
 :host {
-    background-color: #f0f3f6;
+    background-color: #0e1315;
     display: block;
     height: 100%;
     width: 100%;
+
+    ::ng-deep p-chip {
+        cursor: pointer;
+
+        span.p-chip-icon {
+            align-items: center;
+            display: flex;
+        }
+
+        div.p-chip-label {
+            display: flex;
+            margin-left: 8px;
+        }
+    }
 }
