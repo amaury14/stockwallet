@@ -18,16 +18,13 @@ export const initialState: AuthState = {
 
 export const authReducer: ActionReducer<AuthState> = createReducer(
     initialState,
-    on(
-        loginActions.loginSuccess,
-        loginInlineActions.loginSuccess,
-        authEffectsActions.userLoggedIn, (state, action) => {
-            return {
-                ...state,
-                user: action.user,
-                error: null
-            };
-        }),
+    on(authEffectsActions.userLoggedIn, (state, action) => {
+        return {
+            ...state,
+            user: action.user,
+            error: null
+        };
+    }),
     on(
         loginActions.loginFailed,
         loginInlineActions.loginFailed,

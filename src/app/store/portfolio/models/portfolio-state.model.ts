@@ -6,4 +6,5 @@ export interface PortfolioState {
     data: Portfolio[];
     loading: boolean;
     loadingState: LoadingState;
+    selected: Portfolio | null;
 }

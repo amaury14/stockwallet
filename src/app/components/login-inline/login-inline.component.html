@@ -1,18 +1,18 @@
 <!-- eslint-disable @angular-eslint/template/interactive-supports-focus -->
 <!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
-<form class="ld-login-container" [formGroup]="loginForm" *ngIf="showLogin()">
+<form class="sw-login-container" [formGroup]="loginForm" *ngIf="showLogin()">
     <button
         class="btn btn-primary btn-lg btn-block google-button"
         (click)="loginWithGoogle()"
     >
-        <i class="fa fa-google fa-1x google-icon"></i>
+        <i class="pi pi-google fa-1x google-icon" style="font-size: 1.5rem"></i>
         Login with Google
     </button>
     <p class="login-or">OR</p>
-    <div class="ld-input-group">
-        <i class="fa fa-at"></i>
+    <div class="sw-input-group">
+        <i class="pi pi-at" style="font-size: 1.5rem"></i>
         <input
-            class="ld-form-control"
+            class="sw-form-control"
             placeholder="Mail"
             type="email"
             id="email"
@@ -20,28 +20,28 @@
             required
         />
     </div>
-    <div class="ld-input-group">
-        <i class="fa fa-key"></i>
+    <div class="sw-input-group">
+        <i class="pi pi-key" style="font-size: 1.5rem"></i>
         <input
             type="password"
-            class="ld-form-control"
+            class="sw-form-control"
             placeholder="Password"
             id="password"
             formControlName="password"
             required
         />
     </div>
-    <span class="ld-forgot">
+    <span class="sw-forgot">
         <a (click)="sendPasswordResetEmail()">Forgot Password?</a>
     </span>
     <button
-        class="btn btn-primary btn-lg btn-block ld-action-buttons"
+        class="btn btn-primary btn-lg btn-block sw-action-buttons"
         (click)="loginWithEmailPassword()"
     >
         Login
     </button>
     <button
-        class="btn btn-info btn-lg btn-block ld-action-buttons"
+        class="btn btn-info btn-lg btn-block sw-action-buttons"
         (click)="createWithEmailPassword()"
     >
         Signup

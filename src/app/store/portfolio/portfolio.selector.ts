@@ -27,9 +27,15 @@ const getData = createSelector(
     state => state?.data
 );
 
+const getSelected = createSelector(
+    portfolioFeatureSelector,
+    state => state?.selected
+);
+
 export const portfolioSelectors = {
     getData,
     getError,
     getLoadingState,
+    getSelected,
     isLoading
 };

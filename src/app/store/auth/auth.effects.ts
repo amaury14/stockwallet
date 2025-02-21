@@ -7,6 +7,8 @@ import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 
 import { mainContainerActions } from '../../components/main-container/main-container.actions';
+import { loginInlineActions } from '../../components/login-inline/login-inline.actions';
+import { loginActions } from '../../components/login/login.actions';
 import { authSelectors } from './auth.selector';
 import { authEffectsActions } from './auth.actions';
 
@@ -16,7 +18,11 @@ export class AuthEffects {
     constructor(private _actions$: Actions, private _store: Store) { }
 
     loadUserInfo$ = createEffect(() => this._actions$.pipe(
-        ofType(mainContainerActions.appStarted),
+        ofType(
+            mainContainerActions.appStarted,
+            loginInlineActions.loginSuccess,
+            loginActions.loginSuccess
+        ),
         concatLatestFrom(() => this._store.select(authSelectors.getUser)),
         filter(([, user]) => !user),
         switchMap(() => {

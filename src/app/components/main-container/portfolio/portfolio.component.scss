@@ -1,8 +1,28 @@
 @use '../../styles/index.scss' as cssVariables;
 
 :host {
-    background-color: cssVariables.$gray;
+    background-color: cssVariables.$vivaown;
     display: block;
     height: 100%;
     width: 100%;
+
+    p-toolbar {
+        display: block;
+
+        ::ng-deep div.p-toolbar {
+            height: 50px;
+        }
+    }
+
+    p-chip {
+        margin-right: 10px;
+
+        &.selected {
+            border: solid 2px cssVariables.$blue;
+        }
+    }
+
+    .save-button {
+        margin-left: 10px;
+    }
 }

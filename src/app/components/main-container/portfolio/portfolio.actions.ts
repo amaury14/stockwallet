@@ -1,7 +1,12 @@
-import { createActionGroup } from '@ngrx/store';
+import { createActionGroup, props } from '@ngrx/store';
+
+import { Portfolio } from '../../../store/portfolio/models';
 
 export const portfolioActions = createActionGroup({
     source: 'Portfolio Component',
-    events: {}
+    events: {
+        portfolioSelected: props<{ data: Portfolio }>(),
+        portfolioSaved: props<{ data: Portfolio }>()
+    }
 });
 

@@ -4,47 +4,26 @@
     width: 100%;
 }
 
-.ld-header {
-    display: grid;
-    grid-template-columns: 30% 70%;
+p-toolbar {
+    border-radius: 0;
     height: 40px;
     min-height: cssVariables.$header-height;
     width: 100%;
 
-    .ld-logo {
+    .sw-logo {
         font-weight: 600;
         margin: 0 10px;
     }
 
-    .ld-section {
-        align-items: center;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        width: 100%;
+    .sw-action-container {
+        cursor: pointer;
+        margin: 0 10px;
 
-        &.left {
-            justify-content: flex-start;
-        }
-
-        &.right {
-            justify-content: flex-end;
-        }
-
-        .ld-action-container {
-            cursor: pointer;
-            margin: 0 10px;
-
-            .ld-action-item {
-                color: cssVariables.$white;
-                font-size: 15px;
-                margin: 0 5px;
-            }
+        .sw-action-item {
+            color: cssVariables.$white;
+            font-size: 15px;
+            margin: 0 5px;
         }
     }
 
-}
-
-.dark-bg {
-    border-bottom: unset;
 }
