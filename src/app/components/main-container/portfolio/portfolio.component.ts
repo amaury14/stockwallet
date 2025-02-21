@@ -37,7 +37,7 @@ export class PortfolioComponent implements OnInit {
     isLoading: Signal<boolean> = signal(false);
     portfolio: Signal<Portfolio[]> = signal([]);
     portfolioSelected: Signal<Portfolio | null> = signal(null);
-    visible: boolean = false;
+    visible = false;
 
     constructor(private _store: Store, private _fb: UntypedFormBuilder) { }
 

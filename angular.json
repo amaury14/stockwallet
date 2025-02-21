@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "latindeck": {
+    "stockwallet": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -63,10 +63,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "latindeck:build:production"
+              "buildTarget": "stockwallet:build:production"
             },
             "development": {
-              "buildTarget": "latindeck:build:development"
+              "buildTarget": "stockwallet:build:development"
             }
           },
           "defaultConfiguration": "development",
