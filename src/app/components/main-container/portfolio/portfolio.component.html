@@ -2,14 +2,26 @@
     <ng-template #start>
         <app-ui-loader *ngIf="isLoading()"></app-ui-loader>
         @for (item of portfolio(); track $index) {
-            <p-chip
-                [class.selected]="portfolioSelected()?.id === item.id"
-                [label]="item.name"
-                icon="pi pi-wallet"
-                (click)="onPortfolioSelected(item)"
-            />
+        <p-chip [class.selected]="portfolioSelected()?.id === item.id" [label]="item.name" icon="pi pi-wallet"
+            (click)="onPortfolioSelected(item)" />
         }
+        <p-button aria-label="Add" icon="pi pi-plus" [rounded]="true" [raised]="true" severity="contrast" size="large"
+            (click)="onAddClicked()" />
     </ng-template>
     <ng-template #center></ng-template>
     <ng-template #end></ng-template>
 </p-toolbar>
+<p-dialog header="Create Porfolio" [modal]="true" [(visible)]="visible" [style]="{ width: '30rem', height: '20rem' }">
+    <ng-container [formGroup]="form">
+        <p-iftalabel>
+            <input pInputText id="name" formControlName="name"/>
+            <label for="name">Porfolio Name</label>
+        </p-iftalabel>
+    </ng-container>
+    <ng-template #footer>
+        <div class="dialog-flex justify-end gap-2">
+            <p-button label="Cancel" severity="secondary" (click)="onCancelClicked()"/>
+            <p-button class="save-button" label="Save" (click)="onSaveClicked()" [disabled]="!form.valid"/>
+        </div>
+    </ng-template>
+</p-dialog>

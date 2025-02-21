@@ -17,4 +17,18 @@
             margin-left: 8px;
         }
     }
+
+    ::ng-deep p-dialog {
+        span.p-dialog-title {
+            font-size: 20px;
+        }
+
+        * {
+            font-size: 15px !important;
+        }
+    }
+
+    ::ng-deep p-iftalabel input {
+        width: 100%;
+    }
 }

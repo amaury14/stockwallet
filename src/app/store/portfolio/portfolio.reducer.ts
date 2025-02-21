@@ -26,6 +26,7 @@ export const portfolioReducer: ActionReducer<PortfolioState> = createReducer(
         loginActions.loginSuccess,
         loginInlineActions.loginSuccess,
         authEffectsActions.userLoggedIn,
+        portfolioEffectsActions.portfolioAddedSuccess,
         state => {
             return {
                 ...state,

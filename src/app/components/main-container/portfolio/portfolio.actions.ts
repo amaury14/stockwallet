@@ -5,7 +5,8 @@ import { Portfolio } from '../../../store/portfolio/models';
 export const portfolioActions = createActionGroup({
     source: 'Portfolio Component',
     events: {
-        portfolioSelected: props<{ data: Portfolio }>()
+        portfolioSelected: props<{ data: Portfolio }>(),
+        portfolioSaved: props<{ data: Portfolio }>()
     }
 });
 

@@ -6,6 +6,7 @@ import { concatLatestFrom } from '@ngrx/operators';
 import { of } from 'rxjs';
 import { catchError, filter, map, mergeMap } from 'rxjs/operators';
 
+import { portfolioActions } from '../../components/main-container/portfolio/portfolio.actions';
 import { loginActions } from '../../components/login/login.actions';
 import { loginInlineActions } from '../../components/login-inline/login-inline.actions';
 import { authEffectsActions } from '../auth/auth.actions';
@@ -48,7 +49,7 @@ export class PortfolioEffects {
     ));
 
     addItem$ = createEffect(() => this._actions$.pipe(
-        ofType(portfolioEffectsActions.mockAction),
+        ofType(portfolioActions.portfolioSaved),
         concatLatestFrom(() => this._store.select(authSelectors.getUser)),
         mergeMap(([action, user]) =>
             this._firebaseService.addDocument(`${dbCollectionKeys.USERS_COLLECTION_KEY}/${user?.uid}/${dbCollectionKeys.PORTFOLIO_COLLECTION_KEY}`, action.data).pipe(
