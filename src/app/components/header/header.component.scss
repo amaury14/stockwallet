@@ -6,8 +6,7 @@
 
 p-toolbar {
     border-radius: 0;
-    height: 40px;
-    min-height: cssVariables.$header-height;
+    height: cssVariables.$header-height;
     width: 100%;
 
     .sw-logo {

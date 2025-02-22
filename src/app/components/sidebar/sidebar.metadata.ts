@@ -5,43 +5,43 @@ export const sidebarConfig = {
         {
             disabled: false,
             name: 'Dashboard',
-            iconClass: 'fa fa-database',
+            iconClass: 'pi pi-database',
             key: SectionView.DASHBOARD
         },
         {
             disabled: false,
             name: 'Portfolios',
-            iconClass: 'fa fa-cube',
+            iconClass: 'pi pi-wallet',
             key: SectionView.PORTFOLIOS
         },
         {
             disabled: true,
             name: 'Watchlist (coming soon)',
-            iconClass: 'fa fa-lock', //fa-cubes
+            iconClass: 'pi pi-lock', //pi pi-search
             key: SectionView.WATCHLIST
         },
         {
             disabled: true,
             name: 'Calendar (coming soon)',
-            iconClass: 'fa fa-lock',
+            iconClass: 'pi pi-lock',
             key: SectionView.CALENDAR
         },
         {
             disabled: true,
             name: 'Calculators (coming soon)',
-            iconClass: 'fa fa-lock',
+            iconClass: 'pi pi-lock',
             key: SectionView.CALCULATORS
         },
         {
             disabled: true,
             name: 'Ai Ideas (coming soon)',
-            iconClass: 'fa fa-lock',
+            iconClass: 'pi pi-lock',
             key: SectionView.AI_IDEAS
         },
         {
             disabled: true,
             name: 'News (coming soon)',
-            iconClass: 'fa fa-lock',
+            iconClass: 'pi pi-lock',
             key: SectionView.NEWS
         }
     ]
