@@ -6,10 +6,7 @@
     tabindex="5000"
     style="overflow: hidden; outline: none"
 >
-    <!-- sidebar menu start-->
     <ul class="sidebar-menu">
-        <!-- <li class="active"></li> -->
-        <!-- <li class="sub-menu"></li> -->
         <li *ngFor="let section of sections">
             <a (click)="onSectionSelected(section)" [class.disabled]="section.disabled">
                 <i [class]="section.iconClass"></i>
@@ -17,5 +14,4 @@
             </a>
         </li>
     </ul>
-    <!-- sidebar menu end-->
 </div>

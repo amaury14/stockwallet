@@ -56,10 +56,13 @@ export const portfolioReducer: ActionReducer<PortfolioState> = createReducer(
             error: action.error
         };
     }),
-    on(portfolioActions.portfolioSelected, (state, action) => {
-        return {
-            ...state,
-            selected: action.data
-        };
-    })
+    on(
+        portfolioActions.portfolioSelected,
+        portfolioEffectsActions.portfolioAddedSuccess,
+        (state, action) => {
+            return {
+                ...state,
+                selected: action.data
+            };
+        })
 );
