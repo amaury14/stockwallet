@@ -97,6 +97,11 @@ $main-top-bar-height: 100px;
             border: 2px solid cssVariables.$sojoown;
             border-radius: 6px;
             margin: 2px;
+
+            &.holding-card {
+                height: 100%;
+                width: 400px;
+            }
         }
     }
 

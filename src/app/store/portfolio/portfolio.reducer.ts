@@ -38,6 +38,7 @@ export const portfolioReducer: ActionReducer<PortfolioState> = createReducer(
         return {
             ...state,
             data: action.data,
+            selected: !state?.selected ? action.data[0] : state?.selected,
             loading: false,
             loadingState: LoadingState.Loaded
         };

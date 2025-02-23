@@ -17,6 +17,8 @@ import { PanelModule } from 'primeng/panel';
 import { TableModule } from 'primeng/table';
 import { ToolbarModule } from 'primeng/toolbar';
 
+import { holdingsSelectors } from '../../../store/holdings/holdings.selector';
+import { Holding } from '../../../store/holdings/models';
 import { Portfolio } from '../../../store/portfolio/models';
 import { portfolioSelectors } from '../../../store/portfolio/portfolio.selector';
 import { UiLoaderComponent } from '../../shared/ui-loader/ui-loader.component';
@@ -49,9 +51,11 @@ import { portfolioActions } from './portfolio.actions';
 })
 export class PortfolioComponent implements OnInit {
 
+    holdings: Signal<Holding[]> = signal([]);
     holdingDialogVisible = false;
     holdingForm!: UntypedFormGroup;
     portfolioForm!: UntypedFormGroup;
+    isHoldingsLoading: Signal<boolean> = signal(false);
     isLoading: Signal<boolean> = signal(false);
     portfolio: Signal<Portfolio[]> = signal([]);
     portfolioSelected: Signal<Portfolio | null> = signal(null);
@@ -77,18 +81,15 @@ export class PortfolioComponent implements OnInit {
             { label: 'Portfolio Value', data: [24000, 25000, 25500], borderColor: '#42A5F5', fill: false }
         ]
     };
-    holdings = [
-        { ticker: 'AAPL', shares: 10, price: 150, value: 1500, change: 5 },
-        { ticker: 'TSLA', shares: 5, price: 700, value: 3500, change: -2 }
-    ];
-
 
     constructor(private _store: Store, private _fb: UntypedFormBuilder) { }
 
     ngOnInit(): void {
         this.portfolio = this._store.selectSignal(portfolioSelectors.getData);
+        this.isHoldingsLoading = this._store.selectSignal(holdingsSelectors.isLoading);
         this.isLoading = this._store.selectSignal(portfolioSelectors.isLoading);
         this.portfolioSelected = this._store.selectSignal(portfolioSelectors.getSelected);
+        this.holdings = this._store.selectSignal(holdingsSelectors.getAggregatedHoldings);
         this._initializeForms();
     }
 
@@ -112,7 +113,7 @@ export class PortfolioComponent implements OnInit {
                 data: {
                     dateOfPurchase: this.holdingForm.get('dateOfPurchase')?.value,
                     ticker: this.holdingForm.get('ticker')?.value,
-                    amount: this.holdingForm.get('amount')?.value,
+                    shares: this.holdingForm.get('shares')?.value,
                     price: this.holdingForm.get('price')?.value
                 }
             }));
@@ -146,7 +147,7 @@ export class PortfolioComponent implements OnInit {
         this.portfolioForm = this._fb.group({ name: [null, Validators.required] });
         this.holdingForm = this._fb.group({
             ticker: [null, Validators.required],
-            amount: [null, Validators.required],
+            shares: [null, Validators.required],
             dateOfPurchase: new Date(),
             price: [null, Validators.required]
         });
