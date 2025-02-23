@@ -25,6 +25,7 @@
     "@ngrx/store": "^19.0.1",
     "@ngrx/store-devtools": "^19.0.1",
     "@primeng/themes": "^19.0.6",
+    "chart.js": "^4.4.8",
     "eslint-plugin-angular": "^4.1.0",
     "firebase": "^10.14.1",
     "font-awesome": "^4.7.0",

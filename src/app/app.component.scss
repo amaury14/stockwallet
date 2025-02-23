@@ -28,7 +28,10 @@
         }
     }
 
-    ::ng-deep p-iftalabel input {
+    ::ng-deep p-iftalabel input,
+    ::ng-deep p-iftalabel p-inputnumber,
+    ::ng-deep p-iftalabel p-datepicker span,
+    ::ng-deep p-iftalabel p-inputmask {        
         width: 100%;
     }
 }

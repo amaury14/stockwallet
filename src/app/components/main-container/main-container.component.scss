@@ -1,12 +1,15 @@
 @use '../styles/index.scss' as cssVariables;
 
+$header-margin: 5px;
+
 :host {
     background-color: cssVariables.$vivaown;
     display: block;
+    font-size: 15px;
     height: 100%;
     width: 100%;
 }
 
 section#main-content {
-    height: calc(100% - #{cssVariables.$header-height});
+    height: calc(100% - #{cssVariables.$header-height + ($header-margin * 2)});
 }
