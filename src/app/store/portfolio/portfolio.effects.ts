@@ -69,7 +69,12 @@ export class PortfolioEffects {
         filter(([, user]) => !!user?.uid),
         mergeMap(([, user]) =>
             this._firebaseService.getDocuments(`${dbCollectionKeys.USERS_COLLECTION_KEY}/${user?.uid}/${dbCollectionKeys.PORTFOLIO_COLLECTION_KEY}`).pipe(
-                map(response => portfolioEffectsActions.portfolioLoadSuccess({ data: response as Portfolio[] })),
+                map(response => portfolioEffectsActions.portfolioLoadSuccess({
+                    data: (response as Portfolio[])?.map(item => ({
+                        ...item,
+                        createdAt: (item.createdAt as Timestamp).toDate()
+                    }))
+                })),
                 catchError(() =>
                     of(portfolioEffectsActions.portfolioLoadFailed({ error: 'Portfolio failed to Load' }))
                 )

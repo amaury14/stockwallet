@@ -1,0 +1,16 @@
+import { createActionGroup, emptyProps, props } from '@ngrx/store';
+
+import { Holding } from './models';
+import { Portfolio } from '../portfolio/models';
+
+export const holdingsEffectsActions = createActionGroup({
+    source: 'Holdings Effects',
+    events: {
+        portfolioSelected: props<{ portfolio: Portfolio }>(),
+        holdingsLoading: emptyProps(),
+        holdingsLoadSuccess: props<{ data: Holding[] }>(),
+        holdingsLoadFailed: props<{ error: string }>(),
+        holdingAddedSuccess: props<{ data: Holding }>(),
+        holdingAddedFailed: props<{ error: string }>()
+    }
+});
