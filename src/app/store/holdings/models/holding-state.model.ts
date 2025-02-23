@@ -8,9 +8,12 @@ export interface HoldingStateData {
     loadingState: LoadingState;
 }
 
+// eslint-disable-next-line @typescript-eslint/consistent-indexed-object-style
+export interface HoldingStateInnerData {
+    [key: string]: HoldingStateData;
+}
+
 export interface HoldingState {
-    data: {
-        [key: string]: HoldingStateData;
-    };
+    data: HoldingStateInnerData;
     selectedPortfolio: string;
 }
