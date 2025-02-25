@@ -13,3 +13,10 @@ export const holdingDefaultFormValue = {
     dateOfPurchase: new Date(),
     price: [null, Validators.required]
 };
+
+export const holdingDefaultEditFormValue = {
+    ticker: [{ value: null, disabled: true }, Validators.required],
+    shares: [{ value: null, disabled: true }, Validators.required],
+    dateOfPurchase: [{ value: null, disabled: true }, Validators.required],
+    price: [{ value: null, disabled: true }, Validators.required]
+};

@@ -9,7 +9,8 @@ export const portfolioActions = createActionGroup({
         portfolioDeleted: props<{ data: Portfolio }>(),
         portfolioSelected: props<{ data: Portfolio }>(),
         portfolioSaved: props<{ data: Portfolio }>(),
-        holdingSaved: props<{ data: Holding }>()
+        holdingSaved: props<{ data: Holding }>(),
+        holdingEditSelected: props<{ data: Holding }>()
     }
 });
 

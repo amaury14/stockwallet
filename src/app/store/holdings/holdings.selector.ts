@@ -39,11 +39,12 @@ export const getAggregatedHoldings = createSelector(
         if (data?.length) {
             const aggregated = data.reduce((acc, stock) => {
                 if (!acc[stock.ticker]) {
-                    acc[stock.ticker] = { ...stock, ticker: stock.ticker, shares: 0, totalCost: 0 };
+                    acc[stock.ticker] = { ...stock, ticker: stock.ticker, shares: 0, totalCost: 0, transactions: 0 };
                 }
 
                 acc[stock.ticker].shares += stock.shares;
                 acc[stock.ticker].totalCost! += stock.shares * stock.price;
+                acc[stock.ticker].transactions! += 1;
 
                 return acc;
             }, {} as Record<string, Holding>);
@@ -53,7 +54,8 @@ export const getAggregatedHoldings = createSelector(
                 ...stock,
                 ticker: stock.ticker,
                 shares: stock.shares,
-                avgPrice: stock.shares ? stock.totalCost! / stock.shares! : 0
+                avgPrice: stock.shares ? stock.totalCost! / stock.shares! : 0,
+                transactions: stock.transactions
             }));
         }
         return [];
@@ -65,11 +67,17 @@ const getHoldingsByPortfolioId = (portfolioId: string) => createSelector(
     state => state?.data[portfolioId]?.data ?? []
 );
 
+const getSelectedHoldings = createSelector(
+    selectedHoldingSelector,
+    state => state?.data?.filter(item => item.ticker?.toLowerCase() === state?.selectedHolding?.ticker?.toLowerCase()) ?? []
+);
+
 export const holdingsSelectors = {
     getAggregatedHoldings,
     getHoldings,
     getHoldingsByPortfolioId,
     getError,
     getLoadingState,
+    getSelectedHoldings,
     isLoading
 };

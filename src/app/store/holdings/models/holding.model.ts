@@ -9,5 +9,6 @@ export interface Holding {
     shares: number;
     ticker: string;
     totalCost?: number;
+    transactions?: number;
     value?: number;
 }
