@@ -6,6 +6,7 @@ import { Holding } from '../../../store/holdings/models';
 export const portfolioActions = createActionGroup({
     source: 'Portfolio Component',
     events: {
+        portfolioDeleted: props<{ data: Portfolio }>(),
         portfolioSelected: props<{ data: Portfolio }>(),
         portfolioSaved: props<{ data: Portfolio }>(),
         holdingSaved: props<{ data: Holding }>()

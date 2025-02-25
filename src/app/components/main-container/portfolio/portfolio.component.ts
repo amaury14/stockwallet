@@ -23,6 +23,7 @@ import { Portfolio } from '../../../store/portfolio/models';
 import { portfolioSelectors } from '../../../store/portfolio/portfolio.selector';
 import { UiLoaderComponent } from '../../shared/ui-loader/ui-loader.component';
 import { portfolioActions } from './portfolio.actions';
+import { holdingDefaultFormValue, holdingDefaultValue } from './portfolio.metadata';
 
 @Component({
     selector: 'app-portfolio',
@@ -59,6 +60,7 @@ export class PortfolioComponent implements OnInit {
     isLoading: Signal<boolean> = signal(false);
     portfolio: Signal<Portfolio[]> = signal([]);
     portfolioSelected: Signal<Portfolio | null> = signal(null);
+    portfolioDeleteDialogVisible = false;
     portfolioDialogVisible = false;
 
     options = {
@@ -97,6 +99,10 @@ export class PortfolioComponent implements OnInit {
         this.portfolioDialogVisible = true;
     }
 
+    onPortfolioDeleteClicked(): void {
+        this.portfolioDeleteDialogVisible = true;
+    }
+
     onHoldingAddClicked(): void {
         this.holdingDialogVisible = true;
     }
@@ -117,8 +123,17 @@ export class PortfolioComponent implements OnInit {
                     price: this.holdingForm.get('price')?.value
                 }
             }));
-            this.holdingForm.reset();
+            this.holdingForm.reset(holdingDefaultValue);
         }
+    }
+
+    onPortfolioDeleteCancelClicked(): void {
+        this.portfolioDeleteDialogVisible = false;
+    }
+
+    onPortfolioDeleteOkClicked(): void {
+        this._store.dispatch(portfolioActions.portfolioDeleted({ data: this.portfolioSelected()! }));
+        this.portfolioDeleteDialogVisible = false;
     }
 
     onPortfolioCancelClicked(): void {
@@ -145,11 +160,6 @@ export class PortfolioComponent implements OnInit {
 
     private _initializeForms(): void {
         this.portfolioForm = this._fb.group({ name: [null, Validators.required] });
-        this.holdingForm = this._fb.group({
-            ticker: [null, Validators.required],
-            shares: [null, Validators.required],
-            dateOfPurchase: new Date(),
-            price: [null, Validators.required]
-        });
+        this.holdingForm = this._fb.group(holdingDefaultFormValue);
     }
 }

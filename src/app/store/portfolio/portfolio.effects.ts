@@ -33,8 +33,9 @@ export class PortfolioEffects {
             this._store.select(portfolioSelectors.getData)
         ]),
         filter(([, user, data]) => !!user?.uid && !data?.length),
-        mergeMap(([, user]) =>
-            this._firebaseService.getDocuments(`${dbCollectionKeys.USERS_COLLECTION_KEY}/${user?.uid}/${dbCollectionKeys.PORTFOLIO_COLLECTION_KEY}`).pipe(
+        mergeMap(([, user]) => {
+            this._store.dispatch(portfolioEffectsActions.portfolioLoading());
+            return this._firebaseService.getDocuments(`${dbCollectionKeys.USERS_COLLECTION_KEY}/${user?.uid}/${dbCollectionKeys.PORTFOLIO_COLLECTION_KEY}`).pipe(
                 map(response => portfolioEffectsActions.portfolioLoadSuccess({
                     data: (response as Portfolio[])?.map(item => ({
                         ...item,
@@ -45,30 +46,33 @@ export class PortfolioEffects {
                     of(portfolioEffectsActions.portfolioLoadFailed({ error: 'Portfolio failed to Load' }))
                 )
             )
-        )
+        })
     ));
 
     addItem$ = createEffect(() => this._actions$.pipe(
         ofType(portfolioActions.portfolioSaved),
         concatLatestFrom(() => this._store.select(authSelectors.getUser)),
-        mergeMap(([action, user]) =>
-            this._firebaseService.addDocument(`${dbCollectionKeys.USERS_COLLECTION_KEY}/${user?.uid}/${dbCollectionKeys.PORTFOLIO_COLLECTION_KEY}`, action.data).pipe(
+        mergeMap(([action, user]) => {
+            this._store.dispatch(portfolioEffectsActions.portfolioLoading());
+            return this._firebaseService.addDocument(`${dbCollectionKeys.USERS_COLLECTION_KEY}/${user?.uid}/${dbCollectionKeys.PORTFOLIO_COLLECTION_KEY}`, action.data).pipe(
                 map(response => portfolioEffectsActions.portfolioAddedSuccess({ data: { ...action.data, id: (response as DocumentReference<unknown>).id } })),
                 catchError(() =>
                     of(portfolioEffectsActions.portfolioAddedFailed({ error: 'Portfolio failed to save' }))
                 )
             )
-        )
+        })
     ));
 
     loadDataOnRefresh$ = createEffect(() => this._actions$.pipe(
         ofType(
-            portfolioEffectsActions.portfolioAddedSuccess
+            portfolioEffectsActions.portfolioAddedSuccess,
+            portfolioEffectsActions.portfolioDeleteSuccess
         ),
         concatLatestFrom(() => this._store.select(authSelectors.getUser)),
         filter(([, user]) => !!user?.uid),
-        mergeMap(([, user]) =>
-            this._firebaseService.getDocuments(`${dbCollectionKeys.USERS_COLLECTION_KEY}/${user?.uid}/${dbCollectionKeys.PORTFOLIO_COLLECTION_KEY}`).pipe(
+        mergeMap(([, user]) => {
+            this._store.dispatch(portfolioEffectsActions.portfolioLoading());
+            return this._firebaseService.getDocuments(`${dbCollectionKeys.USERS_COLLECTION_KEY}/${user?.uid}/${dbCollectionKeys.PORTFOLIO_COLLECTION_KEY}`).pipe(
                 map(response => portfolioEffectsActions.portfolioLoadSuccess({
                     data: (response as Portfolio[])?.map(item => ({
                         ...item,
@@ -79,6 +83,24 @@ export class PortfolioEffects {
                     of(portfolioEffectsActions.portfolioLoadFailed({ error: 'Portfolio failed to Load' }))
                 )
             )
-        )
+        })
+    ));
+
+    portfolioDeleted$ = createEffect(() => this._actions$.pipe(
+        ofType(portfolioActions.portfolioDeleted),
+        concatLatestFrom(() => this._store.select(authSelectors.getUser)),
+        filter(([action, user]) => !!user?.uid && !!action.data?.id),
+        mergeMap(([action, user]) => {
+            this._store.dispatch(portfolioEffectsActions.portfolioLoading());
+            return this._firebaseService.deleteDocument(
+                `${dbCollectionKeys.USERS_COLLECTION_KEY}/${user?.uid}/${dbCollectionKeys.PORTFOLIO_COLLECTION_KEY}`,
+                action.data?.id!
+            ).pipe(
+                map(() => portfolioEffectsActions.portfolioDeleteSuccess({ data: action.data })),
+                catchError(() =>
+                    of(portfolioEffectsActions.portfolioDeleteFailed({ error: 'Portfolio delete failed' }))
+                )
+            )
+        })
     ));
 }
