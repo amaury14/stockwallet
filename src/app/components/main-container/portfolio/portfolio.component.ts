@@ -16,6 +16,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { PanelModule } from 'primeng/panel';
 import { TableModule } from 'primeng/table';
 import { ToolbarModule } from 'primeng/toolbar';
+import { interval, Subscription, take } from 'rxjs';
 
 import { holdingsSelectors } from '../../../store/holdings/holdings.selector';
 import { Holding } from '../../../store/holdings/models';
@@ -23,6 +24,7 @@ import { Portfolio } from '../../../store/portfolio/models';
 import { portfolioSelectors } from '../../../store/portfolio/portfolio.selector';
 import { UiLoaderComponent } from '../../shared/ui-loader/ui-loader.component';
 import { portfolioActions } from './portfolio.actions';
+import { holdingDefaultFormValue, holdingDefaultValue } from './portfolio.metadata';
 
 @Component({
     selector: 'app-portfolio',
@@ -51,15 +53,19 @@ import { portfolioActions } from './portfolio.actions';
 })
 export class PortfolioComponent implements OnInit {
 
+    countdown = 5; // Timer duration in seconds
     holdings: Signal<Holding[]> = signal([]);
     holdingDialogVisible = false;
     holdingForm!: UntypedFormGroup;
     portfolioForm!: UntypedFormGroup;
     isHoldingsLoading: Signal<boolean> = signal(false);
     isLoading: Signal<boolean> = signal(false);
+    isPortfolioDeleteDisabled = false;
     portfolio: Signal<Portfolio[]> = signal([]);
-    portfolioSelected: Signal<Portfolio | null> = signal(null);
+    portfolioDeleteDialogVisible = false;
+    portfolioDeleteTimerSubscription$: Subscription | null = null;
     portfolioDialogVisible = false;
+    portfolioSelected: Signal<Portfolio | null> = signal(null);
 
     options = {
         plugins: {
@@ -97,6 +103,11 @@ export class PortfolioComponent implements OnInit {
         this.portfolioDialogVisible = true;
     }
 
+    onPortfolioDeleteClicked(): void {
+        this.portfolioDeleteDialogVisible = true;
+        this._startDeleteTimer();
+    }
+
     onHoldingAddClicked(): void {
         this.holdingDialogVisible = true;
     }
@@ -117,8 +128,19 @@ export class PortfolioComponent implements OnInit {
                     price: this.holdingForm.get('price')?.value
                 }
             }));
-            this.holdingForm.reset();
+            this.holdingForm.reset(holdingDefaultValue);
         }
+    }
+
+    onPortfolioDeleteCancelClicked(): void {
+        this.portfolioDeleteDialogVisible = false;
+        this.portfolioDeleteTimerSubscription$?.unsubscribe();
+        this._resetDeleteProps();
+    }
+
+    onPortfolioDeleteOkClicked(): void {
+        this._store.dispatch(portfolioActions.portfolioDeleted({ data: this.portfolioSelected()! }));
+        this.portfolioDeleteDialogVisible = false;
     }
 
     onPortfolioCancelClicked(): void {
@@ -145,11 +167,21 @@ export class PortfolioComponent implements OnInit {
 
     private _initializeForms(): void {
         this.portfolioForm = this._fb.group({ name: [null, Validators.required] });
-        this.holdingForm = this._fb.group({
-            ticker: [null, Validators.required],
-            shares: [null, Validators.required],
-            dateOfPurchase: new Date(),
-            price: [null, Validators.required]
-        });
+        this.holdingForm = this._fb.group(holdingDefaultFormValue);
+    }
+
+    private _resetDeleteProps(): void {
+        this.isPortfolioDeleteDisabled = true; // Disable the button
+        this.countdown = 5; // Reset countdown
+    }
+
+    private _startDeleteTimer(): void {
+        this._resetDeleteProps();
+        this.portfolioDeleteTimerSubscription$ = interval(1000)
+            .pipe(take(this.countdown)) // Run for 5 seconds
+            .subscribe({
+                next: (val) => this.countdown = 5 - (val + 1),
+                complete: () => this.isPortfolioDeleteDisabled = false // Re-enable the button
+            });
     }
 }

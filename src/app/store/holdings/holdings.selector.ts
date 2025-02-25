@@ -60,9 +60,15 @@ export const getAggregatedHoldings = createSelector(
     }
 );
 
+const getHoldingsByPortfolioId = (portfolioId: string) => createSelector(
+    holdingsFeatureSelector,
+    state => state?.data[portfolioId]?.data ?? []
+);
+
 export const holdingsSelectors = {
     getAggregatedHoldings,
     getHoldings,
+    getHoldingsByPortfolioId,
     getError,
     getLoadingState,
     isLoading

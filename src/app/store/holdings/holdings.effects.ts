@@ -3,8 +3,8 @@ import { DocumentReference, Timestamp } from 'firebase/firestore';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { concatLatestFrom } from '@ngrx/operators';
-import { of } from 'rxjs';
-import { catchError, filter, map, mergeMap } from 'rxjs/operators';
+import { asyncScheduler, of, zip } from 'rxjs';
+import { catchError, filter, map, mergeMap, observeOn } from 'rxjs/operators';
 
 import { portfolioActions } from '../../components/main-container/portfolio/portfolio.actions';
 import { authSelectors } from '../auth/auth.selector';
@@ -102,5 +102,31 @@ export class HoldingsEffects {
                 )
             )
         )
+    ));
+
+    // Getting a deleted portfolio from delete stack,
+    // Deleting each holding at a time, using a separate async context
+    deleteMultipleStocks$ = createEffect(() => this._store.select(portfolioSelectors.getDeleteStack).pipe(
+        filter((deleteStack) => !!deleteStack?.length),
+        concatLatestFrom((deleteStack) => [
+            this._store.select(authSelectors.getUser),
+            this._store.select(holdingsSelectors.getHoldingsByPortfolioId(deleteStack[0]))
+        ]),
+        filter(([, user, holdings]) => !!user?.uid && !!holdings?.length),
+        mergeMap(([deleteStack, user, holdings]) => {
+            const deleteRequests = holdings.map(holding =>
+                this._firebaseService.deleteDocument(
+                    `${dbCollectionKeys.USERS_COLLECTION_KEY}/${user?.uid}/${dbCollectionKeys.PORTFOLIO_COLLECTION_KEY}/${deleteStack[0]!}/${dbCollectionKeys.HOLDINGS_COLLECTION_KEY}`,
+                    holding.id!
+                )
+            );
+            return zip(...deleteRequests).pipe(
+                observeOn(asyncScheduler), // Run deletions in a separate async context
+                map(() => holdingsEffectsActions.holdingsDeleteSuccess({ portfolioId: deleteStack[0] })),
+                catchError(() =>
+                    of(holdingsEffectsActions.holdingsDeleteFailed({ error: 'Holdings delete failed' }))
+                )
+            );
+        })
     ));
 }

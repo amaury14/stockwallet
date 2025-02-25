@@ -27,8 +27,10 @@
 
     </ng-template>
     <ng-template #end>
+        <p-button class="delete-portfolio" severity="danger" label="Delete Portfolio" icon="pi pi-trash"
+            (click)="onPortfolioDeleteClicked()" [disabled]="!portfolioSelected()" />
         <p-button class="add-holding" severity="info" label="Add Holding" icon="pi pi-plus"
-            (click)="onHoldingAddClicked()" />
+            (click)="onHoldingAddClicked()" [disabled]="!portfolioSelected()" />
     </ng-template>
 </p-toolbar>
 <!-- main content panel -->
@@ -126,6 +128,24 @@
             <p-button label="Cancel" severity="secondary" (click)="onHoldingCancelClicked()" />
             <p-button class="save-button" label="Save" (click)="onHoldingSaveClicked()"
                 [disabled]="!holdingForm.valid" />
+        </div>
+    </ng-template>
+</p-dialog>
+
+<!-- Delete Porfolio dialog -->
+<p-dialog class="delete-portfolio" header="Delete Porfolio" [modal]="true" [(visible)]="portfolioDeleteDialogVisible"
+    [style]="{ width: '35rem', height: '22rem' }">
+    <p>
+        Are you sure you want to delete "{{ portfolioSelected()?.name }}"?
+    </p>
+    <p>
+        There is no going back from this!!!!
+    </p>
+    <ng-template #footer>
+        <div class="dialog-flex justify-end gap-2">
+            <p-button label="Cancel" severity="secondary" (click)="onPortfolioDeleteCancelClicked()" />
+            <p-button class="delete-button" [label]="isPortfolioDeleteDisabled ? 'Wait ' + countdown + 's' : 'Yes, remove it!'" severity="danger"
+                [disabled]="isPortfolioDeleteDisabled" (click)="onPortfolioDeleteOkClicked()"/>
         </div>
     </ng-template>
 </p-dialog>

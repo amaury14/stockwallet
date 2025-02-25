@@ -32,8 +32,14 @@ const getSelected = createSelector(
     state => state?.selected
 );
 
+const getDeleteStack = createSelector(
+    portfolioFeatureSelector,
+    state => state?.deleteStack ?? []
+);
+
 export const portfolioSelectors = {
     getData,
+    getDeleteStack,
     getError,
     getLoadingState,
     getSelected,
