@@ -117,4 +117,17 @@ $main-top-bar-height: 100px;
     p-dialog.add-holding-dialog ::ng-deep p-iftalabel {
         margin: 5px;
     }
+
+    p-dialog.delete-portfolio::ng-deep {
+        div.p-dialog-content {
+            overflow: hidden;
+            overflow-wrap: break-word;
+            width: 100%;
+            word-wrap: break-word;
+        }
+
+        .delete-button {
+            margin-left: 10px;
+        }
+    }
 }

@@ -16,6 +16,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { PanelModule } from 'primeng/panel';
 import { TableModule } from 'primeng/table';
 import { ToolbarModule } from 'primeng/toolbar';
+import { interval, Subscription, take } from 'rxjs';
 
 import { holdingsSelectors } from '../../../store/holdings/holdings.selector';
 import { Holding } from '../../../store/holdings/models';
@@ -52,16 +53,19 @@ import { holdingDefaultFormValue, holdingDefaultValue } from './portfolio.metada
 })
 export class PortfolioComponent implements OnInit {
 
+    countdown = 5; // Timer duration in seconds
     holdings: Signal<Holding[]> = signal([]);
     holdingDialogVisible = false;
     holdingForm!: UntypedFormGroup;
     portfolioForm!: UntypedFormGroup;
     isHoldingsLoading: Signal<boolean> = signal(false);
     isLoading: Signal<boolean> = signal(false);
+    isPortfolioDeleteDisabled = false;
     portfolio: Signal<Portfolio[]> = signal([]);
-    portfolioSelected: Signal<Portfolio | null> = signal(null);
     portfolioDeleteDialogVisible = false;
+    portfolioDeleteTimerSubscription$: Subscription | null = null;
     portfolioDialogVisible = false;
+    portfolioSelected: Signal<Portfolio | null> = signal(null);
 
     options = {
         plugins: {
@@ -101,6 +105,7 @@ export class PortfolioComponent implements OnInit {
 
     onPortfolioDeleteClicked(): void {
         this.portfolioDeleteDialogVisible = true;
+        this._startDeleteTimer();
     }
 
     onHoldingAddClicked(): void {
@@ -129,6 +134,8 @@ export class PortfolioComponent implements OnInit {
 
     onPortfolioDeleteCancelClicked(): void {
         this.portfolioDeleteDialogVisible = false;
+        this.portfolioDeleteTimerSubscription$?.unsubscribe();
+        this._resetDeleteProps();
     }
 
     onPortfolioDeleteOkClicked(): void {
@@ -161,5 +168,20 @@ export class PortfolioComponent implements OnInit {
     private _initializeForms(): void {
         this.portfolioForm = this._fb.group({ name: [null, Validators.required] });
         this.holdingForm = this._fb.group(holdingDefaultFormValue);
+    }
+
+    private _resetDeleteProps(): void {
+        this.isPortfolioDeleteDisabled = true; // Disable the button
+        this.countdown = 5; // Reset countdown
+    }
+
+    private _startDeleteTimer(): void {
+        this._resetDeleteProps();
+        this.portfolioDeleteTimerSubscription$ = interval(1000)
+            .pipe(take(this.countdown)) // Run for 5 seconds
+            .subscribe({
+                next: (val) => this.countdown = 5 - (val + 1),
+                complete: () => this.isPortfolioDeleteDisabled = false // Re-enable the button
+            });
     }
 }
