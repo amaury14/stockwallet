@@ -117,7 +117,7 @@ export class HoldingsEffects {
             const deleteRequests = holdings.map(holding =>
                 this._firebaseService.deleteDocument(
                     `${dbCollectionKeys.USERS_COLLECTION_KEY}/${user?.uid}/${dbCollectionKeys.PORTFOLIO_COLLECTION_KEY}/${deleteStack[0]!}/${dbCollectionKeys.HOLDINGS_COLLECTION_KEY}`,
-                    holding?.id!
+                    holding.id!
                 )
             );
             return zip(...deleteRequests).pipe(

@@ -80,7 +80,7 @@ export const holdingsReducer: ActionReducer<HoldingState> = createReducer(
         };
     }),
     on(holdingsEffectsActions.holdingsDeleteSuccess, (state, action) => {
-        if (!!state?.data[action.portfolioId]) {
+        if (state?.data[action.portfolioId]) {
             let newState = { ...state };
             const data = { ...newState?.data };
             delete data[action.portfolioId];

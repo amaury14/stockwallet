@@ -68,7 +68,7 @@ export const portfolioReducer: ActionReducer<PortfolioState> = createReducer(
         return {
             ...state,
             selected: null,
-            deleteStack: [...(state?.deleteStack ?? []), action.data?.id!]
+            deleteStack: [...(state?.deleteStack ?? []), action.data.id!]
         };
     }),
     on(holdingsEffectsActions.holdingsDeleteSuccess, (state, action) => {

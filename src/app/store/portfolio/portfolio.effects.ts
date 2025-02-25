@@ -94,7 +94,7 @@ export class PortfolioEffects {
             this._store.dispatch(portfolioEffectsActions.portfolioLoading());
             return this._firebaseService.deleteDocument(
                 `${dbCollectionKeys.USERS_COLLECTION_KEY}/${user?.uid}/${dbCollectionKeys.PORTFOLIO_COLLECTION_KEY}`,
-                action.data?.id!
+                action.data.id!
             ).pipe(
                 map(() => portfolioEffectsActions.portfolioDeleteSuccess({ data: action.data })),
                 catchError(() =>
