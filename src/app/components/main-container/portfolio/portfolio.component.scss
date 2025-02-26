@@ -56,7 +56,7 @@ $main-top-bar-height: 100px;
                 width: 130px;
             }
 
-            p-button.add-holding button,
+            p-button.register-purchase button,
             p-button.delete-portfolio button {
                 font-size: 13px;
                 height: 25px;
@@ -114,7 +114,7 @@ $main-top-bar-height: 100px;
         width: 280px;
     }
 
-    p-dialog.add-holding-dialog ::ng-deep p-iftalabel {
+    p-dialog.register-purchase-dialog ::ng-deep p-iftalabel {
         margin: 5px;
     }
 
@@ -141,7 +141,7 @@ $main-top-bar-height: 100px;
             p-card.edit-holding-card {
                 display: block;
                 height: 330px;
-                overflow-y: auto;
+                overflow: hidden;
             }
 
             div.edit-form {
@@ -149,6 +149,14 @@ $main-top-bar-height: 100px;
                 display: flex;
                 flex-direction: row;
                 justify-content: space-evenly;
+
+                * {
+                    margin: 0 2px;
+                }
+
+                p-button.register-sale button {
+                    height: 43px;
+                }
             }
         }
     }

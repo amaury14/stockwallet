@@ -29,7 +29,7 @@
     <ng-template #end>
         <p-button class="delete-portfolio" severity="danger" label="Delete Portfolio" icon="pi pi-trash"
             (click)="onPortfolioDeleteClicked()" [disabled]="!portfolioSelected()" />
-        <p-button class="add-holding" severity="info" label="Add Holding" icon="pi pi-plus"
+        <p-button class="register-purchase" severity="info" label="Register Purchase" icon="pi pi-plus"
             (click)="onHoldingAddClicked()" [disabled]="!portfolioSelected()" />
     </ng-template>
 </p-toolbar>
@@ -61,13 +61,15 @@
             @if (isHoldingsLoading()) {
             <app-ui-loader></app-ui-loader>
             } @else {
-            <p-table [value]="holdings()" size="small">
+            <p-table [value]="holdings()" size="small" stripedRows [scrollable]="true" scrollHeight="100%" [resizableColumns]="true">
                 <ng-template pTemplate="header">
                     <tr>
-                        <th>Ticker</th>
-                        <th>Shares</th>
-                        <th pTooltip="Average Price" tooltipPosition="left">Avg Price</th>
-                        <th pTooltip="Transactions" tooltipPosition="left">Tx</th>
+                        <th pSortableColumn="ticker">Ticker<p-sortIcon field="ticker" /></th>
+                        <th pSortableColumn="shares">Shares<p-sortIcon field="shares" /></th>
+                        <th pTooltip="Average Price" tooltipPosition="left" pSortableColumn="avgPrice">Avg
+                            Price<p-sortIcon field="avgPrice" /></th>
+                        <th pTooltip="Number of Transactions" tooltipPosition="left" pSortableColumn="transactions">#
+                            Tx<p-sortIcon field="transactions" /></th>
                         <th pTooltip="Edit Contributions" tooltipPosition="left">Edit</th>
                     </tr>
                 </ng-template>
@@ -77,9 +79,9 @@
                         <td>{{ stock.shares }}</td>
                         <td>{{ stock.avgPrice | currency }}</td>
                         <td>{{ stock.transactions }}</td>
-                        <td><p-button aria-label="Edit Holding" icon="pi pi-file-edit"
-                                pTooltip="Edit Ticker Contributions" tooltipPosition="left" [rounded]="true"
-                                [raised]="true" severity="info" size="large" (click)="onEditHoldingClicked(stock)" />
+                        <td><p-button aria-label="Update Contributions" icon="pi pi-file-edit"
+                                pTooltip="Update Contributions" tooltipPosition="left" [rounded]="true" [raised]="true"
+                                severity="info" size="large" (click)="onEditHoldingClicked(stock)" />
                         </td>
                     </tr>
                 </ng-template>
@@ -108,7 +110,7 @@
 </p-dialog>
 
 <!-- add holding dialog -->
-<p-dialog class="add-holding-dialog" header="Add Holding" [modal]="true" [(visible)]="showHoldingDialog"
+<p-dialog class="register-purchase-dialog" header="Register Purchase" [modal]="true" [(visible)]="showHoldingDialog"
     [style]="{ width: '40rem', height: '35rem' }" (onHide)="onHoldingCancelClicked()">
     <ng-container [formGroup]="holdingForm">
         <p-iftalabel>
@@ -160,16 +162,17 @@
 
 <!-- edit ticker contributions dialog -->
 <p-dialog class="edit-portfolio" header="Update Contributions" [modal]="true" [(visible)]="showEditHoldingDialog"
-    [style]="{ width: '100rem', height: '80rem' }" (onHide)="onEditHoldingCancel()">
+    [style]="{ width: '100rem', height: '50rem' }" (onHide)="onEditHoldingCancel()">
     <p-card class="edit-holding-card">
-        <p-table [value]="selectedHoldings()" size="small">
+        <p-table [value]="selectedHoldings()" size="small" stripedRows sortField="dateOfPurchase" [sortOrder]="-1"
+            [scrollable]="true" scrollHeight="300px">
             <ng-template pTemplate="header">
                 <tr>
                     <th>Ticker</th>
-                    <th>Shares</th>
-                    <th>Price</th>
-                    <th>Date of Purchase</th>
-                    <th pTooltip="Edit Contributions" tooltipPosition="top">Edit</th>
+                    <th pSortableColumn="shares">Shares<p-sortIcon field="shares" /></th>
+                    <th pSortableColumn="price">Price<p-sortIcon field="price" /></th>
+                    <th pSortableColumn="dateOfPurchase">Date of Purchase<p-sortIcon field="dateOfPurchase" /></th>
+                    <th>Edit Contributions</th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-stock>
@@ -178,7 +181,7 @@
                     <td>{{ stock.shares }}</td>
                     <td>{{ stock.price | currency }}</td>
                     <td>{{ stock.dateOfPurchase | date: 'MM/dd/yyyy' }}</td>
-                    <td><p-button aria-label="Edit Holding" icon="pi pi-file-edit" pTooltip="Edit Ticker Contributions"
+                    <td><p-button aria-label="Update Contribution" icon="pi pi-file-edit" pTooltip="Update Contribution"
                             tooltipPosition="left" [rounded]="true" [raised]="true" severity="info" size="large"
                             (click)="onEditHoldingItemClicked(stock)" />
                     </td>
@@ -187,6 +190,8 @@
         </p-table>
     </p-card>
     <div class="edit-form" [formGroup]="editHoldingItemForm">
+        <p-button class="register-sale" severity="warn" label="Sold" icon="pi pi-tag" pTooltip="Register Sale"
+            tooltipPosition="top" (click)="onTransactionDeleteClicked()" [disabled]="!editHoldingItemForm.valid" />
         <p-iftalabel>
             <input pInputText id="ticker" formControlName="ticker" />
             <label for="ticker">Ticker</label>
@@ -205,13 +210,13 @@
                 [maxFractionDigits]="5" />
             <label for="price">Price</label>
         </p-iftalabel>
-        <p-button aria-label="Save record" icon="pi pi-save" pTooltip="Save Contributions"
-            tooltipPosition="top" [rounded]="true" [raised]="true" severity="success" size="large"
-             />
+        <p-button aria-label="Save record" icon="pi pi-save" pTooltip="Save Contributions" tooltipPosition="top"
+            [rounded]="true" [raised]="true" severity="success" size="large" [disabled]="!editHoldingItemForm.valid"
+            (click)="onTransactionUpdateClicked()" />
     </div>
     <ng-template #footer>
         <div class="dialog-flex justify-end gap-2">
-            <p-button label="Cancel" severity="secondary" (click)="onEditHoldingCancel()" />
+            <p-button label="Close" severity="secondary" (click)="onEditHoldingCancel()" />
         </div>
     </ng-template>
 </p-dialog>

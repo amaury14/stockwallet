@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, signal, Signal } from '@angular/core';
+import { Component, computed, effect, OnInit, signal, Signal } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { ButtonModule } from 'primeng/button';
@@ -121,6 +121,7 @@ export class PortfolioComponent implements OnInit {
 
     onEditHoldingItemClicked(data: Holding): void {
         this.editHoldingItemForm = this._fb.group({
+            id: [{ value: data.id, disabled: true }, Validators.required],
             ticker: [{ value: data.ticker, disabled: true }, Validators.required],
             shares: [data.shares, Validators.required],
             dateOfPurchase: [{ value: new Date(data.dateOfPurchase as Date), disabled: true }, Validators.required],
@@ -187,6 +188,36 @@ export class PortfolioComponent implements OnInit {
                 }
             }));
             this.portfolioForm.reset();
+        }
+    }
+
+    onTransactionDeleteClicked(): void {
+        if (this.editHoldingItemForm.valid) {
+            this._store.dispatch(portfolioActions.transactionDeleted({
+                data: {
+                    dateOfPurchase: this.editHoldingItemForm.get('dateOfPurchase')?.value,
+                    id: this.editHoldingItemForm.get('id')?.value,
+                    ticker: this.editHoldingItemForm.get('ticker')?.value,
+                    shares: this.editHoldingItemForm.get('shares')?.value,
+                    price: this.editHoldingItemForm.get('price')?.value
+                }
+            }));
+            this.editHoldingItemForm.reset();
+        }
+    }
+
+    onTransactionUpdateClicked(): void {
+        if (this.editHoldingItemForm.valid) {
+            this._store.dispatch(portfolioActions.transactionUpdated({
+                data: {
+                    dateOfPurchase: this.editHoldingItemForm.get('dateOfPurchase')?.value,
+                    id: this.editHoldingItemForm.get('id')?.value,
+                    ticker: this.editHoldingItemForm.get('ticker')?.value,
+                    shares: this.editHoldingItemForm.get('shares')?.value,
+                    price: this.editHoldingItemForm.get('price')?.value
+                }
+            }));
+            this.editHoldingItemForm.reset();
         }
     }
 

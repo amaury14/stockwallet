@@ -104,6 +104,55 @@ export class HoldingsEffects {
         )
     ));
 
+    transactionUpdated$ = createEffect(() => this._actions$.pipe(
+        ofType(
+            portfolioActions.transactionUpdated
+        ),
+        concatLatestFrom(() => [
+            this._store.select(authSelectors.getUser),
+            this._store.select(portfolioSelectors.getSelected)
+        ]),
+        filter(([action, user, selectedPortfolio]) => !!user?.uid && !!selectedPortfolio && !!action.data?.id),
+        mergeMap(([action, user, selectedPortfolio]) =>
+            this._firebaseService.updateDocument(
+                `${dbCollectionKeys.USERS_COLLECTION_KEY}/${user?.uid}/${dbCollectionKeys.PORTFOLIO_COLLECTION_KEY}/${selectedPortfolio?.id}/${dbCollectionKeys.HOLDINGS_COLLECTION_KEY}`,
+                action.data.id!,
+                action.data
+            ).pipe(
+                map(() => holdingsEffectsActions.holdingUpdatedSuccess({
+                    data: action.data
+                })),
+                catchError(() =>
+                    of(holdingsEffectsActions.holdingUpdateFailed({ error: 'Holding update failed' }))
+                )
+            )
+        )
+    ));
+
+    transactionDeleted$ = createEffect(() => this._actions$.pipe(
+        ofType(
+            portfolioActions.transactionDeleted
+        ),
+        concatLatestFrom(() => [
+            this._store.select(authSelectors.getUser),
+            this._store.select(portfolioSelectors.getSelected)
+        ]),
+        filter(([action, user, selectedPortfolio]) => !!user?.uid && !!selectedPortfolio && !!action.data?.id),
+        mergeMap(([action, user, selectedPortfolio]) =>
+            this._firebaseService.deleteDocument(
+                `${dbCollectionKeys.USERS_COLLECTION_KEY}/${user?.uid}/${dbCollectionKeys.PORTFOLIO_COLLECTION_KEY}/${selectedPortfolio?.id}/${dbCollectionKeys.HOLDINGS_COLLECTION_KEY}`,
+                action.data.id!
+            ).pipe(
+                map(() => holdingsEffectsActions.holdingDeletedSuccess({
+                    data: action.data
+                })),
+                catchError(() =>
+                    of(holdingsEffectsActions.holdingDeleteFailed({ error: 'Holding delete failed' }))
+                )
+            )
+        )
+    ));
+
     // Getting a deleted portfolio from delete stack,
     // Deleting each holding at a time, using a separate async context
     deleteMultipleStocks$ = createEffect(() => this._store.select(portfolioSelectors.getDeleteStack).pipe(

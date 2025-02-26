@@ -104,5 +104,34 @@ export const holdingsReducer: ActionReducer<HoldingState> = createReducer(
                 }
             }
         };
+    }),
+    on(holdingsEffectsActions.holdingUpdatedSuccess, (state, action) => {
+        return {
+            ...state,
+            data: {
+                ...state?.data,
+                [state?.selectedPortfolio]: {
+                    ...state?.data[state?.selectedPortfolio],
+                    data: state?.data[state?.selectedPortfolio].data.map(item => {
+                        if (item.id === action.data.id) {
+                            return { ...action.data };
+                        }
+                        return item;
+                    })
+                }
+            }
+        };
+    }),
+    on(holdingsEffectsActions.holdingDeletedSuccess, (state, action) => {
+        return {
+            ...state,
+            data: {
+                ...state?.data,
+                [state?.selectedPortfolio]: {
+                    ...state?.data[state?.selectedPortfolio],
+                    data: state?.data[state?.selectedPortfolio].data.filter(item => item.id !== action.data.id)
+                }
+            }
+        };
     })
 );
