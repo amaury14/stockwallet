@@ -6,6 +6,7 @@ export interface HoldingStateData {
     error: unknown;
     loading: boolean;
     loadingState: LoadingState;
+    selectedHolding: Holding;
 }
 
 // eslint-disable-next-line @typescript-eslint/consistent-indexed-object-style

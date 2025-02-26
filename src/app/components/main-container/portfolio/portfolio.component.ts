@@ -16,6 +16,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { PanelModule } from 'primeng/panel';
 import { TableModule } from 'primeng/table';
 import { ToolbarModule } from 'primeng/toolbar';
+import { TooltipModule } from 'primeng/tooltip';
 import { interval, Subscription, take } from 'rxjs';
 
 import { holdingsSelectors } from '../../../store/holdings/holdings.selector';
@@ -24,7 +25,7 @@ import { Portfolio } from '../../../store/portfolio/models';
 import { portfolioSelectors } from '../../../store/portfolio/portfolio.selector';
 import { UiLoaderComponent } from '../../shared/ui-loader/ui-loader.component';
 import { portfolioActions } from './portfolio.actions';
-import { holdingDefaultFormValue, holdingDefaultValue } from './portfolio.metadata';
+import { holdingDefaultEditFormValue, holdingDefaultFormValue, holdingDefaultValue } from './portfolio.metadata';
 
 @Component({
     selector: 'app-portfolio',
@@ -46,6 +47,7 @@ import { holdingDefaultFormValue, holdingDefaultValue } from './portfolio.metada
         ChartModule,
         PanelModule,
         ToolbarModule,
+        TooltipModule,
         UiLoaderComponent
     ],
     templateUrl: './portfolio.component.html',
@@ -54,18 +56,21 @@ import { holdingDefaultFormValue, holdingDefaultValue } from './portfolio.metada
 export class PortfolioComponent implements OnInit {
 
     countdown = 5; // Timer duration in seconds
+    editHoldingItemForm!: UntypedFormGroup;
     holdings: Signal<Holding[]> = signal([]);
-    holdingDialogVisible = false;
     holdingForm!: UntypedFormGroup;
-    portfolioForm!: UntypedFormGroup;
     isHoldingsLoading: Signal<boolean> = signal(false);
     isLoading: Signal<boolean> = signal(false);
-    isPortfolioDeleteDisabled = false;
+    isPortfolioDeleteDisabled = signal(false);
     portfolio: Signal<Portfolio[]> = signal([]);
-    portfolioDeleteDialogVisible = false;
     portfolioDeleteTimerSubscription$: Subscription | null = null;
-    portfolioDialogVisible = false;
+    portfolioForm!: UntypedFormGroup;
     portfolioSelected: Signal<Portfolio | null> = signal(null);
+    selectedHoldings: Signal<Holding[]> = signal([]);
+    showEditHoldingDialog = signal(false);
+    showHoldingDialog = signal(false);
+    showPortfolioDeleteDialog = signal(false);
+    showPortfolioDialog = signal(false);
 
     options = {
         plugins: {
@@ -96,30 +101,46 @@ export class PortfolioComponent implements OnInit {
         this.isLoading = this._store.selectSignal(portfolioSelectors.isLoading);
         this.portfolioSelected = this._store.selectSignal(portfolioSelectors.getSelected);
         this.holdings = this._store.selectSignal(holdingsSelectors.getAggregatedHoldings);
+        this.selectedHoldings = this._store.selectSignal(holdingsSelectors.getSelectedHoldings);
         this._initializeForms();
     }
 
     onAddClicked(): void {
-        this.portfolioDialogVisible = true;
+        this.showPortfolioDialog.set(true);
     }
 
-    onPortfolioDeleteClicked(): void {
-        this.portfolioDeleteDialogVisible = true;
-        this._startDeleteTimer();
+    onEditHoldingClicked(data: Holding): void {
+        this._store.dispatch(portfolioActions.holdingEditSelected({ data }));
+        this.showEditHoldingDialog.set(true);
+    }
+
+    onEditHoldingCancel(): void {
+        this.showEditHoldingDialog.set(false);
+        this.editHoldingItemForm.reset();
+    }
+
+    onEditHoldingItemClicked(data: Holding): void {
+        this.editHoldingItemForm = this._fb.group({
+            id: [{ value: data.id, disabled: true }, Validators.required],
+            ticker: [{ value: data.ticker, disabled: true }, Validators.required],
+            shares: [data.shares, Validators.required],
+            dateOfPurchase: [{ value: new Date(data.dateOfPurchase as Date), disabled: true }, Validators.required],
+            price: [{ value: data.price, disabled: true }, Validators.required]
+        });
     }
 
     onHoldingAddClicked(): void {
-        this.holdingDialogVisible = true;
+        this.showHoldingDialog.set(true);
     }
 
     onHoldingCancelClicked(): void {
-        this.holdingDialogVisible = false;
+        this.showHoldingDialog.set(false);
         this.holdingForm.reset();
     }
 
     onHoldingSaveClicked(): void {
         if (this.holdingForm.valid) {
-            this.holdingDialogVisible = false;
+            this.showHoldingDialog.set(false);
             this._store.dispatch(portfolioActions.holdingSaved({
                 data: {
                     dateOfPurchase: this.holdingForm.get('dateOfPurchase')?.value,
@@ -133,18 +154,23 @@ export class PortfolioComponent implements OnInit {
     }
 
     onPortfolioDeleteCancelClicked(): void {
-        this.portfolioDeleteDialogVisible = false;
+        this.showPortfolioDeleteDialog.set(false);
         this.portfolioDeleteTimerSubscription$?.unsubscribe();
         this._resetDeleteProps();
     }
 
+    onPortfolioDeleteClicked(): void {
+        this.showPortfolioDeleteDialog.set(true);
+        this._startDeleteTimer();
+    }
+
     onPortfolioDeleteOkClicked(): void {
         this._store.dispatch(portfolioActions.portfolioDeleted({ data: this.portfolioSelected()! }));
-        this.portfolioDeleteDialogVisible = false;
+        this.showPortfolioDeleteDialog.set(false);
     }
 
     onPortfolioCancelClicked(): void {
-        this.portfolioDialogVisible = false;
+        this.showPortfolioDialog.set(false);
         this.portfolioForm.reset();
     }
 
@@ -154,7 +180,7 @@ export class PortfolioComponent implements OnInit {
 
     onPortfolioSaveClicked(): void {
         if (this.portfolioForm.valid) {
-            this.portfolioDialogVisible = false;
+            this.showPortfolioDialog.set(false);
             this._store.dispatch(portfolioActions.portfolioSaved({
                 data: {
                     createdAt: new Date(),
@@ -165,13 +191,44 @@ export class PortfolioComponent implements OnInit {
         }
     }
 
+    onTransactionDeleteClicked(): void {
+        if (this.editHoldingItemForm.valid) {
+            this._store.dispatch(portfolioActions.transactionDeleted({
+                data: {
+                    dateOfPurchase: this.editHoldingItemForm.get('dateOfPurchase')?.value,
+                    id: this.editHoldingItemForm.get('id')?.value,
+                    ticker: this.editHoldingItemForm.get('ticker')?.value,
+                    shares: this.editHoldingItemForm.get('shares')?.value,
+                    price: this.editHoldingItemForm.get('price')?.value
+                }
+            }));
+            this.editHoldingItemForm.reset();
+        }
+    }
+
+    onTransactionUpdateClicked(): void {
+        if (this.editHoldingItemForm.valid) {
+            this._store.dispatch(portfolioActions.transactionUpdated({
+                data: {
+                    dateOfPurchase: this.editHoldingItemForm.get('dateOfPurchase')?.value,
+                    id: this.editHoldingItemForm.get('id')?.value,
+                    ticker: this.editHoldingItemForm.get('ticker')?.value,
+                    shares: this.editHoldingItemForm.get('shares')?.value,
+                    price: this.editHoldingItemForm.get('price')?.value
+                }
+            }));
+            this.editHoldingItemForm.reset();
+        }
+    }
+
     private _initializeForms(): void {
         this.portfolioForm = this._fb.group({ name: [null, Validators.required] });
         this.holdingForm = this._fb.group(holdingDefaultFormValue);
+        this.editHoldingItemForm = this._fb.group(holdingDefaultEditFormValue);
     }
 
     private _resetDeleteProps(): void {
-        this.isPortfolioDeleteDisabled = true; // Disable the button
+        this.isPortfolioDeleteDisabled.set(true); // Disable the button
         this.countdown = 5; // Reset countdown
     }
 
@@ -181,7 +238,7 @@ export class PortfolioComponent implements OnInit {
             .pipe(take(this.countdown)) // Run for 5 seconds
             .subscribe({
                 next: (val) => this.countdown = 5 - (val + 1),
-                complete: () => this.isPortfolioDeleteDisabled = false // Re-enable the button
+                complete: () => this.isPortfolioDeleteDisabled.set(false) // Re-enable the button
             });
     }
 }
