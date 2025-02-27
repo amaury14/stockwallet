@@ -1,6 +1,8 @@
 import { createSelector } from '@ngrx/store';
 
 import { swSelectors } from '../sw.selectors';
+import { getRandomColor } from '../utils';
+import { backgroundColors } from './holdings.metadata';
 import { Holding } from './models';
 
 const holdingsFeatureSelector = createSelector(
@@ -77,6 +79,55 @@ const getFilteredStocks = createSelector(
     state => state.filterStocks ?? []
 )
 
+const getPieChartHoldingsByAmount = createSelector(
+    getAggregatedHoldings,
+    (data: Holding[]) => {
+        if (data?.length) {
+            return {
+                labels: data.map(item => item.ticker),
+                datasets: [
+                    {
+                        data: data.map(item => item.totalCost),
+                        backgroundColor: data.map((item, index) => backgroundColors[index] ?? getRandomColor())
+                    }
+                ]
+            };
+        }
+        return null;
+    }
+);
+
+const getPieChartHoldingsByPercent = createSelector(
+    getAggregatedHoldings,
+    (data: Holding[]) => {
+        if (data?.length) {
+            const totalValue = data.reduce((sum, item) => sum + item.totalCost!, 0);
+            return {
+                labels: data.map(item => item.ticker),
+                datasets: [
+                    {
+                        data: data.map(item => (item.totalCost! * 100) / totalValue),
+                        backgroundColor: data.map((item, index) => backgroundColors[index] ?? getRandomColor())
+                    }
+                ]
+            };
+        }
+        return null;
+    }
+);
+
+const getPortfolioStats = createSelector(
+    getAggregatedHoldings,
+    (data: Holding[]) => {
+        if (data?.length) {
+            return {
+                totalValue: data.reduce((sum, item) => sum + item.totalCost!, 0)
+            };
+        }
+        return null;
+    }
+);
+
 export const holdingsSelectors = {
     getAggregatedHoldings,
     getError,
@@ -84,6 +135,9 @@ export const holdingsSelectors = {
     getHoldings,
     getHoldingsByPortfolioId,
     getLoadingState,
+    getPieChartHoldingsByAmount,
+    getPieChartHoldingsByPercent,
+    getPortfolioStats,
     getSelectedHoldings,
     isLoading
 };
