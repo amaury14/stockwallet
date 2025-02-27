@@ -9,7 +9,8 @@ import { holdingsEffectsActions } from './holdings.actions';
 
 export const initialState: HoldingState = {
     data: {},
-    selectedPortfolio: ''
+    selectedPortfolio: '',
+    filterStocks: []
 };
 
 export const holdingsReducer: ActionReducer<HoldingState> = createReducer(
@@ -132,6 +133,18 @@ export const holdingsReducer: ActionReducer<HoldingState> = createReducer(
                     data: state?.data[state?.selectedPortfolio].data.filter(item => item.id !== action.data.id)
                 }
             }
+        };
+    }),
+    on(holdingsEffectsActions.filterStocksSuccess, (state, action) => {
+        return {
+            ...state,
+            filterStocks: action.data
+        };
+    }),
+    on(holdingsEffectsActions.filterStocksFailed, state => {
+        return {
+            ...state,
+            filterStocks: []
         };
     })
 );

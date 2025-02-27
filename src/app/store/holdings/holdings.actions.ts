@@ -1,7 +1,8 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 
-import { Holding } from './models';
+import { StockInformation } from '../models';
 import { Portfolio } from '../portfolio/models';
+import { Holding } from './models';
 
 export const holdingsEffectsActions = createActionGroup({
     source: 'Holdings Effects',
@@ -17,6 +18,8 @@ export const holdingsEffectsActions = createActionGroup({
         holdingUpdatedSuccess: props<{ data: Holding }>(),
         holdingUpdateFailed: props<{ error: string }>(),
         holdingDeletedSuccess: props<{ data: Holding }>(),
-        holdingDeleteFailed: props<{ error: string }>()
+        holdingDeleteFailed: props<{ error: string }>(),
+        filterStocksSuccess: props<{ data: StockInformation[] }>(),
+        filterStocksFailed: props<{ error: string }>()
     }
 });

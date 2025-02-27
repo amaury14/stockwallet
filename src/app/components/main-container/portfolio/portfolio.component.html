@@ -18,9 +18,9 @@
 <p-toolbar class="main-top-bar">
     <ng-template #start>
         <div class="main-numbers-panel">
-            <span>Total Value</span>
-            <span>Gain/Loss %</span>
-            <span>Best Performer</span>
+            <span>Total Value <span class="total-value">{{ portfolioStats()?.totalValue ?? 0 | currency }}</span></span>
+            <!-- <span>Gain/Loss %</span>
+            <span>Best Performer</span> -->
         </div>
     </ng-template>
     <ng-template #center>
@@ -39,18 +39,18 @@
     <ng-template #start>
         <div class="charts-container">
             <div class="chart-row">
-                <p-card header="Holdings (fake data)">
-                    <p-chart type="pie" [data]="pieData" [options]="options" />
+                <p-card header="Holdings by $">
+                    <p-chart type="pie" [data]="pieChartHoldingsByAmount()" [options]="pieChartOptions" />
                 </p-card>
-                <p-card header="Sectors (fake data)">
-                    <p-chart type="pie" [data]="pieData" [options]="options" />
+                <p-card header="Holdings by %">
+                    <p-chart type="pie" [data]="pieChartHoldingsByPercent()" [options]="pieChartOptions" />
                 </p-card>
             </div>
-            <div class="chart-row">
+            <!-- <div class="chart-row">
                 <p-card header="Portfolio History (fake data)">
                     <p-chart type="line" [data]="lineData" />
                 </p-card>
-            </div>
+            </div> -->
         </div>
     </ng-template>
     <ng-template #center>
@@ -61,7 +61,8 @@
             @if (isHoldingsLoading()) {
             <app-ui-loader></app-ui-loader>
             } @else {
-            <p-table [value]="holdings()" size="small" stripedRows [scrollable]="true" scrollHeight="100%" [resizableColumns]="true">
+            <p-table [value]="holdings()" size="small" stripedRows [scrollable]="true" scrollHeight="100%"
+                [resizableColumns]="true">
                 <ng-template pTemplate="header">
                     <tr>
                         <th pSortableColumn="ticker">Ticker<p-sortIcon field="ticker" /></th>
@@ -114,9 +115,21 @@
     [style]="{ width: '40rem', height: '35rem' }" (onHide)="onHoldingCancelClicked()">
     <ng-container [formGroup]="holdingForm">
         <p-iftalabel>
-            <input pInputText id="ticker" formControlName="ticker" />
+            <input class="uppercase" pInputText id="ticker" formControlName="ticker" />
             <label for="ticker">Ticker</label>
         </p-iftalabel>
+        <!-- <p-iftalabel>
+            <p-autocomplete id="ticker" formControlName="ticker" delay="300" [suggestions]="filteredStocks()"
+                (completeMethod)="filterByTicker($event)" optionLabel="symbol" appendTo="body" dataKey="symbol"
+                [pAutoFocus]="true">
+                <ng-template let-ticker #item>
+                    <div class="flex items-center gap-2">
+                        <div>{{ ticker.symbol }} - {{ ticker.name }} - {{ ticker.region }} ({{ ticker.currency }})</div>
+                    </div>
+                </ng-template>
+            </p-autocomplete>
+            <label for="ticker">Ticker</label>
+        </p-iftalabel> -->
         <p-iftalabel>
             <p-inputnumber inputId="shares" formControlName="shares" mode="decimal" [minFractionDigits]="2"
                 [maxFractionDigits]="5" />

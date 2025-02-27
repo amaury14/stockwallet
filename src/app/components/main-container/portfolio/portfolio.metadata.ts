@@ -10,7 +10,7 @@ export const holdingDefaultValue = {
 export const holdingDefaultFormValue = {
     ticker: [null, Validators.required],
     shares: [null, Validators.required],
-    dateOfPurchase: new Date(),
+    dateOfPurchase: [new Date(), Validators.required],
     price: [null, Validators.required]
 };
 
