@@ -87,8 +87,8 @@ const getPieChartHoldingsByAmount = createSelector(
                 labels: data.map(item => item.ticker),
                 datasets: [
                     {
-                        data: data.map(item => item.totalCost),
-                        backgroundColor: data.map((item, index) => backgroundColors[index] ?? getRandomColor())
+                        data: data.map(item => item.totalCost!),
+                        backgroundColor: data.map((_, index) => backgroundColors[index] ?? getRandomColor())
                     }
                 ]
             };
@@ -107,7 +107,7 @@ const getPieChartHoldingsByPercent = createSelector(
                 datasets: [
                     {
                         data: data.map(item => (item.totalCost! * 100) / totalValue),
-                        backgroundColor: data.map((item, index) => backgroundColors[index] ?? getRandomColor())
+                        backgroundColor: data.map((_, index) => backgroundColors[index] ?? getRandomColor())
                     }
                 ]
             };

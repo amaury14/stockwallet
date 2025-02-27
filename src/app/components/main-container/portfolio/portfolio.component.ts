@@ -23,7 +23,7 @@ import { interval, Subscription, take } from 'rxjs';
 
 import { holdingsSelectors } from '../../../store/holdings/holdings.selector';
 import { Holding } from '../../../store/holdings/models';
-import { StockInformation } from '../../../store/models';
+import { PortfolioPieData, PortfolioStats, StockInformation } from '../../../store/models';
 import { Portfolio } from '../../../store/portfolio/models';
 import { portfolioSelectors } from '../../../store/portfolio/portfolio.selector';
 import { UiLoaderComponent } from '../../shared/ui-loader/ui-loader.component';
@@ -68,13 +68,13 @@ export class PortfolioComponent implements OnInit {
     isHoldingsLoading: Signal<boolean> = signal(false);
     isLoading: Signal<boolean> = signal(false);
     isPortfolioDeleteDisabled = signal(false);
-    pieChartHoldingsByAmount: Signal<any> = signal(null);
-    pieChartHoldingsByPercent: Signal<any> = signal(null);
+    pieChartHoldingsByAmount: Signal<PortfolioPieData | null> = signal(null);
+    pieChartHoldingsByPercent: Signal<PortfolioPieData | null> = signal(null);
     portfolio: Signal<Portfolio[]> = signal([]);
     portfolioDeleteTimerSubscription$: Subscription | null = null;
     portfolioForm!: UntypedFormGroup;
     portfolioSelected: Signal<Portfolio | null> = signal(null);
-    portfolioStats: Signal<any> = signal(null);
+    portfolioStats: Signal<PortfolioStats | null> = signal(null);
     selectedHoldings: Signal<Holding[]> = signal([]);
     showEditHoldingDialog = signal(false);
     showHoldingDialog = signal(false);

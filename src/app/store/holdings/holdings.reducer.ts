@@ -141,7 +141,7 @@ export const holdingsReducer: ActionReducer<HoldingState> = createReducer(
             filterStocks: action.data
         };
     }),
-    on(holdingsEffectsActions.filterStocksFailed, (state, action) => {
+    on(holdingsEffectsActions.filterStocksFailed, state => {
         return {
             ...state,
             filterStocks: []
