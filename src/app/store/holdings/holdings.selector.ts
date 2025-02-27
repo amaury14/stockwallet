@@ -72,11 +72,17 @@ const getSelectedHoldings = createSelector(
     state => state?.data?.filter(item => item.ticker?.toLowerCase() === state?.selectedHolding?.ticker?.toLowerCase()) ?? []
 );
 
+const getFilteredStocks = createSelector(
+    holdingsFeatureSelector,
+    state => state.filterStocks ?? []
+)
+
 export const holdingsSelectors = {
     getAggregatedHoldings,
+    getError,
+    getFilteredStocks,
     getHoldings,
     getHoldingsByPortfolioId,
-    getError,
     getLoadingState,
     getSelectedHoldings,
     isLoading

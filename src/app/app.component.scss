@@ -31,7 +31,8 @@
     ::ng-deep p-iftalabel input,
     ::ng-deep p-iftalabel p-inputnumber,
     ::ng-deep p-iftalabel p-datepicker span,
-    ::ng-deep p-iftalabel p-inputmask {        
+    ::ng-deep p-iftalabel p-inputmask,
+    ::ng-deep p-iftalabel p-autocomplete div.p-autocomplete {        
         width: 100%;
     }
 }

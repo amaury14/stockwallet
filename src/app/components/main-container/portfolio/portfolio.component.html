@@ -61,7 +61,8 @@
             @if (isHoldingsLoading()) {
             <app-ui-loader></app-ui-loader>
             } @else {
-            <p-table [value]="holdings()" size="small" stripedRows [scrollable]="true" scrollHeight="100%" [resizableColumns]="true">
+            <p-table [value]="holdings()" size="small" stripedRows [scrollable]="true" scrollHeight="100%"
+                [resizableColumns]="true">
                 <ng-template pTemplate="header">
                     <tr>
                         <th pSortableColumn="ticker">Ticker<p-sortIcon field="ticker" /></th>
@@ -114,9 +115,21 @@
     [style]="{ width: '40rem', height: '35rem' }" (onHide)="onHoldingCancelClicked()">
     <ng-container [formGroup]="holdingForm">
         <p-iftalabel>
-            <input pInputText id="ticker" formControlName="ticker" />
+            <input class="uppercase" pInputText id="ticker" formControlName="ticker" />
             <label for="ticker">Ticker</label>
         </p-iftalabel>
+        <!-- <p-iftalabel>
+            <p-autocomplete id="ticker" formControlName="ticker" delay="300" [suggestions]="filteredStocks()"
+                (completeMethod)="filterByTicker($event)" optionLabel="symbol" appendTo="body" dataKey="symbol"
+                [pAutoFocus]="true">
+                <ng-template let-ticker #item>
+                    <div class="flex items-center gap-2">
+                        <div>{{ ticker.symbol }} - {{ ticker.name }} - {{ ticker.region }} ({{ ticker.currency }})</div>
+                    </div>
+                </ng-template>
+            </p-autocomplete>
+            <label for="ticker">Ticker</label>
+        </p-iftalabel> -->
         <p-iftalabel>
             <p-inputnumber inputId="shares" formControlName="shares" mode="decimal" [minFractionDigits]="2"
                 [maxFractionDigits]="5" />

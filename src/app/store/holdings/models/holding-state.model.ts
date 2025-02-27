@@ -1,4 +1,4 @@
-import { LoadingState } from '../../models';
+import { LoadingState, StockInformation } from '../../models';
 import { Holding } from './holding.model';
 
 export interface HoldingStateData {
@@ -17,4 +17,5 @@ export interface HoldingStateInnerData {
 export interface HoldingState {
     data: HoldingStateInnerData;
     selectedPortfolio: string;
+    filterStocks: StockInformation[];
 }

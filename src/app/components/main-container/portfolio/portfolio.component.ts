@@ -2,6 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit, signal, Signal } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
+import { AutoCompleteCompleteEvent, AutoCompleteModule } from 'primeng/autocomplete';
+import { AutoFocusModule } from 'primeng/autofocus';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { ChartModule } from 'primeng/chart';
@@ -21,6 +23,7 @@ import { interval, Subscription, take } from 'rxjs';
 
 import { holdingsSelectors } from '../../../store/holdings/holdings.selector';
 import { Holding } from '../../../store/holdings/models';
+import { StockInformation } from '../../../store/models';
 import { Portfolio } from '../../../store/portfolio/models';
 import { portfolioSelectors } from '../../../store/portfolio/portfolio.selector';
 import { UiLoaderComponent } from '../../shared/ui-loader/ui-loader.component';
@@ -30,6 +33,8 @@ import { holdingDefaultEditFormValue, holdingDefaultFormValue, holdingDefaultVal
 @Component({
     selector: 'app-portfolio',
     imports: [
+        AutoCompleteModule,
+        AutoFocusModule,
         ButtonModule,
         CardModule,
         ChipModule,
@@ -57,6 +62,7 @@ export class PortfolioComponent implements OnInit {
 
     countdown = 5; // Timer duration in seconds
     editHoldingItemForm!: UntypedFormGroup;
+    filteredStocks: Signal<StockInformation[]> = signal([]);
     holdings: Signal<Holding[]> = signal([]);
     holdingForm!: UntypedFormGroup;
     isHoldingsLoading: Signal<boolean> = signal(false);
@@ -102,7 +108,12 @@ export class PortfolioComponent implements OnInit {
         this.portfolioSelected = this._store.selectSignal(portfolioSelectors.getSelected);
         this.holdings = this._store.selectSignal(holdingsSelectors.getAggregatedHoldings);
         this.selectedHoldings = this._store.selectSignal(holdingsSelectors.getSelectedHoldings);
+        this.filteredStocks = this._store.selectSignal(holdingsSelectors.getFilteredStocks);
         this._initializeForms();
+    }
+
+    filterByTicker(event: AutoCompleteCompleteEvent): void {
+        this._store.dispatch(portfolioActions.filterTicker({ query: event.query }));
     }
 
     onAddClicked(): void {
@@ -135,7 +146,7 @@ export class PortfolioComponent implements OnInit {
 
     onHoldingCancelClicked(): void {
         this.showHoldingDialog.set(false);
-        this.holdingForm.reset();
+        this.holdingForm.reset(holdingDefaultValue);
     }
 
     onHoldingSaveClicked(): void {
@@ -145,6 +156,7 @@ export class PortfolioComponent implements OnInit {
                 data: {
                     dateOfPurchase: this.holdingForm.get('dateOfPurchase')?.value,
                     ticker: this.holdingForm.get('ticker')?.value,
+                    // ticker: this.holdingForm.get('ticker')?.value?.symbol,
                     shares: this.holdingForm.get('shares')?.value,
                     price: this.holdingForm.get('price')?.value
                 }

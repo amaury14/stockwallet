@@ -10,16 +10,22 @@ import { portfolioActions } from '../../components/main-container/portfolio/port
 import { authSelectors } from '../auth/auth.selector';
 import { FirebaseService } from '../firebase.service';
 import { dbCollectionKeys } from '../key-string.store';
-import { Holding } from './models';
-import { holdingsEffectsActions } from './holdings.actions';
-import { portfolioSelectors } from '../portfolio/portfolio.selector';
-import { holdingsSelectors } from './holdings.selector';
 import { LoadingState } from '../models';
+import { portfolioSelectors } from '../portfolio/portfolio.selector';
+import { StockService } from '../stock.service';
+import { holdingsEffectsActions } from './holdings.actions';
+import { holdingsSelectors } from './holdings.selector';
+import { Holding } from './models';
 
 @Injectable()
 export class HoldingsEffects {
 
-    constructor(private _actions$: Actions, private _store: Store, private _firebaseService: FirebaseService) { }
+    constructor(
+        private _actions$: Actions,
+        private _firebaseService: FirebaseService,
+        private _store: Store,
+        private _stockService: StockService
+    ) { }
 
     portfolioSelected$ = createEffect(() => this._store.select(portfolioSelectors.getSelected).pipe(
         filter(portfolio => !!portfolio),
@@ -176,6 +182,21 @@ export class HoldingsEffects {
                     of(holdingsEffectsActions.holdingsDeleteFailed({ error: 'Holdings delete failed' }))
                 )
             );
+        })
+    ));
+
+    filterTicker$ = createEffect(() => this._actions$.pipe(
+        ofType(portfolioActions.filterTicker),
+        filter((action) => !!action.query),
+        mergeMap((action) => {
+            return this._stockService.getStockData(action.query).pipe(
+                map(data => holdingsEffectsActions.filterStocksSuccess({
+                    data
+                })),
+                catchError(() =>
+                    of(holdingsEffectsActions.filterStocksFailed({ error: 'Filter stocks failed to Load' }))
+                )
+            )
         })
     ));
 }

@@ -17,6 +17,8 @@ export const holdingsEffectsActions = createActionGroup({
         holdingUpdatedSuccess: props<{ data: Holding }>(),
         holdingUpdateFailed: props<{ error: string }>(),
         holdingDeletedSuccess: props<{ data: Holding }>(),
-        holdingDeleteFailed: props<{ error: string }>()
+        holdingDeleteFailed: props<{ error: string }>(),
+        filterStocksSuccess: props<{ data: any }>(),
+        filterStocksFailed: props<{ error: string }>()
     }
 });

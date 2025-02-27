@@ -116,6 +116,10 @@ $main-top-bar-height: 100px;
 
     p-dialog.register-purchase-dialog ::ng-deep p-iftalabel {
         margin: 5px;
+
+        .uppercase {
+            text-transform: uppercase;
+        }
     }
 
     p-dialog.delete-portfolio::ng-deep {
