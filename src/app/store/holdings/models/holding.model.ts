@@ -5,6 +5,7 @@ export interface Holding {
     change?: number;
     dateOfPurchase: Date | Timestamp;
     id?: string;
+    notes?: string;
     price: number;
     shares: number;
     ticker: string;
