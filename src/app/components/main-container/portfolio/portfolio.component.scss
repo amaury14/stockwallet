@@ -51,13 +51,18 @@ $main-top-bar-height: 100px;
                 }
             }
 
+            div.p-toolbar-start,
+            div.p-toolbar-center {
+                width: 450px;
+            }
+
             div.p-toolbar-end {
                 align-items: end;
                 display: flex;
                 flex-direction: column;
                 height: 100%;
                 justify-content: space-between;
-                width: 130px;
+                width: 150px;
             }
 
             p-button.register-purchase button,
@@ -153,17 +158,18 @@ $main-top-bar-height: 100px;
             }
 
             div.edit-form {
-                align-items: center;
+                align-items: flex-end;
                 display: flex;
                 flex-direction: row;
-                justify-content: space-evenly;
+                margin-bottom: 4px;
+                justify-content: flex-start;
 
                 * {
                     margin: 0 2px;
                 }
 
                 p-button.register-sale button {
-                    height: 43px;
+                    height: 30px;
                 }
             }
         }

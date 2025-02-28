@@ -18,13 +18,15 @@
 <p-toolbar class="main-top-bar">
     <ng-template #start>
         <div class="main-numbers-panel">
+            <span>{{ portfolioSelected()?.description }}</span>
+        </div>
+    </ng-template>
+    <ng-template #center>
+        <div class="main-numbers-panel">
             <span>Total Value <span class="total-value">{{ portfolioStats()?.totalValue ?? 0 | currency }}</span></span>
             <!-- <span>Gain/Loss %</span>
             <span>Best Performer</span> -->
         </div>
-    </ng-template>
-    <ng-template #center>
-
     </ng-template>
     <ng-template #end>
         <p-button class="delete-portfolio" severity="danger" label="Delete Portfolio" icon="pi pi-trash"
@@ -94,11 +96,15 @@
 
 <!-- create portfolio dialog -->
 <p-dialog header="Create Portfolio" [modal]="true" [(visible)]="showPortfolioDialog"
-    [style]="{ width: '30rem', height: '20rem' }" (onHide)="onPortfolioCancelClicked()">
+    [style]="{ width: '30rem', height: '30rem' }" (onHide)="onPortfolioCancelClicked()">
     <ng-container [formGroup]="portfolioForm">
         <p-iftalabel>
             <input pInputText id="name" formControlName="name" />
             <label for="name">Porfolio Name</label>
+        </p-iftalabel>
+        <p-iftalabel>
+            <textarea rows="5" cols="30" pTextarea formControlName="description" style="resize: none"></textarea>
+            <label for="description">Description</label>
         </p-iftalabel>
     </ng-container>
     <ng-template #footer>
@@ -112,7 +118,7 @@
 
 <!-- add holding dialog -->
 <p-dialog class="register-purchase-dialog" header="Register Purchase" [modal]="true" [(visible)]="showHoldingDialog"
-    [style]="{ width: '40rem', height: '35rem' }" (onHide)="onHoldingCancelClicked()">
+    [style]="{ width: '40rem', height: '45rem' }" (onHide)="onHoldingCancelClicked()">
     <ng-container [formGroup]="holdingForm">
         <p-iftalabel>
             <input class="uppercase" pInputText id="ticker" formControlName="ticker" />
@@ -143,6 +149,10 @@
             <p-inputnumber inputId="price" formControlName="price" mode="decimal" [minFractionDigits]="2"
                 [maxFractionDigits]="5" />
             <label for="price">Price</label>
+        </p-iftalabel>
+        <p-iftalabel>
+            <textarea rows="5" cols="30" pTextarea formControlName="notes" style="resize: none"></textarea>
+            <label for="notes">Notes</label>
         </p-iftalabel>
     </ng-container>
     <ng-template #footer>
@@ -175,7 +185,7 @@
 
 <!-- edit ticker contributions dialog -->
 <p-dialog class="edit-portfolio" header="Update Contributions" [modal]="true" [(visible)]="showEditHoldingDialog"
-    [style]="{ width: '100rem', height: '50rem' }" (onHide)="onEditHoldingCancel()">
+    [style]="{ width: '100rem', height: '55rem' }" (onHide)="onEditHoldingCancel()">
     <p-card class="edit-holding-card">
         <p-table [value]="selectedHoldings()" size="small" stripedRows sortField="dateOfPurchase" [sortOrder]="-1"
             [scrollable]="true" scrollHeight="300px">
@@ -185,6 +195,7 @@
                     <th pSortableColumn="shares">Shares<p-sortIcon field="shares" /></th>
                     <th pSortableColumn="price">Price<p-sortIcon field="price" /></th>
                     <th pSortableColumn="dateOfPurchase">Date of Purchase<p-sortIcon field="dateOfPurchase" /></th>
+                    <th pSortableColumn="notes">Notes<p-sortIcon field="notes" /></th>
                     <th>Edit Contributions</th>
                 </tr>
             </ng-template>
@@ -194,6 +205,10 @@
                     <td>{{ stock.shares }}</td>
                     <td>{{ stock.price | currency }}</td>
                     <td>{{ stock.dateOfPurchase | date: 'MM/dd/yyyy' }}</td>
+                    <td [pTooltip]="stock.notes" tooltipPosition="top">
+                        {{ stock.notes | slice:0:30 }}
+                        @if (stock.notes?.length > 30) { ... }
+                    </td>
                     <td><p-button aria-label="Update Contribution" icon="pi pi-file-edit" pTooltip="Update Contribution"
                             tooltipPosition="left" [rounded]="true" [raised]="true" severity="info" size="large"
                             (click)="onEditHoldingItemClicked(stock)" />
@@ -202,31 +217,40 @@
             </ng-template>
         </p-table>
     </p-card>
-    <div class="edit-form" [formGroup]="editHoldingItemForm">
-        <p-button class="register-sale" severity="warn" label="Sold" icon="pi pi-tag" pTooltip="Register Sale"
-            tooltipPosition="top" (click)="onTransactionDeleteClicked()" [disabled]="!editHoldingItemForm.valid" />
-        <p-iftalabel>
-            <input pInputText id="ticker" formControlName="ticker" />
-            <label for="ticker">Ticker</label>
-        </p-iftalabel>
-        <p-iftalabel>
-            <p-inputnumber inputId="shares" formControlName="shares" mode="decimal" [minFractionDigits]="2"
-                [maxFractionDigits]="5" />
-            <label for="shares">Shares</label>
-        </p-iftalabel>
-        <p-iftalabel>
-            <p-datepicker id="dateOfPurchase" formControlName="dateOfPurchase" appendTo="body" />
-            <label for="dateOfPurchase">Date of Purchase</label>
-        </p-iftalabel>
-        <p-iftalabel>
-            <p-inputnumber inputId="price" formControlName="price" mode="decimal" [minFractionDigits]="2"
-                [maxFractionDigits]="5" />
-            <label for="price">Price</label>
-        </p-iftalabel>
-        <p-button aria-label="Save record" icon="pi pi-save" pTooltip="Save Contributions" tooltipPosition="top"
-            [rounded]="true" [raised]="true" severity="success" size="large" [disabled]="!editHoldingItemForm.valid"
-            (click)="onTransactionUpdateClicked()" />
-    </div>
+    <ng-container [formGroup]="editHoldingItemForm">
+        <div class="edit-form">
+            <p-iftalabel>
+                <input pInputText id="ticker" formControlName="ticker" />
+                <label for="ticker">Ticker</label>
+            </p-iftalabel>
+            <p-iftalabel>
+                <p-inputnumber inputId="shares" formControlName="shares" mode="decimal" [minFractionDigits]="2"
+                    [maxFractionDigits]="5" />
+                <label for="shares">Shares</label>
+            </p-iftalabel>
+            <p-iftalabel>
+                <p-datepicker id="dateOfPurchase" formControlName="dateOfPurchase" appendTo="body" />
+                <label for="dateOfPurchase">Date of Purchase</label>
+            </p-iftalabel>
+            <p-iftalabel>
+                <p-inputnumber inputId="price" formControlName="price" mode="decimal" [minFractionDigits]="2"
+                    [maxFractionDigits]="5" />
+                <label for="price">Price</label>
+            </p-iftalabel>
+        </div>
+        <div class="edit-form">
+            <p-iftalabel>
+                <textarea rows="2" cols="80" pTextarea formControlName="notes" style="resize: none"></textarea>
+                <label for="notes">Notes</label>
+            </p-iftalabel>
+            <p-button aria-label="Register Sale" severity="warn" label="Register Sale" icon="pi pi-tag"
+                pTooltip="Register Sale" tooltipPosition="top" (click)="onTransactionDeleteClicked()"
+                [disabled]="!editHoldingItemForm.valid" />
+            <p-button aria-label="Save record" severity="success" label="Save Tx" icon="pi pi-save"
+                pTooltip="Save Transaction" tooltipPosition="top" [disabled]="!editHoldingItemForm.valid"
+                (click)="onTransactionUpdateClicked()" />
+        </div>
+    </ng-container>
     <ng-template #footer>
         <div class="dialog-flex justify-end gap-2">
             <p-button label="Close" severity="secondary" (click)="onEditHoldingCancel()" />

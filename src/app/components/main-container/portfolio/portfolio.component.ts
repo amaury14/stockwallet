@@ -17,6 +17,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
 import { PanelModule } from 'primeng/panel';
 import { TableModule } from 'primeng/table';
+import { TextareaModule } from 'primeng/textarea';
 import { ToolbarModule } from 'primeng/toolbar';
 import { TooltipModule } from 'primeng/tooltip';
 import { interval, Subscription, take } from 'rxjs';
@@ -28,7 +29,7 @@ import { Portfolio } from '../../../store/portfolio/models';
 import { portfolioSelectors } from '../../../store/portfolio/portfolio.selector';
 import { UiLoaderComponent } from '../../shared/ui-loader/ui-loader.component';
 import { portfolioActions } from './portfolio.actions';
-import { holdingDefaultEditFormValue, holdingDefaultFormValue, holdingDefaultValue } from './portfolio.metadata';
+import { holdingDefaultEditFormValue, holdingDefaultFormValue, holdingDefaultValue, portfolioFormValue } from './portfolio.metadata';
 
 @Component({
     selector: 'app-portfolio',
@@ -49,6 +50,7 @@ import { holdingDefaultEditFormValue, holdingDefaultFormValue, holdingDefaultVal
         InputTextModule,
         ReactiveFormsModule,
         TableModule,
+        TextareaModule,
         ChartModule,
         PanelModule,
         ToolbarModule,
@@ -124,12 +126,13 @@ export class PortfolioComponent implements OnInit {
 
     onEditHoldingClicked(data: Holding): void {
         this._store.dispatch(portfolioActions.holdingEditSelected({ data }));
+        this.editHoldingItemForm = this._fb.group(holdingDefaultEditFormValue);
         this.showEditHoldingDialog.set(true);
     }
 
     onEditHoldingCancel(): void {
+        this.editHoldingItemForm = this._fb.group(holdingDefaultEditFormValue);
         this.showEditHoldingDialog.set(false);
-        this.editHoldingItemForm.reset();
     }
 
     onEditHoldingItemClicked(data: Holding): void {
@@ -138,7 +141,8 @@ export class PortfolioComponent implements OnInit {
             ticker: [{ value: data.ticker, disabled: true }, Validators.required],
             shares: [data.shares, Validators.required],
             dateOfPurchase: [{ value: new Date(data.dateOfPurchase as Date), disabled: true }, Validators.required],
-            price: [{ value: data.price, disabled: true }, Validators.required]
+            price: [{ value: data.price, disabled: true }, Validators.required],
+            notes: [{ value: data.notes, disabled: false }]
         });
     }
 
@@ -160,7 +164,8 @@ export class PortfolioComponent implements OnInit {
                     ticker: this.holdingForm.get('ticker')?.value,
                     // ticker: this.holdingForm.get('ticker')?.value?.symbol,
                     shares: this.holdingForm.get('shares')?.value,
-                    price: this.holdingForm.get('price')?.value
+                    price: this.holdingForm.get('price')?.value,
+                    notes: this.holdingForm.get('notes')?.value
                 }
             }));
             this.holdingForm.reset(holdingDefaultValue);
@@ -198,7 +203,8 @@ export class PortfolioComponent implements OnInit {
             this._store.dispatch(portfolioActions.portfolioSaved({
                 data: {
                     createdAt: new Date(),
-                    name: this.portfolioForm.get('name')?.value
+                    name: this.portfolioForm.get('name')?.value,
+                    description: this.portfolioForm.get('description')?.value
                 }
             }));
             this.portfolioForm.reset();
@@ -213,7 +219,8 @@ export class PortfolioComponent implements OnInit {
                     id: this.editHoldingItemForm.get('id')?.value,
                     ticker: this.editHoldingItemForm.get('ticker')?.value,
                     shares: this.editHoldingItemForm.get('shares')?.value,
-                    price: this.editHoldingItemForm.get('price')?.value
+                    price: this.editHoldingItemForm.get('price')?.value,
+                    notes: this.editHoldingItemForm.get('notes')?.value
                 }
             }));
             this.editHoldingItemForm.reset();
@@ -228,15 +235,16 @@ export class PortfolioComponent implements OnInit {
                     id: this.editHoldingItemForm.get('id')?.value,
                     ticker: this.editHoldingItemForm.get('ticker')?.value,
                     shares: this.editHoldingItemForm.get('shares')?.value,
-                    price: this.editHoldingItemForm.get('price')?.value
+                    price: this.editHoldingItemForm.get('price')?.value,
+                    notes: this.editHoldingItemForm.get('notes')?.value
                 }
             }));
-            this.editHoldingItemForm.reset();
+            this.editHoldingItemForm = this._fb.group(holdingDefaultEditFormValue);
         }
     }
 
     private _initializeForms(): void {
-        this.portfolioForm = this._fb.group({ name: [null, Validators.required] });
+        this.portfolioForm = this._fb.group(portfolioFormValue);
         this.holdingForm = this._fb.group(holdingDefaultFormValue);
         this.editHoldingItemForm = this._fb.group(holdingDefaultEditFormValue);
     }

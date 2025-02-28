@@ -35,7 +35,9 @@ export class PortfolioEffects {
         filter(([, user, data]) => !!user?.uid && !data?.length),
         mergeMap(([, user]) => {
             this._store.dispatch(portfolioEffectsActions.portfolioLoading());
-            return this._firebaseService.getDocuments(`${dbCollectionKeys.USERS_COLLECTION_KEY}/${user?.uid}/${dbCollectionKeys.PORTFOLIO_COLLECTION_KEY}`).pipe(
+            return this._firebaseService.getDocuments(
+                `${dbCollectionKeys.USERS_COLLECTION_KEY}/${user?.uid}/${dbCollectionKeys.PORTFOLIO_COLLECTION_KEY}`
+            ).pipe(
                 map(response => portfolioEffectsActions.portfolioLoadSuccess({
                     data: (response as Portfolio[])?.map(item => ({
                         ...item,
@@ -54,7 +56,10 @@ export class PortfolioEffects {
         concatLatestFrom(() => this._store.select(authSelectors.getUser)),
         mergeMap(([action, user]) => {
             this._store.dispatch(portfolioEffectsActions.portfolioLoading());
-            return this._firebaseService.addDocument(`${dbCollectionKeys.USERS_COLLECTION_KEY}/${user?.uid}/${dbCollectionKeys.PORTFOLIO_COLLECTION_KEY}`, action.data).pipe(
+            return this._firebaseService.addDocument(
+                `${dbCollectionKeys.USERS_COLLECTION_KEY}/${user?.uid}/${dbCollectionKeys.PORTFOLIO_COLLECTION_KEY}`,
+                action.data
+            ).pipe(
                 map(response => portfolioEffectsActions.portfolioAddedSuccess({ data: { ...action.data, id: (response as DocumentReference<unknown>).id } })),
                 catchError(() =>
                     of(portfolioEffectsActions.portfolioAddedFailed({ error: 'Portfolio failed to save' }))
@@ -72,7 +77,9 @@ export class PortfolioEffects {
         filter(([, user]) => !!user?.uid),
         mergeMap(([, user]) => {
             this._store.dispatch(portfolioEffectsActions.portfolioLoading());
-            return this._firebaseService.getDocuments(`${dbCollectionKeys.USERS_COLLECTION_KEY}/${user?.uid}/${dbCollectionKeys.PORTFOLIO_COLLECTION_KEY}`).pipe(
+            return this._firebaseService.getDocuments(
+                `${dbCollectionKeys.USERS_COLLECTION_KEY}/${user?.uid}/${dbCollectionKeys.PORTFOLIO_COLLECTION_KEY}`
+            ).pipe(
                 map(response => portfolioEffectsActions.portfolioLoadSuccess({
                     data: (response as Portfolio[])?.map(item => ({
                         ...item,
