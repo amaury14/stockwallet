@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DocumentData, DocumentReference, Firestore, addDoc, collection, deleteDoc, doc, getDocs, getFirestore, query, updateDoc } from 'firebase/firestore';
+import { DocumentData, DocumentReference, Firestore, WhereFilterOp, addDoc, collection, deleteDoc, doc, getDocs, getFirestore, query, updateDoc, where } from 'firebase/firestore';
 import { FirebaseApp, initializeApp } from 'firebase/app';
 import { Analytics, getAnalytics } from 'firebase/analytics';
 import { Auth, getAuth } from 'firebase/auth';
@@ -83,6 +83,24 @@ export class FirebaseService {
                 ).catch(() => RequestStatus.ERROR));
         } else {
             return of(RequestStatus.ERROR);
+        }
+    }
+
+    // The operation string (e.g "<", "<=", "==", "<", "<=", "!=").
+    getDocumentsByField(collectionName: string, field: string, operation: WhereFilterOp, value: string): Observable<DocumentData[] | RequestStatus> {
+        if (this.auth?.currentUser) {
+            return from(
+                getDocs(
+                    query(
+                        collection(this.firestore, collectionName),
+                        where(field, operation, value)
+                    )
+                ).then(item => item?.docs?.map((doc) =>
+                    ({ id: doc.id, ...doc.data() }))
+                ).catch(() => RequestStatus.ERROR)
+            );
+        } else {
+            return of([]);
         }
     }
 }

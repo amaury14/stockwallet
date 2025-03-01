@@ -1,6 +1,6 @@
 import { createSelector } from '@ngrx/store';
 
-import { ShareType } from '../models';
+import { ShareType, StockProfile } from '../models';
 import { swSelectors } from '../sw.selectors';
 import { getRandomColor } from '../utils';
 import { backgroundColors } from './holdings.metadata';
@@ -36,7 +36,12 @@ const getHoldings = createSelector(
     state => state?.data
 );
 
-export const getAggregatedHoldings = createSelector(
+const getStockProfiles = createSelector(
+    holdingsFeatureSelector,
+    state => state?.stockProfiles
+);
+
+const getAggregatedHoldings = createSelector(
     getHoldings,
     (data: Holding[]) => {
         if (data?.length) {
@@ -65,7 +70,7 @@ export const getAggregatedHoldings = createSelector(
     }
 );
 
-export const getAggregatedShareTypes = createSelector(
+const getAggregatedShareTypes = createSelector(
     getHoldings,
     (data: Holding[]) => {
         if (data?.length) {
@@ -75,10 +80,10 @@ export const getAggregatedShareTypes = createSelector(
                 acc[key!] = (acc[key!] || 0) + amount;
                 return acc;
             }, {} as Record<string, number>);
-            
+
             // Step 2: Compute total portfolio value
             const totalInvestment = Object.values(totals).reduce((sum, val) => sum + val, 0);
-            
+
             // Step 3: Convert to structured output with percentages
             return Object.entries(totals).map(([label, amount], index) => ({
                 label,
@@ -111,8 +116,9 @@ const getPieChartHoldingsByAmount = createSelector(
     getAggregatedHoldings,
     (data: Holding[]) => {
         if (data?.length) {
+            const totalValue = data.reduce((sum, item) => sum + item.totalCost!, 0);
             return {
-                labels: data.map(item => item.ticker),
+                labels: data.map(item => `${item.ticker} - ${((item.totalCost! * 100) / totalValue).toFixed(2)}%`),
                 datasets: [
                     {
                         data: data.map(item => item.totalCost!),
@@ -125,17 +131,33 @@ const getPieChartHoldingsByAmount = createSelector(
     }
 );
 
-const getPieChartHoldingsByPercent = createSelector(
+const getPieChartHoldingsBySector = createSelector(
     getAggregatedHoldings,
-    (data: Holding[]) => {
-        if (data?.length) {
-            const totalValue = data.reduce((sum, item) => sum + item.totalCost!, 0);
+    getStockProfiles,
+    (data: Holding[], profiles: StockProfile[]) => {
+        if (data?.length && profiles?.length) {
+            const aggregated = data.reduce((acc, stock) => {
+                const profile = profiles.find(item => item.symbol === stock.ticker);
+                if (!!profile && !!profile.sectorDisp && !acc[profile.sectorDisp]) {
+                    acc[profile.sectorDisp] = { ...stock, ...profile!, ticker: stock.ticker, shares: 0, totalCost: 0, transactions: 0 };
+                }
+
+                if (!!profile && !!profile.sectorDisp) {
+                    acc[profile.sectorDisp].shares += stock.shares;
+                    acc[profile.sectorDisp].totalCost! += stock.shares * stock.price;
+                    acc[profile.sectorDisp].transactions! += 1;
+                }
+                return acc;
+            }, {} as Record<string, Holding & StockProfile>);
+
+            const stocks = Object.values(aggregated)?.map(stock => ({ ...stock }));
+            const totalValue = stocks.reduce((sum, item) => sum + item.totalCost!, 0);
             return {
-                labels: data.map(item => item.ticker),
+                labels: stocks.map(item => item.sectorDisp),
                 datasets: [
                     {
-                        data: data.map(item => (item.totalCost! * 100) / totalValue),
-                        backgroundColor: data.map((_, index) => backgroundColors[index] ?? getRandomColor())
+                        data: stocks.map(item => (item.totalCost! * 100) / totalValue),
+                        backgroundColor: stocks.map((_, index) => backgroundColors[index] ?? getRandomColor())
                     }
                 ]
             };
@@ -165,8 +187,9 @@ export const holdingsSelectors = {
     getHoldingsByPortfolioId,
     getLoadingState,
     getPieChartHoldingsByAmount,
-    getPieChartHoldingsByPercent,
+    getPieChartHoldingsBySector,
     getPortfolioStats,
     getSelectedHoldings,
+    getStockProfiles,
     isLoading
 };

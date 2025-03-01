@@ -1,6 +1,6 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 
-import { StockInformation } from '../models';
+import { StockInformation, StockProfile } from '../models';
 import { Portfolio } from '../portfolio/models';
 import { Holding } from './models';
 
@@ -21,6 +21,11 @@ export const holdingsEffectsActions = createActionGroup({
         holdingDeleteFailed: props<{ error: string }>(),
         filterStocksSuccess: props<{ data: StockInformation[] }>(),
         filterStocksFailed: props<{ error: string }>(),
-        noMoreActions: emptyProps()
+        noMoreActions: emptyProps(),
+        fetchStockProfile: props<{ data: Holding }>(),
+        fetchStockProfileSuccess: props<{ data: StockProfile }>(),
+        fetchStockProfileFailed: props<{ error: string }>(),
+        fetchStockProfilesSuccess: props<{ data: StockProfile[] }>(),
+        fetchStockProfilesFailed: props<{ error: string }>()
     }
 });

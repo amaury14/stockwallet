@@ -29,7 +29,6 @@ import { Holding } from '../../../store/holdings/models';
 import { PortfolioPieData, PortfolioStats, ShareType, StockInformation } from '../../../store/models';
 import { Portfolio } from '../../../store/portfolio/models';
 import { portfolioSelectors } from '../../../store/portfolio/portfolio.selector';
-import { UiLoaderComponent } from '../../shared/ui-loader/ui-loader.component';
 import { portfolioActions } from './portfolio.actions';
 import { holdingDefaultEditFormValue, holdingDefaultFormValue, holdingDefaultValue, portfolioFormValue } from './portfolio.metadata';
 
@@ -58,8 +57,7 @@ import { holdingDefaultEditFormValue, holdingDefaultFormValue, holdingDefaultVal
         PanelModule,
         SkeletonModule,
         ToolbarModule,
-        TooltipModule,
-        UiLoaderComponent
+        TooltipModule
     ],
     templateUrl: './portfolio.component.html',
     styleUrls: ['./portfolio.component.scss']
@@ -75,7 +73,7 @@ export class PortfolioComponent implements OnInit {
     isLoading: Signal<boolean> = signal(false);
     isPortfolioDeleteDisabled = signal(false);
     pieChartHoldingsByAmount: Signal<PortfolioPieData | null> = signal(null);
-    pieChartHoldingsByPercent: Signal<PortfolioPieData | null> = signal(null);
+    pieChartHoldingsBySector: Signal<PortfolioPieData | null> = signal(null);
     portfolio: Signal<Portfolio[]> = signal([]);
     portfolioDeleteTimerSubscription$: Subscription | null = null;
     portfolioForm!: UntypedFormGroup;
@@ -98,12 +96,6 @@ export class PortfolioComponent implements OnInit {
             }
         }
     };
-    // lineData = {
-    //     labels: ['Jan', 'Feb', 'Mar'],
-    //     datasets: [
-    //         { label: 'Portfolio Value', data: [24000, 25000, 25500], borderColor: '#42A5F5', fill: false }
-    //     ]
-    // };
 
     constructor(private _store: Store, private _fb: UntypedFormBuilder) { }
 
@@ -116,7 +108,7 @@ export class PortfolioComponent implements OnInit {
         this.selectedHoldings = this._store.selectSignal(holdingsSelectors.getSelectedHoldings);
         this.filteredStocks = this._store.selectSignal(holdingsSelectors.getFilteredStocks);
         this.pieChartHoldingsByAmount = this._store.selectSignal(holdingsSelectors.getPieChartHoldingsByAmount);
-        this.pieChartHoldingsByPercent = this._store.selectSignal(holdingsSelectors.getPieChartHoldingsByPercent);
+        this.pieChartHoldingsBySector = this._store.selectSignal(holdingsSelectors.getPieChartHoldingsBySector);
         this.portfolioStats = this._store.selectSignal(holdingsSelectors.getPortfolioStats);
         this.shareTypes = this._store.selectSignal(holdingsSelectors.getAggregatedShareTypes);
         this._initializeForms();

@@ -1,11 +1,11 @@
 const HOLDINGS_COLLECTION_KEY = 'holdings';
 const PORTFOLIO_COLLECTION_KEY = 'portfolios';
-const TICKERS_COLLECTION_KEY = 'tickers';
+const STOCKS_COLLECTION_KEY = 'stocks';
 const USERS_COLLECTION_KEY = 'users';
 
 export const dbCollectionKeys = {
     HOLDINGS_COLLECTION_KEY,
     PORTFOLIO_COLLECTION_KEY,
-    TICKERS_COLLECTION_KEY,
+    STOCKS_COLLECTION_KEY,
     USERS_COLLECTION_KEY
 };

@@ -55,11 +55,11 @@
                     <p-chart type="pie" [data]="pieChartHoldingsByAmount()" [options]="pieChartOptions" />
                     }
                 </p-card>
-                <p-card header="Holdings by %">
+                <p-card header="Holdings by Sector">
                     @if (isHoldingsLoading()) {
                     <p-skeleton shape="circle" size="360px" />
                     } @else {
-                    <p-chart type="pie" [data]="pieChartHoldingsByPercent()" [options]="pieChartOptions" />
+                    <p-chart type="pie" [data]="pieChartHoldingsBySector()" [options]="pieChartOptions" />
                     }
                 </p-card>
             </div>
