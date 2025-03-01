@@ -17,6 +17,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
 import { MeterGroupModule } from 'primeng/metergroup';
 import { PanelModule } from 'primeng/panel';
+import { SkeletonModule } from 'primeng/skeleton';
 import { TableModule } from 'primeng/table';
 import { TextareaModule } from 'primeng/textarea';
 import { ToolbarModule } from 'primeng/toolbar';
@@ -55,6 +56,7 @@ import { holdingDefaultEditFormValue, holdingDefaultFormValue, holdingDefaultVal
         TextareaModule,
         ChartModule,
         PanelModule,
+        SkeletonModule,
         ToolbarModule,
         TooltipModule,
         UiLoaderComponent
