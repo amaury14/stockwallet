@@ -78,7 +78,7 @@
                 <ng-template pTemplate="body" let-stock>
                     <tr>
                         <td>
-                            <img class="stock-image" [src]="stock.imgSource" onerror="this.style.display='none'"/>
+                            <img class="stock-image" [src]="stock.imgSource" alt="" onerror="this.style.display='none'"/>
                             {{ stock.name }} ({{ stock.ticker }})
                         </td>
                         <td>{{ stock.shares }}</td>
