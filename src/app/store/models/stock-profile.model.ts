@@ -1,0 +1,34 @@
+export interface StockProfile {
+    companyOfficers: unknown[];
+    version: string;
+    status: number;
+    copywrite: string;
+    symbol: string;
+    processedTime: string;
+    modules: string;
+    address1: string;
+    city: string;
+    state: string;
+    zip: string;
+    country: string;
+    phone: string;
+    website: string;
+    industry: string;
+    industryKey: string;
+    industryDisp: string;
+    sector: string;
+    sectorKey: string;
+    sectorDisp: string;
+    longBusinessSummary: string;
+    fullTimeEmployees: number;
+    auditRisk: number;
+    boardRisk: number;
+    compensationRisk: number;
+    shareHolderRightsRisk: number;
+    overallRisk: number;
+    governanceEpochDate: number;
+    compensationAsOfEpochDate: number;
+    irWebsite: string;
+    executiveTeam: unknown[]
+    maxAge: number;
+}

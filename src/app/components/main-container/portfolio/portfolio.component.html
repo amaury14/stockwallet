@@ -2,7 +2,7 @@
 <p-toolbar class="portfolio-bar">
     <ng-template #start>
         @if (isLoading()) {
-        <app-ui-loader></app-ui-loader>
+        <p-skeleton shape="circle" size="3rem" styleClass="mr-2" />
         }
         @for (item of portfolio(); track $index) {
         <p-chip [class.selected]="portfolioSelected()?.id === item.id" [label]="item.name" icon="pi pi-wallet"
@@ -23,7 +23,8 @@
     </ng-template>
     <ng-template #center>
         <div class="main-numbers-panel">
-            <span>Contributions: <span class="total-value">{{ portfolioStats()?.totalValue ?? 0 | currency }}</span></span>
+            <span>Contributions: <span class="total-value">{{ portfolioStats()?.totalValue ?? 0 | currency
+                    }}</span></span>
             <span>Number of Shares: <span class="total-value">{{ holdings().length }}</span></span>
         </div>
     </ng-template>
@@ -39,19 +40,29 @@
     <!-- charts container -->
     <ng-template #start>
         <div class="charts-container">
+            <p-card class="shares-type" header="Types of Shares">
+                @if (isHoldingsLoading()) {
+                <p-skeleton styleClass="mb-2" />
+                } @else {
+                <p-metergroup [value]="shareTypes()" />
+                }
+            </p-card>
             <div class="chart-row">
-                <p-card header="Holdings by $">
+                <p-card header="Holdings by Amount($) and Percentage">
+                    @if (isHoldingsLoading()) {
+                    <p-skeleton shape="circle" size="360px" />
+                    } @else {
                     <p-chart type="pie" [data]="pieChartHoldingsByAmount()" [options]="pieChartOptions" />
+                    }
                 </p-card>
-                <p-card header="Holdings by %">
-                    <p-chart type="pie" [data]="pieChartHoldingsByPercent()" [options]="pieChartOptions" />
+                <p-card header="Holdings by Sector">
+                    @if (isHoldingsLoading()) {
+                    <p-skeleton shape="circle" size="360px" />
+                    } @else {
+                    <p-chart type="pie" [data]="pieChartHoldingsBySector()" [options]="pieChartOptions" />
+                    }
                 </p-card>
             </div>
-            <!-- <div class="chart-row">
-                <p-card header="Portfolio History (fake data)">
-                    <p-chart type="line" [data]="lineData" />
-                </p-card>
-            </div> -->
         </div>
     </ng-template>
     <ng-template #center>
@@ -60,7 +71,7 @@
     <ng-template #end>
         <p-card class="holding-card" header="Holdings">
             @if (isHoldingsLoading()) {
-            <app-ui-loader></app-ui-loader>
+            <p-skeleton width="100%" height="3rem" />
             } @else {
             <p-table [value]="holdings()" size="small" stripedRows [scrollable]="true" scrollHeight="100%"
                 [resizableColumns]="true">
@@ -77,9 +88,10 @@
                 </ng-template>
                 <ng-template pTemplate="body" let-stock>
                     <tr>
-                        <td>
-                            <img class="stock-image" [src]="stock.imgSource" alt="" onerror="this.style.display='none'"/>
-                            {{ stock.name }} ({{ stock.ticker }})
+                        <td [pTooltip]="stock.name" tooltipPosition="top">
+                            <img class="stock-image" [src]="stock.imgSource" alt=""
+                                onerror="this.style.display='none'" />
+                            {{ stock.name | slice:0:20 }} @if (stock.name?.length > 20) { ... } ({{ stock.ticker }})
                         </td>
                         <td>{{ stock.shares }}</td>
                         <td>{{ stock.avgPrice | currency }}</td>
@@ -127,12 +139,13 @@
             <label for="ticker">Ticker</label>
         </p-iftalabel> -->
         <p-iftalabel>
-            <p-autocomplete class="uppercase" id="ticker" formControlName="ticker" delay="300" [suggestions]="filteredStocks()"
-                (completeMethod)="filterByTicker($event)" optionLabel="symbol" appendTo="body" dataKey="symbol"
-                [pAutoFocus]="true">
+            <p-autocomplete class="uppercase" id="ticker" formControlName="ticker" delay="300"
+                [suggestions]="filteredStocks()" (completeMethod)="filterByTicker($event)" optionLabel="symbol"
+                appendTo="body" dataKey="symbol" [pAutoFocus]="true">
                 <ng-template let-ticker #item>
                     <div class="flex items-center gap-2">
-                        <div>{{ ticker.symbol }} - {{ ticker.name }} - {{ ticker.exchDisp }} ({{ ticker.typeDisp }})</div>
+                        <div>{{ ticker.symbol }} - {{ ticker.name }} - {{ ticker.exchDisp }} ({{ ticker.typeDisp }})
+                        </div>
                     </div>
                 </ng-template>
             </p-autocomplete>
@@ -173,6 +186,7 @@
         Are you sure you want to delete "{{ portfolioSelected()?.name }}"?
     </p>
     <p>
+        This action will delete all holdings.
         There is no going back from this!!!!
     </p>
     <ng-template #footer>
@@ -203,7 +217,9 @@
             </ng-template>
             <ng-template pTemplate="body" let-stock>
                 <tr>
-                    <td>{{ stock.name }} ({{ stock.ticker }})</td>
+                    <td [pTooltip]="stock.name" tooltipPosition="top">
+                        {{ stock.name | slice:0:20 }} @if (stock.name?.length > 20) { ... } ({{ stock.ticker }})
+                    </td>
                     <td>{{ stock.shares }}</td>
                     <td>{{ stock.price | currency }}</td>
                     <td>{{ stock.dateOfPurchase | date: 'MM/dd/yyyy' }}</td>

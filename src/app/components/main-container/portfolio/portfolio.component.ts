@@ -15,7 +15,9 @@ import { IftaLabelModule } from 'primeng/iftalabel';
 import { InputMaskModule } from 'primeng/inputmask';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
+import { MeterGroupModule } from 'primeng/metergroup';
 import { PanelModule } from 'primeng/panel';
+import { SkeletonModule } from 'primeng/skeleton';
 import { TableModule } from 'primeng/table';
 import { TextareaModule } from 'primeng/textarea';
 import { ToolbarModule } from 'primeng/toolbar';
@@ -24,10 +26,9 @@ import { interval, Subscription, take } from 'rxjs';
 
 import { holdingsSelectors } from '../../../store/holdings/holdings.selector';
 import { Holding } from '../../../store/holdings/models';
-import { PortfolioPieData, PortfolioStats, StockInformation } from '../../../store/models';
+import { PortfolioPieData, PortfolioStats, ShareType, StockInformation } from '../../../store/models';
 import { Portfolio } from '../../../store/portfolio/models';
 import { portfolioSelectors } from '../../../store/portfolio/portfolio.selector';
-import { UiLoaderComponent } from '../../shared/ui-loader/ui-loader.component';
 import { portfolioActions } from './portfolio.actions';
 import { holdingDefaultEditFormValue, holdingDefaultFormValue, holdingDefaultValue, portfolioFormValue } from './portfolio.metadata';
 
@@ -48,14 +49,15 @@ import { holdingDefaultEditFormValue, holdingDefaultFormValue, holdingDefaultVal
         InputMaskModule,
         InputNumberModule,
         InputTextModule,
+        MeterGroupModule,
         ReactiveFormsModule,
         TableModule,
         TextareaModule,
         ChartModule,
         PanelModule,
+        SkeletonModule,
         ToolbarModule,
-        TooltipModule,
-        UiLoaderComponent
+        TooltipModule
     ],
     templateUrl: './portfolio.component.html',
     styleUrls: ['./portfolio.component.scss']
@@ -71,12 +73,13 @@ export class PortfolioComponent implements OnInit {
     isLoading: Signal<boolean> = signal(false);
     isPortfolioDeleteDisabled = signal(false);
     pieChartHoldingsByAmount: Signal<PortfolioPieData | null> = signal(null);
-    pieChartHoldingsByPercent: Signal<PortfolioPieData | null> = signal(null);
+    pieChartHoldingsBySector: Signal<PortfolioPieData | null> = signal(null);
     portfolio: Signal<Portfolio[]> = signal([]);
     portfolioDeleteTimerSubscription$: Subscription | null = null;
     portfolioForm!: UntypedFormGroup;
     portfolioSelected: Signal<Portfolio | null> = signal(null);
     portfolioStats: Signal<PortfolioStats | null> = signal(null);
+    shareTypes: Signal<ShareType[]> = signal([]);
     selectedHoldings: Signal<Holding[]> = signal([]);
     showEditHoldingDialog = signal(false);
     showHoldingDialog = signal(false);
@@ -93,12 +96,6 @@ export class PortfolioComponent implements OnInit {
             }
         }
     };
-    // lineData = {
-    //     labels: ['Jan', 'Feb', 'Mar'],
-    //     datasets: [
-    //         { label: 'Portfolio Value', data: [24000, 25000, 25500], borderColor: '#42A5F5', fill: false }
-    //     ]
-    // };
 
     constructor(private _store: Store, private _fb: UntypedFormBuilder) { }
 
@@ -111,8 +108,9 @@ export class PortfolioComponent implements OnInit {
         this.selectedHoldings = this._store.selectSignal(holdingsSelectors.getSelectedHoldings);
         this.filteredStocks = this._store.selectSignal(holdingsSelectors.getFilteredStocks);
         this.pieChartHoldingsByAmount = this._store.selectSignal(holdingsSelectors.getPieChartHoldingsByAmount);
-        this.pieChartHoldingsByPercent = this._store.selectSignal(holdingsSelectors.getPieChartHoldingsByPercent);
+        this.pieChartHoldingsBySector = this._store.selectSignal(holdingsSelectors.getPieChartHoldingsBySector);
         this.portfolioStats = this._store.selectSignal(holdingsSelectors.getPortfolioStats);
+        this.shareTypes = this._store.selectSignal(holdingsSelectors.getAggregatedShareTypes);
         this._initializeForms();
     }
 

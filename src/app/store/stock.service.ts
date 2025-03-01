@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 
 import { environment } from '../../environments/environment';
-import { StockInformation } from './models';
+import { StockInformation, StockProfile } from './models';
 
 @Injectable({
     providedIn: 'root',
@@ -22,5 +22,17 @@ export class StockService {
                 }
             }
         ).pipe(map(response => response.body));
+    }
+
+    getStockProfile(ticker: string): Observable<StockProfile> {
+        return this.http.get<{ body: StockProfile; meta: StockProfile; }>(
+            `${environment.rapidApiURL}markets/stock/modules?ticker=${ticker}&module=asset-profile`,
+            {
+                headers: {
+                    [environment.xRapidApiHostField]: environment.xRapidApiHost,
+                    [environment.xRapidApiKeyField]: environment.xRapidApiKey
+                }
+            }
+        ).pipe(map(response => ({ ...response.body, ...response.meta })));
     }
 }

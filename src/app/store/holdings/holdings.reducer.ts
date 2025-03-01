@@ -10,7 +10,8 @@ import { holdingsEffectsActions } from './holdings.actions';
 export const initialState: HoldingState = {
     data: {},
     selectedPortfolio: '',
-    filterStocks: []
+    filterStocks: [],
+    stockProfiles: []
 };
 
 export const holdingsReducer: ActionReducer<HoldingState> = createReducer(
@@ -145,6 +146,18 @@ export const holdingsReducer: ActionReducer<HoldingState> = createReducer(
         return {
             ...state,
             filterStocks: []
+        };
+    }),
+    on(holdingsEffectsActions.fetchStockProfilesSuccess, (state, action) => {
+        return {
+            ...state,
+            stockProfiles: action.data
+        };
+    }),
+    on(holdingsEffectsActions.fetchStockProfileSuccess, (state, action) => {
+        return {
+            ...state,
+            stockProfiles: [...state.stockProfiles, action.data]
         };
     })
 );

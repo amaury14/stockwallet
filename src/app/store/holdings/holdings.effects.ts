@@ -8,10 +8,13 @@ import { catchError, filter, map, mergeMap, observeOn } from 'rxjs/operators';
 
 import { environment } from '../../../environments/environment';
 import { portfolioActions } from '../../components/main-container/portfolio/portfolio.actions';
+import { loginActions } from '../../components/login/login.actions';
+import { loginInlineActions } from '../../components/login-inline/login-inline.actions';
+import { authEffectsActions } from '../auth/auth.actions';
 import { authSelectors } from '../auth/auth.selector';
 import { FirebaseService } from '../firebase.service';
 import { dbCollectionKeys } from '../key-string.store';
-import { LoadingState } from '../models';
+import { LoadingState, StockProfile } from '../models';
 import { portfolioSelectors } from '../portfolio/portfolio.selector';
 import { StockService } from '../stock.service';
 import { holdingsEffectsActions } from './holdings.actions';
@@ -203,23 +206,68 @@ export class HoldingsEffects {
         })
     ));
 
-    // saveTickers$ = createEffect(() => this._actions$.pipe(
-    //     ofType(holdingsEffectsActions.filterStocksSuccess),
-    //     filter((action) => !!action.data?.length),
-    //     mergeMap((action) => {
-    //         const storeRequests = action.data.map(item =>
-    //             this._firebaseService.addDocument(
-    //                 `${dbCollectionKeys.TICKERS_COLLECTION_KEY}/`,
-    //                 item
-    //             )
-    //         );
-    //         return zip(...storeRequests).pipe(
-    //             observeOn(asyncScheduler), // Run store in a separate async context
-    //             map(() => holdingsEffectsActions.noMoreActions()),
-    //             catchError(() =>
-    //                 of(holdingsEffectsActions.noMoreActions())
-    //             )
-    //         );
-    //     })
-    // ));
+    loadStockProfiles$ = createEffect(() => this._actions$.pipe(
+        ofType(
+            loginActions.loginSuccess,
+            loginInlineActions.loginSuccess,
+            authEffectsActions.userLoggedIn
+        ),
+        concatLatestFrom(() => this._store.select(authSelectors.getUser)),
+        filter(([, user]) => !!user?.uid),
+        mergeMap(() =>
+            this._firebaseService.getDocuments(
+                `${dbCollectionKeys.STOCKS_COLLECTION_KEY}`
+            ).pipe(
+                map(response => holdingsEffectsActions.fetchStockProfilesSuccess({
+                    data: response as StockProfile[]
+                })),
+                catchError(() =>
+                    of(holdingsEffectsActions.fetchStockProfilesFailed({ error: 'Fetch Stock Profiles failed to Load' }))
+                )
+            )
+        )
+    ));
+
+    // ==================================================================================================
+    // ==================================================================================================
+    // Logic to fetch stock profile and store it in our firebase to now need to fetch again from paid API
+    checkStoredStock$ = createEffect(() => this._actions$.pipe(
+        ofType(holdingsEffectsActions.holdingAddedSuccess),
+        concatLatestFrom(() => this._store.select(holdingsSelectors.getStockProfiles)),
+        filter(([action, profiles]) => !profiles.find(item => item.symbol === action.data?.symbol)),
+        map(([action]) => holdingsEffectsActions.fetchStockProfile({ data: action.data }))
+    ));
+
+    fetchStockProfile$ = createEffect(() => this._actions$.pipe(
+        ofType(holdingsEffectsActions.fetchStockProfile),
+        filter((action) => !!action.data?.symbol),
+        mergeMap((action) => {
+            return this._stockService.getStockProfile(action.data.symbol!).pipe(
+                map(data => holdingsEffectsActions.fetchStockProfileSuccess({
+                    data
+                })),
+                catchError(() =>
+                    of(holdingsEffectsActions.fetchStockProfileFailed({ error: 'Fetch Stock Profile failed to Load' }))
+                )
+            )
+        })
+    ));
+
+    saveStockToDB$ = createEffect(() => this._actions$.pipe(
+        ofType(holdingsEffectsActions.fetchStockProfileSuccess),
+        filter((action) => !!action.data),
+        mergeMap((action) =>
+            this._firebaseService.addDocument(
+                `${dbCollectionKeys.STOCKS_COLLECTION_KEY}`,
+                action.data
+            ).pipe(
+                map(() => holdingsEffectsActions.noMoreActions()),
+                catchError(() =>
+                    of(holdingsEffectsActions.noMoreActions())
+                )
+            )
+        )
+    ));
+    // ==================================================================================================
+    // ==================================================================================================
 }
