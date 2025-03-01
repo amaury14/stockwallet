@@ -101,6 +101,10 @@ $main-top-bar-height: 100px;
                     flex-direction: column;
                     justify-content: center;
 
+                    .shares-type {
+                        width: 100%;
+                    }
+
                     .chart-row {
                         align-items: start;
                         display: flex;

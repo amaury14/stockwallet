@@ -23,7 +23,8 @@
     </ng-template>
     <ng-template #center>
         <div class="main-numbers-panel">
-            <span>Contributions: <span class="total-value">{{ portfolioStats()?.totalValue ?? 0 | currency }}</span></span>
+            <span>Contributions: <span class="total-value">{{ portfolioStats()?.totalValue ?? 0 | currency
+                    }}</span></span>
             <span>Number of Shares: <span class="total-value">{{ holdings().length }}</span></span>
         </div>
     </ng-template>
@@ -39,6 +40,9 @@
     <!-- charts container -->
     <ng-template #start>
         <div class="charts-container">
+            <p-card class="shares-type" header="Types of Shares">
+                <p-metergroup [value]="shareTypes()" />
+            </p-card>
             <div class="chart-row">
                 <p-card header="Holdings by $">
                     <p-chart type="pie" [data]="pieChartHoldingsByAmount()" [options]="pieChartOptions" />
@@ -77,9 +81,10 @@
                 </ng-template>
                 <ng-template pTemplate="body" let-stock>
                     <tr>
-                        <td>
-                            <img class="stock-image" [src]="stock.imgSource" alt="" onerror="this.style.display='none'"/>
-                            {{ stock.name }} ({{ stock.ticker }})
+                        <td [pTooltip]="stock.name" tooltipPosition="top">
+                            <img class="stock-image" [src]="stock.imgSource" alt=""
+                                onerror="this.style.display='none'" />
+                            {{ stock.name | slice:0:20 }} @if (stock.name?.length > 20) { ... } ({{ stock.ticker }})
                         </td>
                         <td>{{ stock.shares }}</td>
                         <td>{{ stock.avgPrice | currency }}</td>
@@ -127,12 +132,13 @@
             <label for="ticker">Ticker</label>
         </p-iftalabel> -->
         <p-iftalabel>
-            <p-autocomplete class="uppercase" id="ticker" formControlName="ticker" delay="300" [suggestions]="filteredStocks()"
-                (completeMethod)="filterByTicker($event)" optionLabel="symbol" appendTo="body" dataKey="symbol"
-                [pAutoFocus]="true">
+            <p-autocomplete class="uppercase" id="ticker" formControlName="ticker" delay="300"
+                [suggestions]="filteredStocks()" (completeMethod)="filterByTicker($event)" optionLabel="symbol"
+                appendTo="body" dataKey="symbol" [pAutoFocus]="true">
                 <ng-template let-ticker #item>
                     <div class="flex items-center gap-2">
-                        <div>{{ ticker.symbol }} - {{ ticker.name }} - {{ ticker.exchDisp }} ({{ ticker.typeDisp }})</div>
+                        <div>{{ ticker.symbol }} - {{ ticker.name }} - {{ ticker.exchDisp }} ({{ ticker.typeDisp }})
+                        </div>
                     </div>
                 </ng-template>
             </p-autocomplete>
@@ -203,7 +209,9 @@
             </ng-template>
             <ng-template pTemplate="body" let-stock>
                 <tr>
-                    <td>{{ stock.name }} ({{ stock.ticker }})</td>
+                    <td [pTooltip]="stock.name" tooltipPosition="top">
+                        {{ stock.name | slice:0:20 }} @if (stock.name?.length > 20) { ... } ({{ stock.ticker }})
+                    </td>
                     <td>{{ stock.shares }}</td>
                     <td>{{ stock.price | currency }}</td>
                     <td>{{ stock.dateOfPurchase | date: 'MM/dd/yyyy' }}</td>

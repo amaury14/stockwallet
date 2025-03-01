@@ -1,5 +1,6 @@
 import { createSelector } from '@ngrx/store';
 
+import { ShareType } from '../models';
 import { swSelectors } from '../sw.selectors';
 import { getRandomColor } from '../utils';
 import { backgroundColors } from './holdings.metadata';
@@ -59,6 +60,31 @@ export const getAggregatedHoldings = createSelector(
                 avgPrice: stock.shares ? stock.totalCost! / stock.shares! : 0,
                 transactions: stock.transactions
             }));
+        }
+        return [];
+    }
+);
+
+export const getAggregatedShareTypes = createSelector(
+    getHoldings,
+    (data: Holding[]) => {
+        if (data?.length) {
+            const totals = data.reduce((acc, asset) => {
+                const key = asset.typeDisp;
+                const amount = asset.price * asset.shares;
+                acc[key!] = (acc[key!] || 0) + amount;
+                return acc;
+            }, {} as Record<string, number>);
+            
+            // Step 2: Compute total portfolio value
+            const totalInvestment = Object.values(totals).reduce((sum, val) => sum + val, 0);
+            
+            // Step 3: Convert to structured output with percentages
+            return Object.entries(totals).map(([label, amount], index) => ({
+                label,
+                color: backgroundColors[index],
+                value: ((amount / totalInvestment) * 100) // Convert to percentage
+            })) as ShareType[];
         }
         return [];
     }
@@ -132,6 +158,7 @@ const getPortfolioStats = createSelector(
 
 export const holdingsSelectors = {
     getAggregatedHoldings,
+    getAggregatedShareTypes,
     getError,
     getFilteredStocks,
     getHoldings,
