@@ -1,11 +1,8 @@
 export interface StockInformation {
-    currency: string;
-    marketClose: string;
-    marketOpen: string;
-    matchScore: string;
-    name: string;
-    region: string;
-    symbol: string;
-    timezone: string;
-    type: string;
+    exch?: string;
+    exchDisp?: string;
+    name?: string;
+    symbol?: string;
+    type?: string;
+    typeDisp?: string;
 }

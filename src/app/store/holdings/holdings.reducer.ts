@@ -115,7 +115,7 @@ export const holdingsReducer: ActionReducer<HoldingState> = createReducer(
                     ...state?.data[state?.selectedPortfolio],
                     data: state?.data[state?.selectedPortfolio].data.map(item => {
                         if (item.id === action.data.id) {
-                            return { ...action.data };
+                            return { ...item, ...action.data };
                         }
                         return item;
                     })

@@ -6,6 +6,7 @@ import { concatLatestFrom } from '@ngrx/operators';
 import { asyncScheduler, of, zip } from 'rxjs';
 import { catchError, filter, map, mergeMap, observeOn } from 'rxjs/operators';
 
+import { environment } from '../../../environments/environment';
 import { portfolioActions } from '../../components/main-container/portfolio/portfolio.actions';
 import { authSelectors } from '../auth/auth.selector';
 import { FirebaseService } from '../firebase.service';
@@ -52,7 +53,8 @@ export class HoldingsEffects {
                 map(response => holdingsEffectsActions.holdingsLoadSuccess({
                     data: (response as Holding[])?.map(item => ({
                         ...item,
-                        dateOfPurchase: (item.dateOfPurchase as Timestamp).toDate()
+                        dateOfPurchase: (item.dateOfPurchase as Timestamp).toDate(),
+                        imgSource: `${environment.logosUrl}${item.ticker}.png`
                     }))
                 })),
                 catchError(() =>
@@ -100,7 +102,8 @@ export class HoldingsEffects {
                 map(response => holdingsEffectsActions.holdingsLoadSuccess({
                     data: (response as Holding[])?.map(item => ({
                         ...item,
-                        dateOfPurchase: (item.dateOfPurchase as Timestamp).toDate()
+                        dateOfPurchase: (item.dateOfPurchase as Timestamp).toDate(),
+                        imgSource: `${environment.logosUrl}${item.ticker}.png`
                     }))
                 })),
                 catchError(() =>
@@ -199,4 +202,24 @@ export class HoldingsEffects {
             )
         })
     ));
+
+    // saveTickers$ = createEffect(() => this._actions$.pipe(
+    //     ofType(holdingsEffectsActions.filterStocksSuccess),
+    //     filter((action) => !!action.data?.length),
+    //     mergeMap((action) => {
+    //         const storeRequests = action.data.map(item =>
+    //             this._firebaseService.addDocument(
+    //                 `${dbCollectionKeys.TICKERS_COLLECTION_KEY}/`,
+    //                 item
+    //             )
+    //         );
+    //         return zip(...storeRequests).pipe(
+    //             observeOn(asyncScheduler), // Run store in a separate async context
+    //             map(() => holdingsEffectsActions.noMoreActions()),
+    //             catchError(() =>
+    //                 of(holdingsEffectsActions.noMoreActions())
+    //             )
+    //         );
+    //     })
+    // ));
 }

@@ -9,22 +9,18 @@ import { StockInformation } from './models';
     providedIn: 'root',
 })
 export class StockService {
-    private apiUrl = '';
 
-    constructor(private http: HttpClient) {
-        this.apiUrl = environment.quoteApiUrl;
-    }
+    constructor(private http: HttpClient) { }
 
     getStockData(ticker: string): Observable<StockInformation[]> {
-        return this.http.get<{ bestMatches: StockInformation[] }>(`${this.apiUrl}&keywords=${ticker}`).pipe(
-            map(response => response.bestMatches.map(item => {
-                return Object.entries(item)?.reduce((acc, [key, value]) => {
-                    const newKey = key.replace(/^\d+\.\s*/, "") as keyof StockInformation; // Remove number and dot
-                    acc[newKey] = value;
-                    return acc;
-                }, {} as StockInformation)
+        return this.http.get<{ body: StockInformation[] }>(
+            `${environment.rapidApiURL}markets/search?search=${ticker}`,
+            {
+                headers: {
+                    [environment.xRapidApiHostField]: environment.xRapidApiHost,
+                    [environment.xRapidApiKeyField]: environment.xRapidApiKey
+                }
             }
-            ))
-        );
+        ).pipe(map(response => response.body));
     }
 }

@@ -71,7 +71,9 @@ const getHoldingsByPortfolioId = (portfolioId: string) => createSelector(
 
 const getSelectedHoldings = createSelector(
     selectedHoldingSelector,
-    state => state?.data?.filter(item => item.ticker?.toLowerCase() === state?.selectedHolding?.ticker?.toLowerCase()) ?? []
+    state => state?.data?.length
+        ? state?.data?.filter(item => item.ticker?.toLowerCase() === state?.selectedHolding?.ticker?.toLowerCase())
+        : []
 );
 
 const getFilteredStocks = createSelector(

@@ -1,10 +1,13 @@
 import { Timestamp } from 'firebase/firestore';
 
-export interface Holding {
+import { StockInformation } from '../../models';
+
+export interface Holding extends StockInformation {
     avgPrice?: number;
     change?: number;
     dateOfPurchase: Date | Timestamp;
     id?: string;
+    imgSource?: string;
     notes?: string;
     price: number;
     shares: number;

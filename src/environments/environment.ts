@@ -10,6 +10,10 @@ export const environment = {
         appId: "1:642944037395:web:01c3fe56f5daee1c0ec5e6",
         measurementId: "G-9JV2YZNCLP"
     },
-    quoteApiUrl: 'https://www.alphavantage.co/query?function=SYMBOL_SEARCH&apikey=ZAROJYPOJEWOT4K6',
-    alphaAdvantageAPIKey: 'ZAROJYPOJEWOT4K6'
+    rapidApiURL: 'https://yahoo-finance15.p.rapidapi.com/api/v1/',
+    xRapidApiHostField: 'x-rapidapi-host',
+    xRapidApiHost: 'yahoo-finance15.p.rapidapi.com',
+    xRapidApiKeyField: 'x-rapidapi-key',
+    xRapidApiKey: 'eb5688e316msh70169c48797e0d2p15818djsncb1089ac431e',
+    logosUrl: 'https://storage.googleapis.com/iex/api/logos/'
 };
