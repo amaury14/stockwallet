@@ -20,6 +20,7 @@ export const holdingsEffectsActions = createActionGroup({
         holdingDeletedSuccess: props<{ data: Holding }>(),
         holdingDeleteFailed: props<{ error: string }>(),
         filterStocksSuccess: props<{ data: StockInformation[] }>(),
-        filterStocksFailed: props<{ error: string }>()
+        filterStocksFailed: props<{ error: string }>(),
+        noMoreActions: emptyProps()
     }
 });

@@ -9,6 +9,16 @@ $main-top-bar-height: 100px;
     height: 100%;
     width: 100%;
 
+    ::ng-deep img.stock-image {
+        height: 25px;
+        margin-right: 10px;
+        border-radius: 10%;
+    }
+
+    ::ng-deep .save-button {
+        margin-left: 10px;
+    }
+
     p-toolbar.portfolio-bar {
         display: block;
 
@@ -25,10 +35,6 @@ $main-top-bar-height: 100px;
         }
     }
 
-    ::ng-deep .save-button {
-        margin-left: 10px;
-    }
-
     p-toolbar.main-top-bar {
         border-radius: 0;
         display: block;
@@ -43,7 +49,7 @@ $main-top-bar-height: 100px;
                 align-items: start;
                 display: flex;
                 height: 100%;
-                justify-content: space-between;
+                justify-content: flex-start;
                 flex-direction: column;
 
                 .total-value {
@@ -113,20 +119,24 @@ $main-top-bar-height: 100px;
 
             &.holding-card {
                 height: 100%;
-                width: 500px;
+                width: 580px;
             }
         }
     }
 
     p-chart {
         display: block;
-        width: 400px;
+        width: 360px;
     }
 
     p-dialog.register-purchase-dialog ::ng-deep p-iftalabel {
         margin: 5px;
 
         .uppercase {
+            text-transform: uppercase;
+        }
+
+        p-autocomplete.uppercase::ng-deep input {
             text-transform: uppercase;
         }
     }
