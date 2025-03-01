@@ -161,7 +161,7 @@ export class PortfolioComponent implements OnInit {
             this._store.dispatch(portfolioActions.holdingSaved({
                 data: {
                     ...this.holdingForm.get('ticker')?.value,
-                    dateOfPurchase: this.holdingForm.get('dateOfPurchase')?.value,                    
+                    dateOfPurchase: this.holdingForm.get('dateOfPurchase')?.value,
                     ticker: this.holdingForm.get('ticker')?.value?.symbol,
                     shares: this.holdingForm.get('shares')?.value,
                     price: this.holdingForm.get('price')?.value,
