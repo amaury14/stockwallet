@@ -24,7 +24,7 @@
     <ng-template #center>
         <div class="main-numbers-panel">
             <span>Contributions: <span class="total-value">{{ portfolioStats()?.totalValue ?? 0 | currency }}</span></span>
-            <span>Number of Shares: <span class="total-value">{{ holdings()?.length ?? 0 }}</span></span>
+            <span>Number of Shares: <span class="total-value">{{ holdings().length }}</span></span>
         </div>
     </ng-template>
     <ng-template #end>
