@@ -12,6 +12,7 @@ import { HeaderComponent } from '../header/header.component';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { mainContainerActions } from './main-container.actions';
+import { MarketComponent } from './market/market.component';
 import { PortfolioComponent } from './portfolio/portfolio.component';
 
 @Component({
@@ -22,6 +23,7 @@ import { PortfolioComponent } from './portfolio/portfolio.component';
         CommonModule,
         DashboardComponent,
         HeaderComponent,
+        MarketComponent,
         PortfolioComponent,
         SidebarComponent,
         TableModule
@@ -32,7 +34,7 @@ import { PortfolioComponent } from './portfolio/portfolio.component';
 export class MainContainerComponent implements OnInit {
 
     isUserLogged: Signal<boolean> = signal(false);
-    sectionInView: Signal<SectionView> = signal(SectionView.DASHBOARD);
+    sectionInView: Signal<SectionView> = signal(SectionView.MARKET);
     sections = SectionView;
 
     constructor(private _store: Store) { }

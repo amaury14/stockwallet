@@ -4,9 +4,9 @@ export const sidebarConfig = {
     sections: [
         {
             disabled: false,
-            name: 'Dashboard',
-            iconClass: 'pi pi-database',
-            key: SectionView.DASHBOARD
+            name: 'Market',
+            iconClass: 'pi pi-th-large',
+            key: SectionView.MARKET
         },
         {
             disabled: false,
@@ -14,6 +14,12 @@ export const sidebarConfig = {
             iconClass: 'pi pi-wallet',
             key: SectionView.PORTFOLIOS
         }//,
+        // {
+        //     disabled: false,
+        //     name: 'Dashboard',
+        //     iconClass: 'pi pi-database',
+        //     key: SectionView.DASHBOARD
+        // },
         // {
         //     disabled: true,
         //     name: 'Watchlist (coming soon)',

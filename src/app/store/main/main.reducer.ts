@@ -9,7 +9,7 @@ import { SectionView } from '../models';
 import { MainState } from './models';
 
 export const initialState: MainState = {
-    sectionInView: SectionView.DASHBOARD
+    sectionInView: SectionView.MARKET
 };
 
 export const mainReducer: ActionReducer<MainState> = createReducer(
