@@ -1,4 +1,5 @@
 export enum SectionView {
+    MARKET = 'market',
     DASHBOARD = 'dashboard',
     PORTFOLIOS = 'portfolios',
     WATCHLIST = 'watchlist',

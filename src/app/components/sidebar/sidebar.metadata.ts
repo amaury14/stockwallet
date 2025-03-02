@@ -2,18 +2,24 @@ import { SectionView } from '../../store/models';
 
 export const sidebarConfig = {
     sections: [
-        // {
-        //     disabled: false,
-        //     name: 'Dashboard',
-        //     iconClass: 'pi pi-database',
-        //     key: SectionView.DASHBOARD
-        // },
+        {
+            disabled: false,
+            name: 'Market',
+            iconClass: 'pi pi-th-large',
+            key: SectionView.MARKET
+        },
         {
             disabled: false,
             name: 'Portfolios',
             iconClass: 'pi pi-wallet',
             key: SectionView.PORTFOLIOS
         }//,
+        // {
+        //     disabled: false,
+        //     name: 'Dashboard',
+        //     iconClass: 'pi pi-database',
+        //     key: SectionView.DASHBOARD
+        // },
         // {
         //     disabled: true,
         //     name: 'Watchlist (coming soon)',

@@ -5,12 +5,14 @@ import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { TableModule } from 'primeng/table';
 
+import { authSelectors } from '../../store/auth/auth.selector';
 import { mainSelectors } from '../../store/main/main.selector';
 import { SectionView } from '../../store/models';
 import { HeaderComponent } from '../header/header.component';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { mainContainerActions } from './main-container.actions';
+import { MarketComponent } from './market/market.component';
 import { PortfolioComponent } from './portfolio/portfolio.component';
 
 @Component({
@@ -21,6 +23,7 @@ import { PortfolioComponent } from './portfolio/portfolio.component';
         CommonModule,
         DashboardComponent,
         HeaderComponent,
+        MarketComponent,
         PortfolioComponent,
         SidebarComponent,
         TableModule
@@ -30,7 +33,8 @@ import { PortfolioComponent } from './portfolio/portfolio.component';
 })
 export class MainContainerComponent implements OnInit {
 
-    sectionInView: Signal<SectionView> = signal(SectionView.DASHBOARD);
+    isUserLogged: Signal<boolean> = signal(false);
+    sectionInView: Signal<SectionView> = signal(SectionView.MARKET);
     sections = SectionView;
 
     constructor(private _store: Store) { }
@@ -38,6 +42,7 @@ export class MainContainerComponent implements OnInit {
     ngOnInit(): void {
         this._store.dispatch(mainContainerActions.appStarted());
 
+        this.isUserLogged = this._store.selectSignal(authSelectors.isUserLogged);
         this.sectionInView = this._store.selectSignal(mainSelectors.getSectionInView);
     }
 }

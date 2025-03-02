@@ -1,15 +1,20 @@
 <section id="container">
     <app-header></app-header>
+    @if (isUserLogged()) {
     <aside>
         <app-sidebar></app-sidebar>
     </aside>
-    <section id="main-content">
+    }
+    <section id="main-content" [class.full]="!isUserLogged()">
         @switch (sectionInView()) {
             @case (sections.DASHBOARD) {
-                <app-dashboard></app-dashboard>
+            <app-dashboard></app-dashboard>
             }
             @case (sections.PORTFOLIOS) {
-                <app-portfolio></app-portfolio>
+            <app-portfolio></app-portfolio>
+            }
+            @case (sections.MARKET) {
+            <app-market></app-market>
             }
         }
     </section>

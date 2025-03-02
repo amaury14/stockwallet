@@ -1,0 +1,29 @@
+@use '../../styles/index.scss' as cssVariables;
+
+:host {
+    background-color: cssVariables.$vivaown;
+    display: block;
+    height: 100%;
+    width: 100%;
+
+    div.market-content {
+        align-items: center;
+        display: flex;
+        flex-direction: row;
+        height: calc(100% - 20px);
+        justify-content: center;
+        width: 100%;
+
+        app-sp500-heatmap {
+            display: block;
+            height: 100%;
+            width: 80%;
+        }
+
+        app-top-stories {
+            display: block;
+            height: 100%;
+            width: 20%;
+        }
+    }
+}
