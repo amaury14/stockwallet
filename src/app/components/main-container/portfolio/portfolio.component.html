@@ -9,7 +9,7 @@
             (click)="onPortfolioSelected(item)" />
         }
         <p-button aria-label="Add" icon="pi pi-plus" [rounded]="true" [raised]="true" severity="contrast" size="large"
-            (click)="onAddClicked()" />
+            [disabled]="!isUserLogged()" (click)="onAddClicked()" />
     </ng-template>
     <ng-template #center></ng-template>
     <ng-template #end></ng-template>
