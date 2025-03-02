@@ -153,7 +153,7 @@ const getPieChartHoldingsBySector = createSelector(
             const stocks = Object.values(aggregated)?.map(stock => ({ ...stock }));
             const totalValue = stocks.reduce((sum, item) => sum + item.totalCost!, 0);
             return {
-                labels: stocks.map(item => item.sectorDisp),
+                labels: stocks.map(item => `${item.sectorDisp} - ${((item.totalCost! * 100) / totalValue).toFixed(2)}%`),
                 datasets: [
                     {
                         data: stocks.map(item => (item.totalCost! * 100) / totalValue),

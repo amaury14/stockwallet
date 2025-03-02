@@ -5,6 +5,7 @@ import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { TableModule } from 'primeng/table';
 
+import { authSelectors } from '../../store/auth/auth.selector';
 import { mainSelectors } from '../../store/main/main.selector';
 import { SectionView } from '../../store/models';
 import { HeaderComponent } from '../header/header.component';
@@ -30,6 +31,7 @@ import { PortfolioComponent } from './portfolio/portfolio.component';
 })
 export class MainContainerComponent implements OnInit {
 
+    isUserLogged: Signal<boolean> = signal(false);
     sectionInView: Signal<SectionView> = signal(SectionView.DASHBOARD);
     sections = SectionView;
 
@@ -38,6 +40,7 @@ export class MainContainerComponent implements OnInit {
     ngOnInit(): void {
         this._store.dispatch(mainContainerActions.appStarted());
 
+        this.isUserLogged = this._store.selectSignal(authSelectors.isUserLogged);
         this.sectionInView = this._store.selectSignal(mainSelectors.getSectionInView);
     }
 }
