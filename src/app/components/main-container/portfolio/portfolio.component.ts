@@ -24,6 +24,7 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { TooltipModule } from 'primeng/tooltip';
 import { interval, Subscription, take } from 'rxjs';
 
+import { authSelectors } from '../../../store/auth/auth.selector';
 import { holdingsSelectors } from '../../../store/holdings/holdings.selector';
 import { Holding } from '../../../store/holdings/models';
 import { PortfolioPieData, PortfolioStats, ShareType, StockInformation } from '../../../store/models';
@@ -72,6 +73,7 @@ export class PortfolioComponent implements OnInit {
     isHoldingsLoading: Signal<boolean> = signal(false);
     isLoading: Signal<boolean> = signal(false);
     isPortfolioDeleteDisabled = signal(false);
+    isUserLogged: Signal<boolean> = signal(false);
     pieChartHoldingsByAmount: Signal<PortfolioPieData | null> = signal(null);
     pieChartHoldingsBySector: Signal<PortfolioPieData | null> = signal(null);
     portfolio: Signal<Portfolio[]> = signal([]);
@@ -100,6 +102,7 @@ export class PortfolioComponent implements OnInit {
     constructor(private _store: Store, private _fb: UntypedFormBuilder) { }
 
     ngOnInit(): void {
+        this.isUserLogged = this._store.selectSignal(authSelectors.isUserLogged);
         this.portfolio = this._store.selectSignal(portfolioSelectors.getData);
         this.isHoldingsLoading = this._store.selectSignal(holdingsSelectors.isLoading);
         this.isLoading = this._store.selectSignal(portfolioSelectors.isLoading);
