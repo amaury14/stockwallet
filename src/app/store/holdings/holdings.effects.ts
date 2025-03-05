@@ -8,7 +8,7 @@ import { catchError, filter, map, mergeMap, observeOn } from 'rxjs/operators';
 
 import { environment } from '../../../environments/environment';
 import { registerPurchaseActions } from '../../components/dialogs/register-purchase/register-purchase.actions';
-import { portfolioActions } from '../../components/main-container/portfolio/portfolio.actions';
+import { updateContributionsActions } from '../../components/dialogs/update-contributions/update-contributions.actions';
 import { loginActions } from '../../components/login/login.actions';
 import { loginInlineActions } from '../../components/login-inline/login-inline.actions';
 import { authEffectsActions } from '../auth/auth.actions';
@@ -118,9 +118,7 @@ export class HoldingsEffects {
     ));
 
     transactionUpdated$ = createEffect(() => this._actions$.pipe(
-        ofType(
-            portfolioActions.transactionUpdated
-        ),
+        ofType(updateContributionsActions.transactionUpdated),
         concatLatestFrom(() => [
             this._store.select(authSelectors.getUser),
             this._store.select(portfolioSelectors.getSelected)
@@ -143,9 +141,7 @@ export class HoldingsEffects {
     ));
 
     transactionDeleted$ = createEffect(() => this._actions$.pipe(
-        ofType(
-            portfolioActions.transactionDeleted
-        ),
+        ofType(updateContributionsActions.transactionDeleted),
         concatLatestFrom(() => [
             this._store.select(authSelectors.getUser),
             this._store.select(portfolioSelectors.getSelected)

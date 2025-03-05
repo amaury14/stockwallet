@@ -1,7 +1,7 @@
 import { ActionReducer, createReducer, on } from '@ngrx/store';
 
 import { headerActions } from '../../components/header/header.actions';
-import { portfolioActions } from '../../components/main-container/portfolio/portfolio.actions';
+import { mainContentActions } from '../../components/main-container/portfolio/main-content/main-content.actions';
 import { authEffectsActions } from '../auth/auth.actions';
 import { LoadingState } from '../models';
 import { HoldingState } from './models';
@@ -95,7 +95,7 @@ export const holdingsReducer: ActionReducer<HoldingState> = createReducer(
         }
         return state;
     }),
-    on(portfolioActions.holdingEditSelected, (state, action) => {
+    on(mainContentActions.holdingEditSelected, (state, action) => {
         return {
             ...state,
             data: {

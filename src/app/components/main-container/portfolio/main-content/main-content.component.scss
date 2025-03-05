@@ -1,0 +1,73 @@
+@use '../../../styles/index.scss' as cssVariables;
+
+:host {
+    ::ng-deep img.stock-image {
+        height: 25px;
+        margin-right: 10px;
+        border-radius: 10%;
+    }
+
+    p-toolbar.main-content-bar {
+        border-radius: 0;
+        width: 100%;
+
+        ::ng-deep div.p-toolbar {
+            height: calc(100% - #{cssVariables.$portfolio-bar-height + cssVariables.$main-top-bar-height});
+            width: 100%;
+
+            div.p-toolbar-start,
+            div.p-toolbar-center,
+            div.p-toolbar-end {
+                align-items: start;
+                height: 100%;
+                justify-content: start;
+                flex-direction: row;
+
+                .charts-container {
+                    align-items: center;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    width: 100%;
+
+                    .shares-type {
+                        width: 100%;
+                    }
+
+                    .chart-row {
+                        align-items: start;
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: flex-start;
+                        width: 100%;
+                    }
+                }
+            }
+
+            div.p-toolbar-start {
+                width: 58%;
+            }
+
+            div.p-toolbar-end {
+                width: 40%;
+            }
+        }
+
+        p-card {
+            border: 2px solid cssVariables.$sojoown;
+            border-radius: 6px;
+            margin: 2px;
+            width: 100%;
+
+            &.holding-card {
+                height: 100%;
+                width: 100%;
+            }
+        }
+    }
+
+    p-chart {
+        display: block;
+        width: 100%;
+    }
+}
