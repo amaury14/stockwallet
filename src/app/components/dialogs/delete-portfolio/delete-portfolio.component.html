@@ -1,0 +1,19 @@
+<!-- delete portfolio dialog -->
+<p-dialog class="delete-portfolio" header="Delete Portfolio" [modal]="true" [(visible)]="showPortfolioDeleteDialog"
+    [style]="{ width: '35rem', height: '22rem' }" (onHide)="onPortfolioDeleteCancelClicked()">
+    <p>
+        Are you sure you want to delete "{{ portfolioSelected()?.name }}"?
+    </p>
+    <p>
+        This action will delete all holdings.
+        There is no going back from this!!!!
+    </p>
+    <ng-template #footer>
+        <div class="dialog-flex justify-end gap-2">
+            <p-button label="Cancel" severity="secondary" (click)="onPortfolioDeleteCancelClicked()" />
+            <p-button class="delete-button"
+                [label]="isPortfolioDeleteDisabled() ? 'Wait ' + countdown + 's' : 'Yes, remove it!'" severity="danger"
+                [disabled]="isPortfolioDeleteDisabled()" (click)="onPortfolioDeleteOkClicked()" />
+        </div>
+    </ng-template>
+</p-dialog>

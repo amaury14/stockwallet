@@ -1,0 +1,32 @@
+:host {
+    p-dialog.edit-contributions::ng-deep {
+        div.p-dialog-content {
+            overflow: hidden;
+            overflow-wrap: break-word;
+            width: 100%;
+            word-wrap: break-word;
+
+            p-card.edit-holding-card {
+                display: block;
+                height: 330px;
+                overflow: hidden;
+            }
+
+            div.edit-form {
+                align-items: flex-end;
+                display: flex;
+                flex-direction: row;
+                margin-bottom: 4px;
+                justify-content: flex-start;
+
+                * {
+                    margin: 0 2px;
+                }
+
+                p-button.register-sale button {
+                    height: 30px;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,19 @@
+@use '../../styles/index.scss' as cssVariables;
+
+:host {
+    ::ng-deep .save-button {
+        margin-left: 10px;
+    }
+
+    p-dialog.register-purchase-dialog ::ng-deep p-iftalabel {
+        margin: 5px;
+
+        .uppercase {
+            text-transform: uppercase;
+        }
+
+        p-autocomplete.uppercase::ng-deep input {
+            text-transform: uppercase;
+        }
+    }
+}

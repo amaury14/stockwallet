@@ -1,7 +1,7 @@
 import { ActionReducer, createReducer, on } from '@ngrx/store';
 
 import { headerActions } from '../../components/header/header.actions';
-import { portfolioActions } from '../../components/main-container/portfolio/portfolio.actions';
+import { portfolioBarActions } from '../../components/main-container/portfolio/portfolio-bar/portfolio-bar.actions';
 import { authEffectsActions } from '../auth/auth.actions';
 import { holdingsEffectsActions } from '../holdings/holdings.actions';
 import { LoadingState } from '../models';
@@ -56,7 +56,7 @@ export const portfolioReducer: ActionReducer<PortfolioState> = createReducer(
         };
     }),
     on(
-        portfolioActions.portfolioSelected,
+        portfolioBarActions.portfolioSelected,
         portfolioEffectsActions.portfolioAddedSuccess,
         (state, action) => {
             return {

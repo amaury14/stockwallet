@@ -1,0 +1,76 @@
+<!-- edit ticker contributions dialog -->
+<p-dialog class="edit-contributions" header="Update Contributions" [modal]="true" [(visible)]="showEditHoldingDialog"
+    [style]="{ width: '100rem', height: '55rem' }" (onHide)="onEditHoldingCancel()">
+    <p-card class="edit-holding-card">
+        <p-table [value]="selectedHoldings()" size="small" stripedRows sortField="dateOfPurchase" [sortOrder]="-1"
+            [scrollable]="true" scrollHeight="300px">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Ticker</th>
+                    <th pSortableColumn="shares">Shares<p-sortIcon field="shares" /></th>
+                    <th pSortableColumn="price">Price<p-sortIcon field="price" /></th>
+                    <th pSortableColumn="dateOfPurchase">Date of Purchase<p-sortIcon field="dateOfPurchase" /></th>
+                    <th pSortableColumn="notes">Notes<p-sortIcon field="notes" /></th>
+                    <th>Edit Contributions</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-stock>
+                <tr>
+                    <td [pTooltip]="stock.name" tooltipPosition="top">
+                        {{ stock.name | slice:0:20 }} @if (stock.name?.length > 20) { ... } ({{ stock.ticker }})
+                    </td>
+                    <td>{{ stock.shares }}</td>
+                    <td>{{ stock.price | currency }}</td>
+                    <td>{{ stock.dateOfPurchase | date: 'MM/dd/yyyy' }}</td>
+                    <td [pTooltip]="stock.notes" tooltipPosition="top">
+                        {{ stock.notes | slice:0:30 }}
+                        @if (stock.notes?.length > 30) { ... }
+                    </td>
+                    <td><p-button aria-label="Update Contribution" icon="pi pi-file-edit" pTooltip="Update Contribution"
+                            tooltipPosition="left" [rounded]="true" [raised]="true" severity="info" size="large"
+                            (click)="onEditHoldingItemClicked(stock)" />
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </p-card>
+    <ng-container [formGroup]="editHoldingItemForm">
+        <div class="edit-form">
+            <p-iftalabel>
+                <input pInputText id="ticker" formControlName="ticker" />
+                <label for="ticker">Ticker</label>
+            </p-iftalabel>
+            <p-iftalabel>
+                <p-inputnumber inputId="shares" formControlName="shares" mode="decimal" [minFractionDigits]="2"
+                    [maxFractionDigits]="5" />
+                <label for="shares">Shares</label>
+            </p-iftalabel>
+            <p-iftalabel>
+                <p-datepicker id="dateOfPurchase" formControlName="dateOfPurchase" appendTo="body" />
+                <label for="dateOfPurchase">Date of Purchase</label>
+            </p-iftalabel>
+            <p-iftalabel>
+                <p-inputnumber inputId="price" formControlName="price" mode="decimal" [minFractionDigits]="2"
+                    [maxFractionDigits]="5" />
+                <label for="price">Price</label>
+            </p-iftalabel>
+        </div>
+        <div class="edit-form">
+            <p-iftalabel>
+                <textarea rows="2" cols="80" pTextarea formControlName="notes" style="resize: none"></textarea>
+                <label for="notes">Notes</label>
+            </p-iftalabel>
+            <p-button aria-label="Register Sale" severity="warn" label="Register Sale" icon="pi pi-tag"
+                pTooltip="Register Sale" tooltipPosition="top" (click)="onTransactionDeleteClicked()"
+                [disabled]="!editHoldingItemForm.valid" />
+            <p-button aria-label="Save record" severity="success" label="Save Tx" icon="pi pi-save"
+                pTooltip="Save Transaction" tooltipPosition="top" [disabled]="!editHoldingItemForm.valid"
+                (click)="onTransactionUpdateClicked()" />
+        </div>
+    </ng-container>
+    <ng-template #footer>
+        <div class="dialog-flex justify-end gap-2">
+            <p-button label="Close" severity="secondary" (click)="onEditHoldingCancel()" />
+        </div>
+    </ng-template>
+</p-dialog>

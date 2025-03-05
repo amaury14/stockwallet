@@ -1,0 +1,19 @@
+@use '../../../styles/index.scss' as cssVariables;
+
+:host {
+    p-toolbar.portfolio-bar {
+        display: block;
+
+        ::ng-deep div.p-toolbar {
+            height: cssVariables.$portfolio-bar-height;
+        }
+    }
+
+    p-chip {
+        margin-right: 10px;
+
+        &.selected {
+            border: solid 2px cssVariables.$blue;
+        }
+    }
+}
