@@ -7,7 +7,7 @@ import { of } from 'rxjs';
 import { catchError, filter, map, mergeMap } from 'rxjs/operators';
 
 import { createPortfolioActions } from '../../components/dialogs/create-portfolio/create-portfolio.actions';
-import { portfolioActions } from '../../components/main-container/portfolio/portfolio.actions';
+import { deletePortfolioActions } from '../../components/dialogs/delete-portfolio/delete-portfolio.actions';
 import { loginActions } from '../../components/login/login.actions';
 import { loginInlineActions } from '../../components/login-inline/login-inline.actions';
 import { authEffectsActions } from '../auth/auth.actions';
@@ -95,7 +95,7 @@ export class PortfolioEffects {
     ));
 
     portfolioDeleted$ = createEffect(() => this._actions$.pipe(
-        ofType(portfolioActions.portfolioDeleted),
+        ofType(deletePortfolioActions.portfolioDeleted),
         concatLatestFrom(() => this._store.select(authSelectors.getUser)),
         filter(([action, user]) => !!user?.uid && !!action.data?.id),
         mergeMap(([action, user]) => {
