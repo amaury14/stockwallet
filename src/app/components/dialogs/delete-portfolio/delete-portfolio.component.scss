@@ -1,0 +1,14 @@
+:host {
+    p-dialog.delete-portfolio::ng-deep {
+        div.p-dialog-content {
+            overflow: hidden;
+            overflow-wrap: break-word;
+            width: 100%;
+            word-wrap: break-word;
+        }
+
+        .delete-button {
+            margin-left: 10px;
+        }
+    }
+}

@@ -1,0 +1,21 @@
+<!-- main top portfolio panel -->
+<p-toolbar class="main-top-bar">
+    <ng-template #start>
+        <div class="main-numbers-panel">
+            <span>{{ portfolioSelected()?.description }}</span>
+        </div>
+    </ng-template>
+    <ng-template #center>
+        <div class="main-numbers-panel">
+            <span>Contributions: <span class="total-value">{{ portfolioStats()?.totalValue ?? 0 | currency
+                    }}</span></span>
+            <span>Number of Shares: <span class="total-value">{{ holdings().length }}</span></span>
+        </div>
+    </ng-template>
+    <ng-template #end>
+        <p-button class="delete-portfolio" severity="danger" label="Delete Portfolio" icon="pi pi-trash"
+            (click)="onPortfolioDeleteClicked()" [disabled]="!portfolioSelected()" />
+        <p-button class="register-purchase" severity="info" label="Register Purchase" icon="pi pi-plus"
+            (click)="onHoldingAddClicked()" [disabled]="!portfolioSelected()" />
+    </ng-template>
+</p-toolbar>

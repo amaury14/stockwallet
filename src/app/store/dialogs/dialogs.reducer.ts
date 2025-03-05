@@ -1,12 +1,17 @@
 import { ActionReducer, createReducer, on } from '@ngrx/store';
 
 import { createPortfolioActions } from '../../components/dialogs/create-portfolio/create-portfolio.actions';
+import { deletePortfolioActions } from '../../components/dialogs/delete-portfolio/delete-portfolio.actions';
+import { registerPurchaseActions } from '../../components/dialogs/register-purchase/register-purchase.actions';
 import { headerActions } from '../../components/header/header.actions';
+import { mainTopBarActions } from '../../components/main-container/portfolio/main-top-bar/main-top-bar.actions';
 import { portfolioBarActions } from '../../components/main-container/portfolio/portfolio-bar/portfolio-bar.actions';
 import { authEffectsActions } from '../auth/auth.actions';
 import { DialogsStateData } from './models';
 
 export const initialState: DialogsStateData = {
+    showHoldingDialog: false,
+    showPortfolioDeleteDialog: false,
     showPortfolioDialog: false
 };
 
@@ -19,9 +24,27 @@ export const dialogsReducer: ActionReducer<DialogsStateData> = createReducer(
         portfolioBarActions.showPortfolioDialogUpdated,
         createPortfolioActions.showPortfolioDialogUpdated,
         (state, action) => {
-        return {
-            ...state,
-            showPortfolioDialog: action.data
-        };
-    })
+            return {
+                ...state,
+                showPortfolioDialog: action.data
+            };
+        }),
+    on(
+        mainTopBarActions.showHoldingDialogUpdated,
+        registerPurchaseActions.showHoldingDialogUpdated,
+        (state, action) => {
+            return {
+                ...state,
+                showHoldingDialog: action.data
+            };
+        }),
+    on(
+        mainTopBarActions.showPortfolioDeleteDialogUpdated,
+        deletePortfolioActions.showPortfolioDeleteDialogUpdated,
+        (state, action) => {
+            return {
+                ...state,
+                showPortfolioDeleteDialog: action.data
+            };
+        })
 );

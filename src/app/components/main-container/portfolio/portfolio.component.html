@@ -1,26 +1,7 @@
 <!-- portfolio bar -->
 <app-portfolio-bar></app-portfolio-bar>
 <!-- main top portfolio panel -->
-<p-toolbar class="main-top-bar">
-    <ng-template #start>
-        <div class="main-numbers-panel">
-            <span>{{ portfolioSelected()?.description }}</span>
-        </div>
-    </ng-template>
-    <ng-template #center>
-        <div class="main-numbers-panel">
-            <span>Contributions: <span class="total-value">{{ portfolioStats()?.totalValue ?? 0 | currency
-                    }}</span></span>
-            <span>Number of Shares: <span class="total-value">{{ holdings().length }}</span></span>
-        </div>
-    </ng-template>
-    <ng-template #end>
-        <p-button class="delete-portfolio" severity="danger" label="Delete Portfolio" icon="pi pi-trash"
-            (click)="onPortfolioDeleteClicked()" [disabled]="!portfolioSelected()" />
-        <p-button class="register-purchase" severity="info" label="Register Purchase" icon="pi pi-plus"
-            (click)="onHoldingAddClicked()" [disabled]="!portfolioSelected()" />
-    </ng-template>
-</p-toolbar>
+<app-main-top-bar></app-main-top-bar>
 <!-- main content panel -->
 <p-toolbar class="main-content-bar">
     <!-- charts container -->
@@ -97,74 +78,11 @@
 <!-- create portfolio dialog -->
 <app-create-portfolio-dialog></app-create-portfolio-dialog>
 
-<!-- add holding dialog -->
-<p-dialog class="register-purchase-dialog" header="Register Purchase" [modal]="true" [(visible)]="showHoldingDialog"
-    [style]="{ width: '40rem', height: '45rem' }" (onHide)="onHoldingCancelClicked()">
-    <ng-container [formGroup]="holdingForm">
-        <!-- <p-iftalabel>
-            <input class="uppercase" pInputText id="ticker" formControlName="ticker" />
-            <label for="ticker">Ticker</label>
-        </p-iftalabel> -->
-        <p-iftalabel>
-            <p-autocomplete class="uppercase" id="ticker" formControlName="ticker" delay="300"
-                [suggestions]="filteredStocks()" (completeMethod)="filterByTicker($event)" optionLabel="symbol"
-                appendTo="body" dataKey="symbol" [pAutoFocus]="true">
-                <ng-template let-ticker #item>
-                    <div class="flex items-center gap-2">
-                        <div>{{ ticker.symbol }} - {{ ticker.name }} - {{ ticker.exchDisp }} ({{ ticker.typeDisp }})
-                        </div>
-                    </div>
-                </ng-template>
-            </p-autocomplete>
-            <label for="ticker">Ticker</label>
-        </p-iftalabel>
-        <p-iftalabel>
-            <p-inputnumber inputId="shares" formControlName="shares" mode="decimal" [minFractionDigits]="2"
-                [maxFractionDigits]="5" />
-            <label for="shares">Shares</label>
-        </p-iftalabel>
-        <p-iftalabel>
-            <p-datepicker id="dateOfPurchase" formControlName="dateOfPurchase" appendTo="body" />
-            <label for="dateOfPurchase">Date of Purchase</label>
-        </p-iftalabel>
-        <p-iftalabel>
-            <p-inputnumber inputId="price" formControlName="price" mode="decimal" [minFractionDigits]="2"
-                [maxFractionDigits]="5" />
-            <label for="price">Price</label>
-        </p-iftalabel>
-        <p-iftalabel>
-            <textarea rows="5" cols="30" pTextarea formControlName="notes" style="resize: none"></textarea>
-            <label for="notes">Notes</label>
-        </p-iftalabel>
-    </ng-container>
-    <ng-template #footer>
-        <div class="dialog-flex justify-end gap-2">
-            <p-button label="Cancel" severity="secondary" (click)="onHoldingCancelClicked()" />
-            <p-button class="save-button" label="Save" (click)="onHoldingSaveClicked()"
-                [disabled]="!holdingForm.valid" />
-        </div>
-    </ng-template>
-</p-dialog>
+<!-- register purchase dialog -->
+<app-register-purchase></app-register-purchase>
 
 <!-- delete portfolio dialog -->
-<p-dialog class="delete-portfolio" header="Delete Portfolio" [modal]="true" [(visible)]="showPortfolioDeleteDialog"
-    [style]="{ width: '35rem', height: '22rem' }" (onHide)="onPortfolioDeleteCancelClicked()">
-    <p>
-        Are you sure you want to delete "{{ portfolioSelected()?.name }}"?
-    </p>
-    <p>
-        This action will delete all holdings.
-        There is no going back from this!!!!
-    </p>
-    <ng-template #footer>
-        <div class="dialog-flex justify-end gap-2">
-            <p-button label="Cancel" severity="secondary" (click)="onPortfolioDeleteCancelClicked()" />
-            <p-button class="delete-button"
-                [label]="isPortfolioDeleteDisabled() ? 'Wait ' + countdown + 's' : 'Yes, remove it!'" severity="danger"
-                [disabled]="isPortfolioDeleteDisabled()" (click)="onPortfolioDeleteOkClicked()" />
-        </div>
-    </ng-template>
-</p-dialog>
+<app-delete-portfolio></app-delete-portfolio>
 
 <!-- edit ticker contributions dialog -->
 <p-dialog class="edit-portfolio" header="Update Contributions" [modal]="true" [(visible)]="showEditHoldingDialog"

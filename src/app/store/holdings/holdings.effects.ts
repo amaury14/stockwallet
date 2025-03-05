@@ -7,6 +7,7 @@ import { asyncScheduler, of, zip } from 'rxjs';
 import { catchError, filter, map, mergeMap, observeOn } from 'rxjs/operators';
 
 import { environment } from '../../../environments/environment';
+import { registerPurchaseActions } from '../../components/dialogs/register-purchase/register-purchase.actions';
 import { portfolioActions } from '../../components/main-container/portfolio/portfolio.actions';
 import { loginActions } from '../../components/login/login.actions';
 import { loginInlineActions } from '../../components/login-inline/login-inline.actions';
@@ -68,7 +69,7 @@ export class HoldingsEffects {
     ));
 
     addItem$ = createEffect(() => this._actions$.pipe(
-        ofType(portfolioActions.holdingSaved),
+        ofType(registerPurchaseActions.holdingSaved),
         concatLatestFrom(() => [
             this._store.select(authSelectors.getUser),
             this._store.select(portfolioSelectors.getSelected)
@@ -192,7 +193,7 @@ export class HoldingsEffects {
     ));
 
     filterTicker$ = createEffect(() => this._actions$.pipe(
-        ofType(portfolioActions.filterTicker),
+        ofType(registerPurchaseActions.filterTicker),
         filter((action) => !!action.query),
         mergeMap((action) => {
             return this._stockService.getStockData(action.query).pipe(
