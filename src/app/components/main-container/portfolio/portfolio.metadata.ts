@@ -1,10 +1,5 @@
 import { Validators } from '@angular/forms';
 
-export const portfolioFormValue = {
-    name: [null, Validators.required],
-    description: ''
-};
-
 export const holdingDefaultValue = {
     ticker: null,
     shares: null,

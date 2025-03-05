@@ -30,8 +30,10 @@ import { Holding } from '../../../store/holdings/models';
 import { PortfolioPieData, PortfolioStats, ShareType, StockInformation } from '../../../store/models';
 import { Portfolio } from '../../../store/portfolio/models';
 import { portfolioSelectors } from '../../../store/portfolio/portfolio.selector';
+import { CreatePortfolioDialogComponent } from '../../dialogs/create-portfolio/create-portfolio.component';
 import { portfolioActions } from './portfolio.actions';
-import { holdingDefaultEditFormValue, holdingDefaultFormValue, holdingDefaultValue, portfolioFormValue } from './portfolio.metadata';
+import { holdingDefaultEditFormValue, holdingDefaultFormValue, holdingDefaultValue } from './portfolio.metadata';
+import { PortfolioBarComponent } from './portfolio-bar/portfolio-bar.component';
 
 @Component({
     selector: 'app-portfolio',
@@ -42,6 +44,7 @@ import { holdingDefaultEditFormValue, holdingDefaultFormValue, holdingDefaultVal
         CardModule,
         ChipModule,
         CommonModule,
+        CreatePortfolioDialogComponent,
         DatePickerModule,
         DialogModule,
         FloatLabelModule,
@@ -56,6 +59,7 @@ import { holdingDefaultEditFormValue, holdingDefaultFormValue, holdingDefaultVal
         TextareaModule,
         ChartModule,
         PanelModule,
+        PortfolioBarComponent,
         SkeletonModule,
         ToolbarModule,
         TooltipModule
@@ -78,7 +82,6 @@ export class PortfolioComponent implements OnInit {
     pieChartHoldingsBySector: Signal<PortfolioPieData | null> = signal(null);
     portfolio: Signal<Portfolio[]> = signal([]);
     portfolioDeleteTimerSubscription$: Subscription | null = null;
-    portfolioForm!: UntypedFormGroup;
     portfolioSelected: Signal<Portfolio | null> = signal(null);
     portfolioStats: Signal<PortfolioStats | null> = signal(null);
     shareTypes: Signal<ShareType[]> = signal([]);
@@ -86,7 +89,6 @@ export class PortfolioComponent implements OnInit {
     showEditHoldingDialog = signal(false);
     showHoldingDialog = signal(false);
     showPortfolioDeleteDialog = signal(false);
-    showPortfolioDialog = signal(false);
 
     pieChartOptions = {
         plugins: {
@@ -119,10 +121,6 @@ export class PortfolioComponent implements OnInit {
 
     filterByTicker(event: AutoCompleteCompleteEvent): void {
         this._store.dispatch(portfolioActions.filterTicker({ query: event.query }));
-    }
-
-    onAddClicked(): void {
-        this.showPortfolioDialog.set(true);
     }
 
     onEditHoldingClicked(data: Holding): void {
@@ -189,29 +187,6 @@ export class PortfolioComponent implements OnInit {
         this.showPortfolioDeleteDialog.set(false);
     }
 
-    onPortfolioCancelClicked(): void {
-        this.showPortfolioDialog.set(false);
-        this.portfolioForm.reset();
-    }
-
-    onPortfolioSelected(data: Portfolio): void {
-        this._store.dispatch(portfolioActions.portfolioSelected({ data }));
-    }
-
-    onPortfolioSaveClicked(): void {
-        if (this.portfolioForm.valid) {
-            this.showPortfolioDialog.set(false);
-            this._store.dispatch(portfolioActions.portfolioSaved({
-                data: {
-                    createdAt: new Date(),
-                    name: this.portfolioForm.get('name')?.value,
-                    description: this.portfolioForm.get('description')?.value
-                }
-            }));
-            this.portfolioForm.reset();
-        }
-    }
-
     onTransactionDeleteClicked(): void {
         if (this.editHoldingItemForm.valid) {
             this._store.dispatch(portfolioActions.transactionDeleted({
@@ -245,7 +220,6 @@ export class PortfolioComponent implements OnInit {
     }
 
     private _initializeForms(): void {
-        this.portfolioForm = this._fb.group(portfolioFormValue);
         this.holdingForm = this._fb.group(holdingDefaultFormValue);
         this.editHoldingItemForm = this._fb.group(holdingDefaultEditFormValue);
     }

@@ -1,8 +1,5 @@
 @use '../../styles/index.scss' as cssVariables;
 
-$portfolio-bar-height: 50px;
-$main-top-bar-height: 100px;
-
 :host {
     background-color: cssVariables.$vivaown;
     display: block;
@@ -15,33 +12,13 @@ $main-top-bar-height: 100px;
         border-radius: 10%;
     }
 
-    ::ng-deep .save-button {
-        margin-left: 10px;
-    }
-
-    p-toolbar.portfolio-bar {
-        display: block;
-
-        ::ng-deep div.p-toolbar {
-            height: $portfolio-bar-height;
-        }
-    }
-
-    p-chip {
-        margin-right: 10px;
-
-        &.selected {
-            border: solid 2px cssVariables.$blue;
-        }
-    }
-
     p-toolbar.main-top-bar {
         border-radius: 0;
         display: block;
         width: 100%;
 
         ::ng-deep div.p-toolbar {
-            height: $main-top-bar-height;
+            height: cssVariables.$main-top-bar-height;
 
             div.p-toolbar-start,
             div.p-toolbar-center,
@@ -85,7 +62,7 @@ $main-top-bar-height: 100px;
         width: 100%;
 
         ::ng-deep div.p-toolbar {
-            height: calc(100% - #{$portfolio-bar-height + $main-top-bar-height});
+            height: calc(100% - #{cssVariables.$portfolio-bar-height + cssVariables.$main-top-bar-height});
 
             div.p-toolbar-start,
             div.p-toolbar-center,

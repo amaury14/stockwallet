@@ -7,8 +7,6 @@ export const portfolioActions = createActionGroup({
     source: 'Portfolio Component',
     events: {
         portfolioDeleted: props<{ data: Portfolio }>(),
-        portfolioSelected: props<{ data: Portfolio }>(),
-        portfolioSaved: props<{ data: Portfolio }>(),
         holdingSaved: props<{ data: Holding }>(),
         holdingEditSelected: props<{ data: Holding }>(),
         transactionUpdated: props<{ data: Holding }>(),
