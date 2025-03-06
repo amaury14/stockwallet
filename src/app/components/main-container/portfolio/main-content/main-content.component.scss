@@ -56,11 +56,11 @@
 
             div.p-toolbar-start,
             div.p-toolbar-end {
-                flex: 1 1 auto;
                 align-items: unset;
+                flex: 1 1 auto;
+                flex-direction: unset;
                 height: unset;
                 justify-content: unset;
-                flex-direction: unset;
             }
         }
 
