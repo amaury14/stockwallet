@@ -1,6 +1,9 @@
 @use '../../../styles/index.scss' as cssVariables;
 
 :host {
+    display: flex;
+    height: calc(100% - #{cssVariables.$portfolio-bar-height + cssVariables.$main-top-bar-height});
+
     ::ng-deep img.stock-image {
         height: 25px;
         margin-right: 10px;
@@ -8,11 +11,18 @@
     }
 
     p-toolbar.main-content-bar {
+        display: flex;
         border-radius: 0;
+        height: 100%;
         width: 100%;
 
         ::ng-deep div.p-toolbar {
-            height: calc(100% - #{cssVariables.$portfolio-bar-height + cssVariables.$main-top-bar-height});
+            align-items: flex-start;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            height: 100%;
+            overflow: auto;
             width: 100%;
 
             div.p-toolbar-start,
@@ -44,12 +54,13 @@
                 }
             }
 
-            div.p-toolbar-start {
-                width: 58%;
-            }
-
+            div.p-toolbar-start,
             div.p-toolbar-end {
-                width: 40%;
+                align-items: unset;
+                flex: 1 1 auto;
+                flex-direction: unset;
+                height: unset;
+                justify-content: unset;
             }
         }
 
@@ -67,7 +78,8 @@
     }
 
     p-chart {
-        display: block;
+        display: flex;
+        height: 100%;
         width: 100%;
     }
 }
