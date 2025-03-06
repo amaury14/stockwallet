@@ -1,13 +1,19 @@
 @use '../../../styles/index.scss' as cssVariables;
 
 :host {
+    display: flex;
+    height: cssVariables.$main-top-bar-height;
+
     p-toolbar.main-top-bar {
         border-radius: 0;
-        display: block;
         width: 100%;
 
         ::ng-deep div.p-toolbar {
-            height: cssVariables.$main-top-bar-height;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            height: 100%;
+            width: 100%;
 
             div.p-toolbar-start,
             div.p-toolbar-center,
@@ -25,7 +31,7 @@
 
             div.p-toolbar-start,
             div.p-toolbar-center {
-                width: 450px;
+                flex: 0 1 auto;
             }
 
             div.p-toolbar-end {

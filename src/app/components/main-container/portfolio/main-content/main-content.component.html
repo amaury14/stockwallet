@@ -13,14 +13,14 @@
             <div class="chart-row">
                 <p-card header="Holdings by Amount($) and Percentage">
                     @if (isHoldingsLoading()) {
-                    <p-skeleton shape="circle" size="360px" />
+                    <p-skeleton shape="circle" size="25rem" />
                     } @else {
                     <p-chart type="pie" [data]="pieChartHoldingsByAmount()" [options]="pieChartOptions" />
                     }
                 </p-card>
                 <p-card header="Holdings by Sector">
                     @if (isHoldingsLoading()) {
-                    <p-skeleton shape="circle" size="360px" />
+                    <p-skeleton shape="circle" size="25rem" />
                     } @else {
                     <p-chart type="pie" [data]="pieChartHoldingsBySector()" [options]="pieChartOptions" />
                     }
