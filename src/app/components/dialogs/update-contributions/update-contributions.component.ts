@@ -93,7 +93,7 @@ export class UpdateContributionsComponent implements OnInit {
             id: [{ value: data.id, disabled: true }, Validators.required],
             ticker: [{ value: data.ticker, disabled: true }, Validators.required],
             shares: [data.shares, Validators.required],
-            dateOfPurchase: [{ value: new Date(data.dateOfPurchase as Date), disabled: true }, Validators.required],
+            dateOfPurchase: [{ value: new Date(data.dateOfPurchase as Date), disabled: false }, Validators.required],
             price: [{ value: data.price, disabled: true }, Validators.required],
             notes: [{ value: data.notes, disabled: false }]
         });
