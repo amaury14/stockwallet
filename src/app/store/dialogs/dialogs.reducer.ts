@@ -1,5 +1,6 @@
 import { ActionReducer, createReducer, on } from '@ngrx/store';
 
+import { calculateContributionActions } from '../../components/dialogs/calculate-contribution/calculate-contribution.actions';
 import { createPortfolioActions } from '../../components/dialogs/create-portfolio/create-portfolio.actions';
 import { deletePortfolioActions } from '../../components/dialogs/delete-portfolio/delete-portfolio.actions';
 import { registerPurchaseActions } from '../../components/dialogs/register-purchase/register-purchase.actions';
@@ -12,6 +13,7 @@ import { authEffectsActions } from '../auth/auth.actions';
 import { DialogsStateData } from './models';
 
 export const initialState: DialogsStateData = {
+    showCalculateContributionDialog: false,
     showEditHoldingDialog: false,
     showHoldingDialog: false,
     showPortfolioDeleteDialog: false,
@@ -57,6 +59,15 @@ export const dialogsReducer: ActionReducer<DialogsStateData> = createReducer(
             return {
                 ...state,
                 showEditHoldingDialog: action.data
+            };
+        }),
+    on(
+        mainTopBarActions.showCalculateContributionDialogUpdated,
+        calculateContributionActions.showCalculateContributionDialogUpdated,
+        (state, action) => {
+            return {
+                ...state,
+                showCalculateContributionDialog: action.data
             };
         })
 );

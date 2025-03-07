@@ -57,13 +57,16 @@ const getAggregatedHoldings = createSelector(
                 return acc;
             }, {} as Record<string, Holding>);
 
+            const stocks = Object.values(aggregated)?.map(stock => ({ ...stock }));
+            const totalValue = stocks.reduce((sum, item) => sum + item.totalCost!, 0);
             // Convert object to array and calculate average price
             return Object.values(aggregated)?.map(stock => ({
                 ...stock,
                 ticker: stock.ticker,
                 shares: stock.shares,
                 avgPrice: stock.shares ? stock.totalCost! / stock.shares! : 0,
-                transactions: stock.transactions
+                transactions: stock.transactions,
+                percent: (stock.totalCost! * 100) / totalValue
             }));
         }
         return [];

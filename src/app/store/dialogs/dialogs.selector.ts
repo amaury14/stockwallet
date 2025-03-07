@@ -27,7 +27,13 @@ const showEditHoldingDialog = createSelector(
     state => state?.showEditHoldingDialog
 );
 
+const showCalculateContributionDialog = createSelector(
+    dialogsFeatureSelector,
+    state => state?.showCalculateContributionDialog
+);
+
 export const dialogsSelectors = {
+    showCalculateContributionDialog,
     showEditHoldingDialog,
     showHoldingDialog,
     showPortfolioDeleteDialog,

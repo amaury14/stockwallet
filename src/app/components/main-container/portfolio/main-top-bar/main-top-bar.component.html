@@ -15,6 +15,9 @@
     <ng-template #end>
         <p-button class="delete-portfolio" severity="danger" label="Delete Portfolio" icon="pi pi-trash"
             (click)="onPortfolioDeleteClicked()" [disabled]="!portfolioSelected()" />
+        <p-button class="delete-portfolio" severity="success" label="Calc Contribution" icon="pi pi-calculator"
+            pTooltip="Calculate contribution based on portfolio structure" tooltipPosition="left" (click)="onCalculateContributionClicked()"
+            [disabled]="!portfolioSelected()" />
         <p-button class="register-purchase" severity="info" label="Register Purchase" icon="pi pi-plus"
             (click)="onHoldingAddClicked()" [disabled]="!portfolioSelected()" />
     </ng-template>
