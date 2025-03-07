@@ -8,7 +8,9 @@ export interface Holding extends StockInformation {
     dateOfPurchase: Date | Timestamp;
     id?: string;
     imgSource?: string;
+    investAmount?: number;
     notes?: string;
+    percent?: number;
     price: number;
     shares: number;
     ticker: string;

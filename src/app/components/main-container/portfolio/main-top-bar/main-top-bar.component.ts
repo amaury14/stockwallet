@@ -3,6 +3,7 @@ import { Component, OnInit, signal, Signal } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { ButtonModule } from 'primeng/button';
 import { ToolbarModule } from 'primeng/toolbar';
+import { TooltipModule } from 'primeng/tooltip';
 
 import { holdingsSelectors } from '../../../../store/holdings/holdings.selector';
 import { Holding } from '../../../../store/holdings/models';
@@ -16,7 +17,8 @@ import { mainTopBarActions } from './main-top-bar.actions';
     imports: [
         ButtonModule,
         CommonModule,
-        ToolbarModule
+        ToolbarModule,
+        TooltipModule
     ],
     templateUrl: './main-top-bar.component.html',
     styleUrls: ['./main-top-bar.component.scss']
@@ -33,6 +35,10 @@ export class MainTopBarComponent implements OnInit {
         this.portfolioSelected = this._store.selectSignal(portfolioSelectors.getSelected);
         this.holdings = this._store.selectSignal(holdingsSelectors.getAggregatedHoldings);
         this.portfolioStats = this._store.selectSignal(holdingsSelectors.getPortfolioStats);
+    }
+
+    onCalculateContributionClicked(): void {
+        this._store.dispatch(mainTopBarActions.showCalculateContributionDialogUpdated({ data: true }));
     }
 
     onHoldingAddClicked(): void {

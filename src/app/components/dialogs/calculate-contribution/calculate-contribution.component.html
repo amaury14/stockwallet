@@ -1,0 +1,69 @@
+<!-- calculate contribution dialog -->
+<p-toast position="center" />
+<p-dialog class="calculate-contribution" header="Calculate Contribution" [modal]="true"
+    [(visible)]="showCalculateContributionDialog" [style]="{ width: '100rem', height: '55rem' }"
+    (onHide)="onCloseClicked()">
+    <div class="contribution-content">
+        <div class="amount-content">
+            <p-floatlabel variant="in">
+                <p-inputnumber id="amount" [(ngModel)]="amount" autocomplete="off" inputId="currency-us" mode="currency"
+                    currency="USD" locale="en-US" />
+                <label for="amount">Amount</label>
+            </p-floatlabel>
+            <p-button label="Calculate" class="right-button" severity="success" (click)="onCalculateClicked()" />
+            <p-button
+                pTooltip="Fill in the amount, select the symbols you are interested in and edit the percentage cell for each row, then click Calculate"
+                tooltipPosition="bottom" class="right-button" icon="pi pi-question-circle" [rounded]="true" severity="secondary" />
+        </div>
+        <p-table [value]="holdings()" [(selection)]="selectedTicker" dataKey="id" [tableStyle]="{ 'width': '100%' }"
+            size="small" stripedRows [scrollable]="true" scrollHeight="400px">
+            <ng-template #header>
+                <tr>
+                    <th style="width:2%"><p-tableHeaderCheckbox /></th>
+                    <th style="width:35%">
+                        Ticker
+                    </th>
+                    <th style="width:20%">
+                        Current Amount
+                    </th>
+                    <th style="width:20%">
+                        Percent
+                    </th>
+                    <th style="width:20%">
+                        Amount to invest
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template #body let-holding let-editing="editing">
+                <tr>
+                    <td>
+                        <p-tableCheckbox [value]="holding" />
+                    </td>
+                    <td [pTooltip]="holding.name" tooltipPosition="top">
+                        {{ holding.name | slice:0:35 }} @if (holding.name?.length > 35) { ... } ({{ holding.ticker }})
+                    </td>
+                    <td>{{ holding.totalCost | currency }}</td>
+                    <td [pEditableColumn]="holding.percent" pEditableColumnField="percent">
+                        <p-cellEditor>
+                            <ng-template #input>
+                                <p-inputnumber [(ngModel)]="holding.percent" inputId="percent" mode="decimal"
+                                    [minFractionDigits]="2" [maxFractionDigits]="4" />
+                            </ng-template>
+                            <ng-template #output>
+                                {{ holding.percent.toFixed(2) }}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td [pTooltip]="holding.investAmount" tooltipPosition="top">
+                        {{ holding.investAmount | currency: 'USD' }}
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+    <ng-template #footer>
+        <div class="dialog-flex justify-end gap-2">
+            <p-button label="Close" class="right-button" severity="secondary" (click)="onCloseClicked()" />
+        </div>
+    </ng-template>
+</p-dialog>
