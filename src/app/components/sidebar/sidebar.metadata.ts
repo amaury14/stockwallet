@@ -1,16 +1,17 @@
+import { sibebarKeys } from '../../store/key-string.store';
 import { SectionView } from '../../store/models';
 
 export const sidebarConfig = {
     sections: [
         {
             disabled: false,
-            name: 'Market',
+            name: sibebarKeys.MARKET_TITLE,
             iconClass: 'pi pi-th-large',
             key: SectionView.MARKET
         },
         {
             disabled: false,
-            name: 'Portfolios',
+            name: sibebarKeys.PORTFOLIOS_TITLE,
             iconClass: 'pi pi-wallet',
             key: SectionView.PORTFOLIOS
         }//,

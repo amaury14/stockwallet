@@ -3,7 +3,7 @@ import { createSelector } from '@ngrx/store';
 import { ShareType, StockProfile } from '../models';
 import { swSelectors } from '../sw.selectors';
 import { getRandomColor } from '../utils';
-import { backgroundColors } from './holdings.metadata';
+import { backgroundColors, tabData } from './holdings.metadata';
 import { Holding } from './models';
 
 const holdingsFeatureSelector = createSelector(
@@ -34,6 +34,16 @@ const getLoadingState = createSelector(
 const getHoldings = createSelector(
     selectedHoldingSelector,
     state => state?.data
+);
+
+const getTabs = createSelector(
+    selectedHoldingSelector,
+    state => state?.tabs ?? []
+);
+
+const getSelectedTab = createSelector(
+    selectedHoldingSelector,
+    state => state?.selectedTab ?? tabData[0]
 );
 
 const getStockProfiles = createSelector(
@@ -127,7 +137,22 @@ const getPieChartHoldingsByAmount = createSelector(
                         data: data.map(item => item.totalCost!),
                         backgroundColor: data.map((_, index) => backgroundColors[index] ?? getRandomColor())
                     }
-                ]
+                ],
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            display: data?.length <= 5,
+                            align: 'center',
+                            position: 'top',
+                            labels: {
+                                usePointStyle: true,
+                                color: 'white'
+                            }
+                        }
+                    }
+                }
             };
         }
         return null;
@@ -155,15 +180,58 @@ const getPieChartHoldingsBySector = createSelector(
 
             const stocks = Object.values(aggregated)?.map(stock => ({ ...stock }));
             const totalValue = stocks.reduce((sum, item) => sum + item.totalCost!, 0);
-            return {
-                labels: stocks.map(item => `${item.sectorDisp} - ${((item.totalCost! * 100) / totalValue).toFixed(2)}%`),
-                datasets: [
-                    {
-                        data: stocks.map(item => (item.totalCost! * 100) / totalValue),
-                        backgroundColor: stocks.map((_, index) => backgroundColors[index] ?? getRandomColor())
+            if (stocks.length) {
+                return {
+                    labels: stocks.map(item => `${item.sectorDisp} - ${((item.totalCost! * 100) / totalValue).toFixed(2)}%`),
+                    datasets: [
+                        {
+                            data: stocks.map(item => (item.totalCost! * 100) / totalValue),
+                            backgroundColor: stocks.map((_, index) => backgroundColors[index] ?? getRandomColor())
+                        }
+                    ],
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        plugins: {
+                            legend: {
+                                display: data?.length <= 5,
+                                align: 'center',
+                                position: 'top',
+                                labels: {
+                                    usePointStyle: true,
+                                    color: 'white'
+                                }
+                            }
+                        }
                     }
-                ]
-            };
+                };
+            } else {
+                const totalETFValue = data.reduce((sum, item) => sum + item.totalCost!, 0);
+                return {
+                    labels: ['ETF - 100%'],
+                    datasets: [
+                        {
+                            data: [totalETFValue],
+                            backgroundColor: [backgroundColors[0]]
+                        }
+                    ],
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        plugins: {
+                            legend: {
+                                display: true,
+                                align: 'center',
+                                position: 'top',
+                                labels: {
+                                    usePointStyle: true,
+                                    color: 'white'
+                                }
+                            }
+                        }
+                    }
+                };
+            }
         }
         return null;
     }
@@ -247,6 +315,8 @@ export const holdingsSelectors = {
     getPieChartHoldingsBySector,
     getPortfolioStats,
     getSelectedHoldings,
+    getSelectedTab,
     getStockProfiles,
+    getTabs,
     isLoading
 };

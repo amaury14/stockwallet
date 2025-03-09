@@ -1,5 +1,6 @@
 import { LoadingState, StockInformation, StockProfile } from '../../models';
 import { Holding } from './holding.model';
+import { TabData } from './tab-data.model';
 
 export interface HoldingStateData {
     data: Holding[];
@@ -7,6 +8,8 @@ export interface HoldingStateData {
     loading: boolean;
     loadingState: LoadingState;
     selectedHolding: Holding;
+    selectedTab: TabData;
+    tabs: TabData[];
 }
 
 // eslint-disable-next-line @typescript-eslint/consistent-indexed-object-style
@@ -16,7 +19,7 @@ export interface HoldingStateInnerData {
 
 export interface HoldingState {
     data: HoldingStateInnerData;
-    selectedPortfolio: string;
     filterStocks: StockInformation[];
+    selectedPortfolio: string;
     stockProfiles: StockProfile[];
 }

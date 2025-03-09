@@ -14,14 +14,14 @@
                     @if (isHoldingsLoading()) {
                     <p-skeleton shape="circle" size="25rem" />
                     } @else {
-                    <p-chart type="pie" [data]="pieChartHoldingsByAmount()" [options]="pieChartOptions" />
+                    <p-chart type="pie" [data]="pieChartHoldingsByAmount()" [options]="pieChartHoldingsByAmount()?.options" />
                     }
                 </p-card>
                 <p-card header="Holdings by Sector">
                     @if (isHoldingsLoading()) {
                     <p-skeleton shape="circle" size="25rem" />
                     } @else {
-                    <p-chart type="pie" [data]="pieChartHoldingsBySector()" [options]="pieChartOptions" />
+                    <p-chart type="pie" [data]="pieChartHoldingsBySector()" [options]="pieChartHoldingsBySector()?.options" />
                     }
                 </p-card>
             </div>
@@ -44,8 +44,7 @@
                         <th pTooltip="Average Price" tooltipPosition="left" pSortableColumn="avgPrice">
                             Avg
                             Price<p-sortIcon field="avgPrice" /></th>
-                        <th pTooltip="Number of Transactions" tooltipPosition="left"
-                            pSortableColumn="transactions">#
+                        <th pTooltip="Number of Transactions" tooltipPosition="left" pSortableColumn="transactions">#
                             Tx<p-sortIcon field="transactions" /></th>
                         <th pTooltip="Edit Contributions" tooltipPosition="left">Edit</th>
                     </tr>
@@ -62,9 +61,8 @@
                         <td>{{ stock.avgPrice | currency }}</td>
                         <td>{{ stock.transactions }}</td>
                         <td><p-button aria-label="Update Contributions" icon="pi pi-file-edit"
-                                pTooltip="Update Contributions" tooltipPosition="left" [rounded]="true"
-                                [raised]="true" severity="info" size="large"
-                                (click)="onEditHoldingClicked(stock)" />
+                                pTooltip="Update Contributions" tooltipPosition="left" [rounded]="true" [raised]="true"
+                                severity="info" size="large" (click)="onEditHoldingClicked(stock)" />
                         </td>
                     </tr>
                 </ng-template>

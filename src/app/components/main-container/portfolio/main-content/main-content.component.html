@@ -1,15 +1,24 @@
 <!-- main content panel -->
-<p-tabs value="0">
+@if (tabs().length) {
+<p-tabs [value]="selectedTab().index">
     <p-tablist>
-        <p-tab value="0">General</p-tab>
-        <p-tab value="1">Stats</p-tab>
+        @for (tab of tabs(); track $index) {
+        <p-tab [value]="tab.index" (click)="onTabClicked(tab)">{{ tab.title }}</p-tab>
+        }
     </p-tablist>
     <p-tabpanels>
-        <p-tabpanel value="0">
+        @for (tab of tabs(); track $index) {
+        <p-tabpanel [value]="tab.index">
+            @switch (tab.tabType) {
+            @case (tabTypes.general) {
             <app-general></app-general>
-        </p-tabpanel>
-        <p-tabpanel value="1">
+            }
+            @case (tabTypes.stats) {
             <app-stats></app-stats>
+            }
+            }
         </p-tabpanel>
+        }
     </p-tabpanels>
 </p-tabs>
+}

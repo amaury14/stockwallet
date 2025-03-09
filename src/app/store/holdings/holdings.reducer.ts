@@ -2,10 +2,12 @@ import { ActionReducer, createReducer, on } from '@ngrx/store';
 
 import { headerActions } from '../../components/header/header.actions';
 import { generalActions } from '../../components/main-container/portfolio/general/general.actions';
+import { mainContentActions } from '../../components/main-container/portfolio/main-content/main-content.actions';
 import { authEffectsActions } from '../auth/auth.actions';
 import { LoadingState } from '../models';
-import { HoldingState } from './models';
 import { holdingsEffectsActions } from './holdings.actions';
+import { tabData } from './holdings.metadata';
+import { HoldingState } from './models';
 
 export const initialState: HoldingState = {
     data: {},
@@ -26,6 +28,18 @@ export const holdingsReducer: ActionReducer<HoldingState> = createReducer(
             selectedPortfolio: action.portfolio?.id!
         };
     }),
+    on(mainContentActions.tabSelected, (state, action) => {
+        return {
+            ...state,
+            data: {
+                ...state?.data,
+                [state?.selectedPortfolio]: {
+                    ...state?.data[state?.selectedPortfolio],
+                    selectedTab: action.data
+                }
+            }
+        };
+    }),
     on(
         holdingsEffectsActions.holdingsLoading,
         holdingsEffectsActions.holdingAddedSuccess,
@@ -37,7 +51,9 @@ export const holdingsReducer: ActionReducer<HoldingState> = createReducer(
                     [state?.selectedPortfolio]: {
                         ...state?.data[state?.selectedPortfolio],
                         loading: true,
-                        loadingState: LoadingState.Loading
+                        loadingState: LoadingState.Loading,
+                        tabs: tabData,
+                        selectedTab: tabData[0]
                     }
                 }
             };
