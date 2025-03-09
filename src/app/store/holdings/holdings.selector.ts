@@ -155,15 +155,28 @@ const getPieChartHoldingsBySector = createSelector(
 
             const stocks = Object.values(aggregated)?.map(stock => ({ ...stock }));
             const totalValue = stocks.reduce((sum, item) => sum + item.totalCost!, 0);
-            return {
-                labels: stocks.map(item => `${item.sectorDisp} - ${((item.totalCost! * 100) / totalValue).toFixed(2)}%`),
-                datasets: [
-                    {
-                        data: stocks.map(item => (item.totalCost! * 100) / totalValue),
-                        backgroundColor: stocks.map((_, index) => backgroundColors[index] ?? getRandomColor())
-                    }
-                ]
-            };
+            if (stocks.length) {
+                return {
+                    labels: stocks.map(item => `${item.sectorDisp} - ${((item.totalCost! * 100) / totalValue).toFixed(2)}%`),
+                    datasets: [
+                        {
+                            data: stocks.map(item => (item.totalCost! * 100) / totalValue),
+                            backgroundColor: stocks.map((_, index) => backgroundColors[index] ?? getRandomColor())
+                        }
+                    ]
+                };
+            } else {
+                const totalETFValue = data.reduce((sum, item) => sum + item.totalCost!, 0);
+                return {
+                    labels: ['ETF - 100%'],
+                    datasets: [
+                        {
+                            data: [totalETFValue],
+                            backgroundColor: [backgroundColors[0]]
+                        }
+                    ]
+                };
+            }
         }
         return null;
     }
