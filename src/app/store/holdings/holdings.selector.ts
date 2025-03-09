@@ -3,7 +3,7 @@ import { createSelector } from '@ngrx/store';
 import { ShareType, StockProfile } from '../models';
 import { swSelectors } from '../sw.selectors';
 import { getRandomColor } from '../utils';
-import { backgroundColors } from './holdings.metadata';
+import { backgroundColors, tabData } from './holdings.metadata';
 import { Holding } from './models';
 
 const holdingsFeatureSelector = createSelector(
@@ -34,6 +34,16 @@ const getLoadingState = createSelector(
 const getHoldings = createSelector(
     selectedHoldingSelector,
     state => state?.data
+);
+
+const getTabs = createSelector(
+    selectedHoldingSelector,
+    state => state?.tabs ?? []
+);
+
+const getSelectedTab = createSelector(
+    selectedHoldingSelector,
+    state => state?.selectedTab ?? tabData[0]
 );
 
 const getStockProfiles = createSelector(
@@ -260,6 +270,8 @@ export const holdingsSelectors = {
     getPieChartHoldingsBySector,
     getPortfolioStats,
     getSelectedHoldings,
+    getSelectedTab,
     getStockProfiles,
+    getTabs,
     isLoading
 };

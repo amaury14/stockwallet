@@ -1,3 +1,6 @@
+import { tabKeys } from '../key-string.store';
+import { TabData, TabType } from './models';
+
 export const backgroundColors = [
     '#42A5F5', // Blue
     '#66BB6A', // Green
@@ -14,4 +17,17 @@ export const backgroundColors = [
     '#D4E157', // Lime Green
     '#FF8A65', // Light Red
     '#78909C'  // Grayish Blue
+];
+
+export const tabData: TabData[] = [
+    {
+        index: 0,
+        title: tabKeys.GENERAL_TITLE,
+        tabType: TabType.general
+    },
+    {
+        index: 1,
+        title: tabKeys.STATS_TITLE,
+        tabType: TabType.stats
+    }
 ];
