@@ -181,9 +181,63 @@ const getPortfolioStats = createSelector(
     }
 );
 
+const getBarChartPortfolioContributions = createSelector(
+    getHoldings,
+    (data: Holding[]) => {
+        if (data?.length) {
+            // Group by month and year
+            // eslint-disable-next-line @typescript-eslint/consistent-indexed-object-style
+            const groupedData: { [key: string]: number } = {};
+
+            data.forEach(item => {
+                const date = item.dateOfPurchase;
+                const monthYear = date.toLocaleString('default', { month: 'long', year: 'numeric' });
+
+                // Calculate total value
+                const totalValue = item.price * item.shares;
+
+                // Accumulate values if multiple purchases in the same month
+                if (groupedData[monthYear]) {
+                    groupedData[monthYear] += totalValue;
+                } else {
+                    groupedData[monthYear] = totalValue;
+                }
+            });
+
+            // Convert grouped data to an array and sort by actual date
+            const sortedEntries = Object.keys(groupedData)
+                .map(monthYear => ({
+                    monthYear,
+                    totalValue: groupedData[monthYear],
+                    timestamp: new Date(monthYear).getTime() // Convert monthYear to timestamp
+                }))
+                .sort((a, b) => a.timestamp - b.timestamp); // Sort by timestamp (ascending)
+
+            // Extract labels and data after sorting
+            const labels = sortedEntries.map(entry => entry.monthYear);
+            const datasetData = sortedEntries.map(entry => entry.totalValue);
+
+            // Set chart data
+            return {
+                labels: labels, // Month and year labels
+                datasets: [
+                    {
+                        label: 'Investment Value per Month',
+                        data: datasetData,
+                        backgroundColor: backgroundColors[0],
+                        borderColor: '#00ACC1'
+                    }
+                ]
+            };
+        }
+        return null;
+    }
+);
+
 export const holdingsSelectors = {
     getAggregatedHoldings,
     getAggregatedShareTypes,
+    getBarChartPortfolioContributions,
     getError,
     getFilteredStocks,
     getHoldings,
