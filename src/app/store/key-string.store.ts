@@ -7,7 +7,7 @@ const MARKET_TITLE = 'Market';
 const PORTFOLIOS_TITLE = 'Portfolios';
 
 const GENERAL_TITLE = 'General';
-const STATS_TITLE = 'Stats';
+const STATS_TITLE = 'Statistics';
 
 export const dbCollectionKeys = {
     HOLDINGS_COLLECTION_KEY,
