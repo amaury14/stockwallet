@@ -1,0 +1,75 @@
+<p-toolbar class="main-content-bar">
+    <!-- charts container -->
+    <ng-template #start>
+        <div class="charts-container">
+            <p-card class="shares-type" header="Types of Shares">
+                @if (isHoldingsLoading()) {
+                <p-skeleton styleClass="mb-2" />
+                } @else {
+                <p-metergroup [value]="shareTypes()" />
+                }
+            </p-card>
+            <div class="chart-row">
+                <p-card header="Holdings by Amount($) and Percentage">
+                    @if (isHoldingsLoading()) {
+                    <p-skeleton shape="circle" size="25rem" />
+                    } @else {
+                    <p-chart type="pie" [data]="pieChartHoldingsByAmount()" [options]="pieChartOptions" />
+                    }
+                </p-card>
+                <p-card header="Holdings by Sector">
+                    @if (isHoldingsLoading()) {
+                    <p-skeleton shape="circle" size="25rem" />
+                    } @else {
+                    <p-chart type="pie" [data]="pieChartHoldingsBySector()" [options]="pieChartOptions" />
+                    }
+                </p-card>
+            </div>
+        </div>
+    </ng-template>
+    <ng-template #center>
+    </ng-template>
+    <!-- holdings container -->
+    <ng-template #end>
+        <p-card class="holding-card" header="Holdings">
+            @if (isHoldingsLoading()) {
+            <p-skeleton width="100%" height="3rem" />
+            } @else {
+            <p-table [value]="holdings()" size="small" stripedRows [scrollable]="true" scrollHeight="100%"
+                [resizableColumns]="true">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th pSortableColumn="ticker">Ticker<p-sortIcon field="ticker" /></th>
+                        <th pSortableColumn="shares">Shares<p-sortIcon field="shares" /></th>
+                        <th pTooltip="Average Price" tooltipPosition="left" pSortableColumn="avgPrice">
+                            Avg
+                            Price<p-sortIcon field="avgPrice" /></th>
+                        <th pTooltip="Number of Transactions" tooltipPosition="left"
+                            pSortableColumn="transactions">#
+                            Tx<p-sortIcon field="transactions" /></th>
+                        <th pTooltip="Edit Contributions" tooltipPosition="left">Edit</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-stock>
+                    <tr>
+                        <td [pTooltip]="stock.name" tooltipPosition="top">
+                            <img class="stock-image" [src]="stock.imgSource" alt=""
+                                onerror="this.style.display='none'" />
+                            {{ stock.name | slice:0:20 }} @if (stock.name?.length > 20) { ... } ({{
+                            stock.ticker }})
+                        </td>
+                        <td>{{ stock.shares }}</td>
+                        <td>{{ stock.avgPrice | currency }}</td>
+                        <td>{{ stock.transactions }}</td>
+                        <td><p-button aria-label="Update Contributions" icon="pi pi-file-edit"
+                                pTooltip="Update Contributions" tooltipPosition="left" [rounded]="true"
+                                [raised]="true" severity="info" size="large"
+                                (click)="onEditHoldingClicked(stock)" />
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            }
+        </p-card>
+    </ng-template>
+</p-toolbar>

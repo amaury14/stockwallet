@@ -1,4 +1,6 @@
 export * from './loading-state.enum';
+export * from './portfolio-bar-data.model';
+export * from './portfolio-line-data.model';
 export * from './portfolio-pie-data.model';
 export * from './portfolio-stats.model';
 export * from './request-status.enum';

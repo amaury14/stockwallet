@@ -6,7 +6,7 @@ import { deletePortfolioActions } from '../../components/dialogs/delete-portfoli
 import { registerPurchaseActions } from '../../components/dialogs/register-purchase/register-purchase.actions';
 import { updateContributionsActions } from '../../components/dialogs/update-contributions/update-contributions.actions';
 import { headerActions } from '../../components/header/header.actions';
-import { mainContentActions } from '../../components/main-container/portfolio/main-content/main-content.actions';
+import { generalActions } from '../../components/main-container/portfolio/general/general.actions';
 import { mainTopBarActions } from '../../components/main-container/portfolio/main-top-bar/main-top-bar.actions';
 import { portfolioBarActions } from '../../components/main-container/portfolio/portfolio-bar/portfolio-bar.actions';
 import { authEffectsActions } from '../auth/auth.actions';
@@ -53,7 +53,7 @@ export const dialogsReducer: ActionReducer<DialogsStateData> = createReducer(
             };
         }),
     on(
-        mainContentActions.showEditHoldingDialogUpdated,
+        generalActions.showEditHoldingDialogUpdated,
         updateContributionsActions.showEditHoldingDialogUpdated,
         (state, action) => {
             return {

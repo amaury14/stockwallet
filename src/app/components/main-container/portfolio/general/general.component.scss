@@ -1,0 +1,90 @@
+@use '../../../styles/index.scss' as cssVariables;
+
+:host {
+    display: flex;
+    height: 100%;
+
+    ::ng-deep img.stock-image {
+        height: 25px;
+        margin-right: 10px;
+        border-radius: 10%;
+    }
+
+    p-toolbar.main-content-bar {
+        display: flex;
+        border-radius: 0;
+        height: 100%;
+        width: 100%;
+
+        ::ng-deep div.p-toolbar {
+            align-items: flex-start;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            height: 100%;
+            overflow: auto;
+            width: 100%;
+
+            div.p-toolbar-start,
+            div.p-toolbar-center,
+            div.p-toolbar-end {
+                align-items: start;
+                height: 100%;
+                justify-content: start;
+                flex-direction: row;
+
+                .charts-container {
+                    align-items: center;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    width: 100%;
+
+                    .shares-type {
+                        width: 100%;
+                    }
+
+                    .chart-row {
+                        align-items: start;
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: flex-start;
+                        width: 100%;
+                    }
+                }
+            }
+
+            div.p-toolbar-start,
+            div.p-toolbar-end {
+                align-items: unset;
+                flex: 1 1 auto;
+                flex-direction: unset;
+                height: unset;
+                justify-content: unset;
+            }
+        }
+
+        p-card {
+            border: 2px solid cssVariables.$sojoown;
+            border-radius: 6px;
+            margin: 2px;
+            width: 100%;
+
+            &.holding-card {
+                height: 100%;
+                width: 100%;
+            }
+        }
+    }
+
+    p-chart::ng-deep {
+        display: flex;
+        height: 100%;
+        width: 100%;
+
+        div {
+            min-height: 300px;
+            min-width: 300px;
+        }
+    }
+}
