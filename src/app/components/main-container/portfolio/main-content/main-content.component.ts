@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, signal, Signal } from '@angular/core';
+import { Component, OnInit, signal, Signal } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { TabsModule } from 'primeng/tabs';
 
@@ -21,7 +21,7 @@ import { mainContentActions } from './main-content.actions';
     templateUrl: './main-content.component.html',
     styleUrls: ['./main-content.component.scss']
 })
-export class MainContentComponent {
+export class MainContentComponent implements OnInit {
 
     selectedTab: Signal<TabData> = signal(tabData[0]);
     tabs: Signal<TabData[]> = signal([]);

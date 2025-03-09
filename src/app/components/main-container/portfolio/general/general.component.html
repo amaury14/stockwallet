@@ -14,14 +14,14 @@
                     @if (isHoldingsLoading()) {
                     <p-skeleton shape="circle" size="25rem" />
                     } @else {
-                    <p-chart type="pie" [data]="pieChartHoldingsByAmount()" [options]="pieChartOptions" />
+                    <p-chart type="pie" [data]="pieChartHoldingsByAmount()" [options]="pieChartHoldingsByAmount()?.options" />
                     }
                 </p-card>
                 <p-card header="Holdings by Sector">
                     @if (isHoldingsLoading()) {
                     <p-skeleton shape="circle" size="25rem" />
                     } @else {
-                    <p-chart type="pie" [data]="pieChartHoldingsBySector()" [options]="pieChartOptions" />
+                    <p-chart type="pie" [data]="pieChartHoldingsBySector()" [options]="pieChartHoldingsBySector()?.options" />
                     }
                 </p-card>
             </div>

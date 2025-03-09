@@ -41,19 +41,6 @@ export class GeneralComponent implements OnInit {
     pieChartHoldingsBySector: Signal<PortfolioPieData | null> = signal(null);
     shareTypes: Signal<ShareType[]> = signal([]);
 
-    pieChartOptions = {
-        responsive: true,
-        maintainAspectRatio: true,
-        plugins: {
-            legend: {
-                labels: {
-                    usePointStyle: true,
-                    color: 'white'
-                }
-            }
-        }
-    };
-
     constructor(private _store: Store) { }
 
     ngOnInit(): void {

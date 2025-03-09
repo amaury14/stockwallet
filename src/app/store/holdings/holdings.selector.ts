@@ -137,7 +137,22 @@ const getPieChartHoldingsByAmount = createSelector(
                         data: data.map(item => item.totalCost!),
                         backgroundColor: data.map((_, index) => backgroundColors[index] ?? getRandomColor())
                     }
-                ]
+                ],
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            display: data?.length <= 5,
+                            align: 'center',
+                            position: 'top',
+                            labels: {
+                                usePointStyle: true,
+                                color: 'white'
+                            }
+                        }
+                    }
+                }
             };
         }
         return null;
@@ -173,7 +188,22 @@ const getPieChartHoldingsBySector = createSelector(
                             data: stocks.map(item => (item.totalCost! * 100) / totalValue),
                             backgroundColor: stocks.map((_, index) => backgroundColors[index] ?? getRandomColor())
                         }
-                    ]
+                    ],
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        plugins: {
+                            legend: {
+                                display: data?.length <= 5,
+                                align: 'center',
+                                position: 'top',
+                                labels: {
+                                    usePointStyle: true,
+                                    color: 'white'
+                                }
+                            }
+                        }
+                    }
                 };
             } else {
                 const totalETFValue = data.reduce((sum, item) => sum + item.totalCost!, 0);
@@ -184,7 +214,22 @@ const getPieChartHoldingsBySector = createSelector(
                             data: [totalETFValue],
                             backgroundColor: [backgroundColors[0]]
                         }
-                    ]
+                    ],
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        plugins: {
+                            legend: {
+                                display: true,
+                                align: 'center',
+                                position: 'top',
+                                labels: {
+                                    usePointStyle: true,
+                                    color: 'white'
+                                }
+                            }
+                        }
+                    }
                 };
             }
         }

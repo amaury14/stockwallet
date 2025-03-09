@@ -6,4 +6,5 @@ export interface PortfolioPieDataset {
 export interface PortfolioPieData {
     labels: string[];
     datasets: PortfolioPieDataset[];
+    options: unknown;
 }
