@@ -1,16 +1,12 @@
 <!-- eslint-disable @angular-eslint/template/interactive-supports-focus -->
 <!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
-<div
-    id="sidebar"
-    class="nav-collapse"
-    tabindex="5000"
-    style="overflow: hidden; outline: none"
->
+<div id="sidebar" class="nav-collapse" tabindex="5000" style="overflow: hidden; outline: none">
     <ul class="sidebar-menu">
         <li *ngFor="let section of sections">
-            <a (click)="onSectionSelected(section)" [class.disabled]="section.disabled">
+            <a (click)="onSectionSelected(section)" [class.disabled]="section.disabled"
+                [class.selected]="sectionInView() === section.key">
                 <i [class]="section.iconClass"></i>
-                <span>{{section.name}}</span>
+                <span>{{ section.name }}</span>
             </a>
         </li>
     </ul>
