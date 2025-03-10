@@ -117,7 +117,9 @@ const getHoldingsByPortfolioId = (portfolioId: string) => createSelector(
 const getSelectedHoldings = createSelector(
     selectedHoldingSelector,
     state => state?.data?.length
-        ? state?.data?.filter(item => item.ticker?.toLowerCase() === state?.selectedHolding?.ticker?.toLowerCase())
+        ? state?.data?.filter(item =>
+            item.ticker?.toLowerCase() === state?.selectedHolding?.ticker?.toLowerCase())
+            .map(item => ({ ...item, totalCost: item.shares * item.price }))
         : []
 );
 
