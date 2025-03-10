@@ -8,6 +8,7 @@ import { catchError, filter, map, mergeMap } from 'rxjs/operators';
 
 import { createPortfolioActions } from '../../components/dialogs/create-portfolio/create-portfolio.actions';
 import { deletePortfolioActions } from '../../components/dialogs/delete-portfolio/delete-portfolio.actions';
+import { mainTopBarActions } from '../../components/main-container/portfolio/main-top-bar/main-top-bar.actions';
 import { loginActions } from '../../components/login/login.actions';
 import { loginInlineActions } from '../../components/login-inline/login-inline.actions';
 import { authEffectsActions } from '../auth/auth.actions';
@@ -107,6 +108,35 @@ export class PortfolioEffects {
                 map(() => portfolioEffectsActions.portfolioDeleteSuccess({ data: action.data })),
                 catchError(() =>
                     of(portfolioEffectsActions.portfolioDeleteFailed({ error: 'Portfolio delete failed' }))
+                )
+            )
+        })
+    ));
+
+    updateCashBalance$ = createEffect(() => this._actions$.pipe(
+        ofType(mainTopBarActions.cashBalanceUpdated),
+        concatLatestFrom(() => [
+            this._store.select(authSelectors.getUser),
+            this._store.select(portfolioSelectors.getSelected)
+        ]),
+        filter(([action, user, selectedPortfolio]) => action.data >= 0 && !!user?.uid && !!selectedPortfolio?.id),
+        mergeMap(([action, user, selectedPortfolio]) => {
+            return this._firebaseService.updateDocument(
+                `${dbCollectionKeys.USERS_COLLECTION_KEY}/${user?.uid}/${dbCollectionKeys.PORTFOLIO_COLLECTION_KEY}`,
+                selectedPortfolio?.id!,
+                {
+                    ...selectedPortfolio,
+                    cashAmount: action.data
+                }
+            ).pipe(
+                map(() => portfolioEffectsActions.portfolioUpdatedSuccess({
+                    data: {
+                        ...selectedPortfolio!,
+                        cashAmount: action.data
+                    }
+                })),
+                catchError(() =>
+                    of(portfolioEffectsActions.portfolioUpdatedFailed({ error: 'Portfolio failed to update' }))
                 )
             )
         })

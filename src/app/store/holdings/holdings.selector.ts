@@ -1,6 +1,7 @@
 import { createSelector } from '@ngrx/store';
 
 import { ShareType, StockProfile } from '../models';
+import { portfolioSelectors } from '../portfolio/portfolio.selector';
 import { swSelectors } from '../sw.selectors';
 import { getRandomColor } from '../utils';
 import { backgroundColors, tabData } from './holdings.metadata';
@@ -239,10 +240,14 @@ const getPieChartHoldingsBySector = createSelector(
 
 const getPortfolioStats = createSelector(
     getAggregatedHoldings,
-    (data: Holding[]) => {
+    portfolioSelectors.getCashAmount,
+    (data: Holding[], cashAmount: number) => {
         if (data?.length) {
+            const contributionsValue = data.reduce((sum, item) => sum + item.totalCost!, 0);
             return {
-                totalValue: data.reduce((sum, item) => sum + item.totalCost!, 0)
+                cashValue: cashAmount,
+                contributionsValue,
+                totalValue: contributionsValue + cashAmount
             };
         }
         return null;

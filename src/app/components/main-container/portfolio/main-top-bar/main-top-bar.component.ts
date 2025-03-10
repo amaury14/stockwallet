@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, signal, Signal } from '@angular/core';
+import { Component, effect, OnInit, signal, Signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { ButtonModule } from 'primeng/button';
+import { InputNumberModule } from 'primeng/inputnumber';
 import { ToolbarModule } from 'primeng/toolbar';
 import { TooltipModule } from 'primeng/tooltip';
 
@@ -17,6 +19,8 @@ import { mainTopBarActions } from './main-top-bar.actions';
     imports: [
         ButtonModule,
         CommonModule,
+        FormsModule,
+        InputNumberModule,
         ToolbarModule,
         TooltipModule
     ],
@@ -25,11 +29,19 @@ import { mainTopBarActions } from './main-top-bar.actions';
 })
 export class MainTopBarComponent implements OnInit {
 
-    holdings: Signal<Holding[]> = signal([]);    
+    cashBalance = 0;
+    holdings: Signal<Holding[]> = signal([]);
+    isEditing = signal(false);
     portfolioSelected: Signal<Portfolio | null> = signal(null);
     portfolioStats: Signal<PortfolioStats | null> = signal(null);
 
-    constructor(private _store: Store) { }
+    constructor(private _store: Store) {
+        effect(() => {
+            if (this.portfolioStats()?.cashValue! >= 0) {
+                this.cashBalance = this.portfolioStats()?.cashValue!;
+            }
+        });
+    }
 
     ngOnInit(): void {
         this.portfolioSelected = this._store.selectSignal(portfolioSelectors.getSelected);
@@ -39,6 +51,13 @@ export class MainTopBarComponent implements OnInit {
 
     onCalculateContributionClicked(): void {
         this._store.dispatch(mainTopBarActions.showCalculateContributionDialogUpdated({ data: true }));
+    }
+
+    onEditChashClicked(isEditing: boolean): void {
+        if (isEditing && this.cashBalance !== this.portfolioStats()?.cashValue) {
+            this._store.dispatch(mainTopBarActions.cashBalanceUpdated({ data: this.cashBalance }));
+        }
+        this.isEditing.set(!isEditing);
     }
 
     onHoldingAddClicked(): void {

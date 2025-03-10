@@ -7,17 +7,40 @@
     </ng-template>
     <ng-template #center>
         <div class="main-numbers-panel">
-            <span>Contributions: <span class="total-value">{{ portfolioStats()?.totalValue ?? 0 | currency
-                    }}</span></span>
-            <span>Number of Shares: <span class="total-value">{{ holdings().length }}</span></span>
+            <span class="sw-label">Total Balance:
+                <span class="total-value">
+                    {{ portfolioStats()?.totalValue ?? 0 | currency }}
+                </span>
+            </span>
+            <span class="sw-label">Contributions:
+                <span class="invested-value">
+                    {{ portfolioStats()?.contributionsValue ?? 0 | currency }}
+                </span>
+            </span>
+            <span class="sw-label">Cash Balance:
+                @if (isEditing()) {
+                <p-inputnumber inputId="price" mode="decimal" [minFractionDigits]="2"
+                    [maxFractionDigits]="4" [(ngModel)]="cashBalance" [min]="0" [max]="1000000000" (keyup.enter)="onEditChashClicked(isEditing())"/>
+                } @else {
+                <span class="cash-value">
+                    {{ portfolioStats()?.cashValue ?? 0 | currency }}
+                </span>
+                }
+                <i class="edit-cash pi" [class]="isEditing() ? 'pi-check' : 'pi-file-edit'" style="font-size: 1.5rem"
+                    [pTooltip]="isEditing() ? 'Save balance' : 'Update cash balance'" tooltipPosition="right"
+                    (click)="onEditChashClicked(isEditing())"></i>
+            </span>
+            <span class="sw-label">Number of Shares:
+                <span class="shares-value">{{ holdings().length }}</span>
+            </span>
         </div>
     </ng-template>
     <ng-template #end>
         <p-button class="delete-portfolio" severity="danger" label="Delete Portfolio" icon="pi pi-trash"
             (click)="onPortfolioDeleteClicked()" [disabled]="!portfolioSelected()" />
         <p-button class="delete-portfolio" severity="success" label="Calc Contribution" icon="pi pi-calculator"
-            pTooltip="Calculate contribution based on portfolio structure" tooltipPosition="left" (click)="onCalculateContributionClicked()"
-            [disabled]="!portfolioSelected()" />
+            pTooltip="Calculate contribution based on portfolio structure" tooltipPosition="left"
+            (click)="onCalculateContributionClicked()" [disabled]="!portfolioSelected()" />
         <p-button class="register-purchase" severity="info" label="Register Purchase" icon="pi pi-plus"
             (click)="onHoldingAddClicked()" [disabled]="!portfolioSelected()" />
     </ng-template>
