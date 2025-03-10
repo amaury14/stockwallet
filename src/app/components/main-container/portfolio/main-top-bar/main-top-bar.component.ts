@@ -37,8 +37,8 @@ export class MainTopBarComponent implements OnInit {
 
     constructor(private _store: Store) {
         effect(() => {
-            if (this.portfolioStats()?.cashValue! >= 0) {
-                this.cashBalance = this.portfolioStats()?.cashValue!;
+            if (this.portfolioStats()!.cashValue! >= 0) {
+                this.cashBalance = this.portfolioStats()!.cashValue!;
             }
         });
     }

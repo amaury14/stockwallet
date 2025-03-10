@@ -123,7 +123,7 @@ export class PortfolioEffects {
         mergeMap(([action, user, selectedPortfolio]) => {
             return this._firebaseService.updateDocument(
                 `${dbCollectionKeys.USERS_COLLECTION_KEY}/${user?.uid}/${dbCollectionKeys.PORTFOLIO_COLLECTION_KEY}`,
-                selectedPortfolio?.id!,
+                selectedPortfolio!.id!,
                 {
                     ...selectedPortfolio,
                     cashAmount: action.data
