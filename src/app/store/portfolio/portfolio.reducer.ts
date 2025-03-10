@@ -76,5 +76,17 @@ export const portfolioReducer: ActionReducer<PortfolioState> = createReducer(
             ...state,
             deleteStack: state?.deleteStack?.filter(item => item !== action.portfolioId)
         };
+    }),
+    on(portfolioEffectsActions.portfolioUpdatedSuccess, (state, action) => {
+        return {
+            ...state,
+            data: state?.data.map(item => {
+                if (item.id === action.data.id) {
+                    return { ...item, ...action.data };
+                }
+                return item;
+            }),
+            selected: action.data
+        };
     })
 );

@@ -11,6 +11,8 @@ export const portfolioEffectsActions = createActionGroup({
         portfolioAddedSuccess: props<{ data: Portfolio }>(),
         portfolioAddedFailed: props<{ error: string }>(),
         portfolioDeleteSuccess: props<{ data: Portfolio }>(),
-        portfolioDeleteFailed: props<{ error: string }>()
+        portfolioDeleteFailed: props<{ error: string }>(),
+        portfolioUpdatedSuccess: props<{ data: Portfolio }>(),
+        portfolioUpdatedFailed: props<{ error: string }>()
     }
 });

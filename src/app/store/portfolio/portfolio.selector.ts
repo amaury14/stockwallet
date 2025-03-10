@@ -37,7 +37,13 @@ const getDeleteStack = createSelector(
     state => state?.deleteStack ?? []
 );
 
+const getCashAmount = createSelector(
+    getSelected,
+    state => state?.cashAmount ?? 0
+);
+
 export const portfolioSelectors = {
+    getCashAmount,
     getData,
     getDeleteStack,
     getError,
