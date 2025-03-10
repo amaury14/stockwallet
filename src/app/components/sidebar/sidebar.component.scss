@@ -15,10 +15,21 @@ li {
     cursor: pointer;
 
     a {
+        border-right: none;
+        border-bottom: none;
         display: flex;
+
+        &:hover {
+            border-right: none;
+            border-bottom: none;
+        }
 
         &.disabled {
             cursor: not-allowed;
+        }
+
+        &.selected {
+            background-color: cssVariables.$sw-dark;
         }
     }
 

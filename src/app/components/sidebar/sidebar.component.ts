@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit, signal, Signal } from '@angular/core';
 import { Store } from '@ngrx/store';
 
-import { SectionViewModel } from '../../store/models';
+import { mainSelectors } from '../../store/main/main.selector';
+import { SectionView, SectionViewModel } from '../../store/models';
 import { sidebarConfig } from './sidebar.metadata';
 import { sidebarActions } from './sidebar.actions';
 
@@ -14,11 +15,16 @@ import { sidebarActions } from './sidebar.actions';
     templateUrl: './sidebar.component.html',
     styleUrls: ['./sidebar.component.scss']
 })
-export class SidebarComponent {
+export class SidebarComponent implements OnInit {
 
-    public sections: SectionViewModel[] = sidebarConfig?.sections;
+    sections: SectionViewModel[] = sidebarConfig?.sections;
+    sectionInView: Signal<SectionView> = signal(SectionView.MARKET);
 
     constructor(private _store: Store) { }
+
+    ngOnInit(): void {
+        this.sectionInView = this._store.selectSignal(mainSelectors.getSectionInView);
+    }
 
     onSectionSelected(section: SectionViewModel): void {
         if (!section?.disabled) {
