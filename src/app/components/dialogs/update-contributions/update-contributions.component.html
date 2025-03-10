@@ -8,6 +8,7 @@
                 <tr>
                     <th>Ticker</th>
                     <th pSortableColumn="shares">Shares<p-sortIcon field="shares" /></th>
+                    <th pSortableColumn="totalCost">Invested<p-sortIcon field="totalCost" /></th>
                     <th pSortableColumn="price">Price<p-sortIcon field="price" /></th>
                     <th pSortableColumn="dateOfPurchase">Date of Purchase<p-sortIcon field="dateOfPurchase" /></th>
                     <th pSortableColumn="notes">Notes<p-sortIcon field="notes" /></th>
@@ -19,7 +20,8 @@
                     <td [pTooltip]="stock.name" tooltipPosition="top">
                         {{ stock.name | slice:0:20 }} @if (stock.name?.length > 20) { ... } ({{ stock.ticker }})
                     </td>
-                    <td>{{ stock.shares }}</td>
+                    <td>{{ stock.shares.toFixed(5) }}</td>
+                    <td>{{ stock.totalCost | currency }}</td>
                     <td>{{ stock.price | currency }}</td>
                     <td>{{ stock.dateOfPurchase | date: 'MM/dd/yyyy' }}</td>
                     <td [pTooltip]="stock.notes" tooltipPosition="top">
