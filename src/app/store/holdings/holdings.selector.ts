@@ -307,6 +307,61 @@ const getBarChartPortfolioContributions = createSelector(
     }
 );
 
+const getLineChartPortfolioHistory = createSelector(
+    getHoldings,
+    (data: Holding[]) => {
+        if (data?.length) {
+            // Group by month and year
+            // eslint-disable-next-line @typescript-eslint/consistent-indexed-object-style
+            const groupedData: { [key: string]: number } = {};
+
+            let sumValue = 0;
+            const sortedData = [...data].sort((first, second) => (first.dateOfPurchase as Date).getTime() - (second.dateOfPurchase as Date).getTime());
+            sortedData.forEach(item => {
+                const date = item.dateOfPurchase;
+                const field = date.toLocaleString('default', { day: 'numeric', month: 'long', year: 'numeric' });
+
+                // Calculate total value
+                const totalValue = item.price * item.shares;
+
+                // Sum value
+                sumValue += totalValue;
+
+                // Accumulate values if multiple purchases in the same month
+                groupedData[field] = sumValue;
+            });
+
+            // Convert grouped data to an array and sort by actual date
+            const sortedEntries = Object.keys(groupedData)
+                .map(dayMonthYear => ({
+                    dayMonthYear,
+                    totalValue: groupedData[dayMonthYear],
+                    timestamp: new Date(dayMonthYear).getTime() // Convert dayMonthYear to timestamp
+                }))
+                .sort((a, b) => a.timestamp - b.timestamp); // Sort by timestamp (ascending)
+
+            // Extract labels and data after sorting
+            const labels = sortedEntries.map(entry => entry.dayMonthYear);
+            const datasetData = sortedEntries.map(entry => entry.totalValue);
+
+            // Set chart data
+            return {
+                labels: labels, // Day, month and year labels
+                datasets: [
+                    {
+                        label: 'Portfolio History',
+                        data: datasetData,
+                        fill: true,
+                        borderColor: backgroundColors[1],
+                        tension: 0.2
+                    }
+                ]
+            };
+        }
+        return null;
+    }
+);
+
 export const holdingsSelectors = {
     getAggregatedHoldings,
     getAggregatedShareTypes,
@@ -315,6 +370,7 @@ export const holdingsSelectors = {
     getFilteredStocks,
     getHoldings,
     getHoldingsByPortfolioId,
+    getLineChartPortfolioHistory,
     getLoadingState,
     getPieChartHoldingsByAmount,
     getPieChartHoldingsBySector,

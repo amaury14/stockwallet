@@ -1,1 +1,7 @@
-<p-chart type="bar" [data]="lineChartPortfolioContributions()" [options]="lineChartOptions" height="300px" width="350px"/>
+<p-card class="chart-card" header="Portfolio History">
+    <p-chart type="line" [data]="lineChartPortfolioHistory()" [options]="chartOptions" height="300px" width="100%" />
+</p-card>
+<p-card class="chart-card" header="Investment Value per Month">
+    <p-chart type="bar" [data]="barChartPortfolioContributions()" [options]="chartOptions" height="300px"
+        width="100%" />
+</p-card>

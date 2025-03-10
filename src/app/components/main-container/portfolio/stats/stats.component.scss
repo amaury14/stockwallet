@@ -1,8 +1,26 @@
+@use '../../../styles/index.scss' as cssVariables;
+
 :host {
-    p-chart::ng-deep {
-        canvas {
-            height: 300px;
-            width: 350px;
+    display: grid;
+    grid-template-rows: repeat(auto-fit, 1fr);
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    width: 100%;
+
+    p-card {
+        border: 2px solid cssVariables.$sojoown;
+        border-radius: 6px;
+        width: 100%;
+
+        &.chart-card {
+            height: 100%;
+            width: 100%;
+        }
+        p-chart::ng-deep {
+            canvas {
+                height: 300px;
+                width: 100%;
+            }
         }
     }
 }

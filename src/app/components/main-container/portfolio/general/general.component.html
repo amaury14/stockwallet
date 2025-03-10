@@ -14,14 +14,16 @@
                     @if (isHoldingsLoading()) {
                     <p-skeleton shape="circle" size="25rem" />
                     } @else {
-                    <p-chart type="pie" [data]="pieChartHoldingsByAmount()" [options]="pieChartHoldingsByAmount()?.options" />
+                    <p-chart type="pie" [data]="pieChartHoldingsByAmount()"
+                        [options]="pieChartHoldingsByAmount()?.options" />
                     }
                 </p-card>
                 <p-card header="Holdings by Sector">
                     @if (isHoldingsLoading()) {
                     <p-skeleton shape="circle" size="25rem" />
                     } @else {
-                    <p-chart type="pie" [data]="pieChartHoldingsBySector()" [options]="pieChartHoldingsBySector()?.options" />
+                    <p-chart type="pie" [data]="pieChartHoldingsBySector()"
+                        [options]="pieChartHoldingsBySector()?.options" />
                     }
                 </p-card>
             </div>
@@ -41,11 +43,12 @@
                     <tr>
                         <th pSortableColumn="ticker">Ticker<p-sortIcon field="ticker" /></th>
                         <th pSortableColumn="shares">Shares<p-sortIcon field="shares" /></th>
-                        <th pTooltip="Average Price" tooltipPosition="left" pSortableColumn="avgPrice">
-                            Avg
-                            Price<p-sortIcon field="avgPrice" /></th>
-                        <th pTooltip="Number of Transactions" tooltipPosition="left" pSortableColumn="transactions">#
-                            Tx<p-sortIcon field="transactions" /></th>
+                        <th pTooltip="Invested Amount" tooltipPosition="top" pSortableColumn="totalCost">
+                            Invested<p-sortIcon field="totalCost" /></th>
+                        <th pTooltip="Average Price" tooltipPosition="top" pSortableColumn="avgPrice">
+                            Avg Price<p-sortIcon field="avgPrice" /></th>
+                        <th pTooltip="Number of Transactions" tooltipPosition="top" pSortableColumn="transactions">
+                            # Tx<p-sortIcon field="transactions" /></th>
                         <th pTooltip="Edit Contributions" tooltipPosition="left">Edit</th>
                     </tr>
                 </ng-template>
@@ -57,7 +60,8 @@
                             {{ stock.name | slice:0:20 }} @if (stock.name?.length > 20) { ... } ({{
                             stock.ticker }})
                         </td>
-                        <td>{{ stock.shares }}</td>
+                        <td>{{ stock.shares.toFixed(2) }}</td>
+                        <td>{{ stock.totalCost | currency }}</td>
                         <td>{{ stock.avgPrice | currency }}</td>
                         <td>{{ stock.transactions }}</td>
                         <td><p-button aria-label="Update Contributions" icon="pi pi-file-edit"
