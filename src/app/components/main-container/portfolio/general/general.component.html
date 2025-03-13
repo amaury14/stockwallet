@@ -37,8 +37,8 @@
             @if (isHoldingsLoading()) {
             <p-skeleton width="100%" height="3rem" />
             } @else {
-            <p-table [value]="holdings()" size="small" stripedRows [scrollable]="true" scrollHeight="100%"
-                [resizableColumns]="true">
+            <p-table [value]="holdings()" size="small" stripedRows sortField="totalCost" [sortOrder]="-1"
+                [scrollable]="true" scrollHeight="100%" [resizableColumns]="true">
                 <ng-template pTemplate="header">
                     <tr>
                         <th pSortableColumn="ticker">Ticker<p-sortIcon field="ticker" /></th>
