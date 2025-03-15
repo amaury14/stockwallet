@@ -14,11 +14,11 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
 import { TextareaModule } from 'primeng/textarea';
 
+import { dialogsSelectors } from '../../../store/dialogs/dialogs.selector';
 import { StockInformation } from '../../../store/models';
 import { holdingsSelectors } from '../../../store/holdings/holdings.selector';
 import { holdingDefaultFormValue, holdingDefaultValue } from './register-purchase.metadata';
 import { registerPurchaseActions } from './register-purchase.actions';
-import { dialogsSelectors } from '../../../store/dialogs/dialogs.selector';
 
 @Component({
     selector: 'app-register-purchase',
@@ -62,7 +62,7 @@ export class RegisterPurchaseComponent implements OnInit {
     }
 
     filterByTicker(event: AutoCompleteCompleteEvent): void {
-        this._store.dispatch(registerPurchaseActions.filterTicker({ query: event.query }));
+        this._store.dispatch(registerPurchaseActions.filterTicker({ query: event.query?.toUpperCase() }));
     }
 
     onHoldingCancelClicked(): void {

@@ -2,18 +2,13 @@
 <p-dialog class="register-purchase-dialog" header="Register Purchase" [modal]="true" [(visible)]="showHoldingDialog"
     [style]="{ width: '40rem', height: '45rem' }" (onHide)="onHoldingCancelClicked()">
     <ng-container [formGroup]="holdingForm">
-        <!-- <p-iftalabel>
-            <input class="uppercase" pInputText id="ticker" formControlName="ticker" />
-            <label for="ticker">Ticker</label>
-        </p-iftalabel> -->
         <p-iftalabel>
             <p-autocomplete class="uppercase" id="ticker" formControlName="ticker" delay="300"
                 [suggestions]="filteredStocks()" (completeMethod)="filterByTicker($event)" optionLabel="symbol"
                 appendTo="body" dataKey="symbol" [pAutoFocus]="true">
                 <ng-template let-ticker #item>
                     <div class="flex items-center gap-2">
-                        <div>{{ ticker.symbol }} - {{ ticker.name }} - {{ ticker.exchDisp }} ({{ ticker.typeDisp }})
-                        </div>
+                        <div>{{ ticker.symbol }} - {{ ticker.name }} ({{ ticker.typeDisp }})</div>
                     </div>
                 </ng-template>
             </p-autocomplete>

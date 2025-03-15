@@ -1,8 +1,10 @@
 export interface StockInformation {
-    exch?: string;
-    exchDisp?: string;
+    id?: string;
+    marketCap?: string;
     name?: string;
+    netchange?: string;
+    lastsale?: string;
+    pctchange?: string;
     symbol?: string;
-    type?: string;
     typeDisp?: string;
 }

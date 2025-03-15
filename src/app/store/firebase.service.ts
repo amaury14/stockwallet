@@ -87,7 +87,7 @@ export class FirebaseService {
     }
 
     // The operation string (e.g "<", "<=", "==", "<", "<=", "!=").
-    getDocumentsByField(collectionName: string, field: string, operation: WhereFilterOp, value: string): Observable<DocumentData[] | RequestStatus> {
+    getDocumentsByField(collectionName: string, field: string, operation: WhereFilterOp, value: unknown): Observable<DocumentData[] | RequestStatus> {
         if (this.auth?.currentUser) {
             return from(
                 getDocs(
