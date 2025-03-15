@@ -164,16 +164,17 @@ export const holdingsReducer: ActionReducer<HoldingState> = createReducer(
             filterStocks: []
         };
     }),
-    on(holdingsEffectsActions.fetchStockProfilesSuccess, (state, action) => {
-        return {
-            ...state,
-            stockProfiles: action.data
-        };
-    }),
-    on(holdingsEffectsActions.fetchStockProfileSuccess, (state, action) => {
-        return {
-            ...state,
-            stockProfiles: [...state.stockProfiles, action.data]
-        };
-    })
+    // Commented for now, cause we don't use this stoci profiles, and is a lot of information
+    // on(holdingsEffectsActions.fetchStockProfilesSuccess, (state, action) => {
+    //     return {
+    //         ...state,
+    //         stockProfiles: action.data
+    //     };
+    // }),
+    // on(holdingsEffectsActions.fetchStockProfileSuccess, (state, action) => {
+    //     return {
+    //         ...state,
+    //         stockProfiles: [...state.stockProfiles, action.data]
+    //     };
+    // })
 );

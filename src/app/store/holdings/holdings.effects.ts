@@ -203,36 +203,30 @@ export class HoldingsEffects {
         })
     ));
 
-    loadStockProfiles$ = createEffect(() => this._actions$.pipe(
-        ofType(
-            loginActions.loginSuccess,
-            loginInlineActions.loginSuccess,
-            authEffectsActions.userLoggedIn
-        ),
-        concatLatestFrom(() => this._store.select(authSelectors.getUser)),
-        filter(([, user]) => !!user?.uid),
-        mergeMap(() =>
-            this._firebaseService.getDocuments(
-                `${dbCollectionKeys.STOCKS_COLLECTION_KEY}`
-            ).pipe(
-                map(response => holdingsEffectsActions.fetchStockProfilesSuccess({
-                    data: response as StockProfile[]
-                })),
-                catchError(() =>
-                    of(holdingsEffectsActions.fetchStockProfilesFailed({ error: 'Fetch Stock Profiles failed to Load' }))
-                )
-            )
-        )
-    ));
-
     // ==================================================================================================
     // ==================================================================================================
     // Logic to fetch stock profile and store it in our firebase to now need to fetch again from paid API
     checkStoredStock$ = createEffect(() => this._actions$.pipe(
         ofType(holdingsEffectsActions.holdingAddedSuccess),
-        concatLatestFrom(() => this._store.select(holdingsSelectors.getStockProfiles)),
-        filter(([action, profiles]) => !profiles.find(item => item.symbol === action.data?.symbol)),
-        map(([action]) => holdingsEffectsActions.fetchStockProfile({ data: action.data }))
+        concatLatestFrom(() => this._store.select(authSelectors.getUser)),
+        filter(([action, user]) => !!user?.uid && !!action.data?.symbol),
+        mergeMap(([action]) =>
+            this._firebaseService.getDocuments(
+                `${dbCollectionKeys.STOCKS_COLLECTION_KEY}`
+            ).pipe(
+                map(response => {
+                    if (!(response as StockProfile[]).find(item => item.symbol === action.data?.symbol)) {
+                        return holdingsEffectsActions.fetchStockProfile({ data: action.data });
+                    }
+                    return holdingsEffectsActions.fetchStockProfilesSuccess({
+                        data: response as StockProfile[]
+                    });
+                }),
+                catchError(() =>
+                    of(holdingsEffectsActions.fetchStockProfilesFailed({ error: 'Fetch Stock Profiles failed to Load' }))
+                )
+            )
+        )
     ));
 
     fetchStockProfile$ = createEffect(() => this._actions$.pipe(
