@@ -10,7 +10,7 @@ export const environment = {
         appId: "1:642944037395:web:01c3fe56f5daee1c0ec5e6",
         measurementId: "G-9JV2YZNCLP"
     },
-    rapidApiURL: 'https://yahoo-finance15.p.rapidapi.com/api/v1/',
+    rapidApiURL: 'https://yahoo-finance15.p.rapidapi.com/api/',
     xRapidApiHostField: 'x-rapidapi-host',
     xRapidApiHost: 'yahoo-finance15.p.rapidapi.com',
     xRapidApiKeyField: 'x-rapidapi-key',

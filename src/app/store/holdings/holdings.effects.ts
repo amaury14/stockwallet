@@ -9,13 +9,10 @@ import { catchError, filter, map, mergeMap, observeOn } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { registerPurchaseActions } from '../../components/dialogs/register-purchase/register-purchase.actions';
 import { updateContributionsActions } from '../../components/dialogs/update-contributions/update-contributions.actions';
-import { loginActions } from '../../components/login/login.actions';
-import { loginInlineActions } from '../../components/login-inline/login-inline.actions';
-import { authEffectsActions } from '../auth/auth.actions';
 import { authSelectors } from '../auth/auth.selector';
 import { FirebaseService } from '../firebase.service';
 import { dbCollectionKeys } from '../key-string.store';
-import { LoadingState, StockProfile } from '../models';
+import { LoadingState, StockInformation, StockProfile } from '../models';
 import { portfolioSelectors } from '../portfolio/portfolio.selector';
 import { StockService } from '../stock.service';
 import { holdingsEffectsActions } from './holdings.actions';
@@ -192,9 +189,18 @@ export class HoldingsEffects {
         ofType(registerPurchaseActions.filterTicker),
         filter((action) => !!action.query),
         mergeMap((action) => {
-            return this._stockService.getStockData(action.query).pipe(
-                map(data => holdingsEffectsActions.filterStocksSuccess({
-                    data
+            return this._firebaseService.getDocumentsByField(
+                `${dbCollectionKeys.TICKERS_COLLECTION_KEY}`,
+                'symbol',
+                'in',
+                [action.query]
+            ).pipe(
+                map((response) => holdingsEffectsActions.filterStocksSuccess({
+                    data: (response as StockInformation[]).map(item => {
+                        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                        const { id, ...itemObj } = item;
+                        return { ...itemObj, typeDisp: item.typeDisp ? item.typeDisp : 'Equity' };
+                    })
                 })),
                 catchError(() =>
                     of(holdingsEffectsActions.filterStocksFailed({ error: 'Filter stocks failed to Load' }))

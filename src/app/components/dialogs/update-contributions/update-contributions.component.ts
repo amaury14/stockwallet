@@ -75,6 +75,11 @@ export class UpdateContributionsComponent implements OnInit {
                 this.editHoldingItemForm = this._fb.group(holdingDefaultEditFormValue);
             }
         });
+        effect(() => {
+            if (this.selectedHoldings().length === 0 && this.showEditHoldingDialog()) {
+                this._store.dispatch(updateContributionsActions.showEditHoldingDialogUpdated({ data: false }));
+            }
+        });
     }
 
     ngOnInit(): void {
