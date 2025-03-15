@@ -9,6 +9,9 @@ import { catchError, filter, map, mergeMap, observeOn } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { registerPurchaseActions } from '../../components/dialogs/register-purchase/register-purchase.actions';
 import { updateContributionsActions } from '../../components/dialogs/update-contributions/update-contributions.actions';
+import { loginActions } from '../../components/login/login.actions';
+import { loginInlineActions } from '../../components/login-inline/login-inline.actions';
+import { authEffectsActions } from '../auth/auth.actions';
 import { authSelectors } from '../auth/auth.selector';
 import { FirebaseService } from '../firebase.service';
 import { dbCollectionKeys, dbCollectionValues } from '../key-string.store';
@@ -207,6 +210,28 @@ export class HoldingsEffects {
                 )
             )
         })
+    ));
+
+    loadStockProfiles$ = createEffect(() => this._actions$.pipe(
+        ofType(
+            loginActions.loginSuccess,
+            loginInlineActions.loginSuccess,
+            authEffectsActions.userLoggedIn
+        ),
+        concatLatestFrom(() => this._store.select(authSelectors.getUser)),
+        filter(([, user]) => !!user?.uid),
+        mergeMap(() =>
+            this._firebaseService.getDocuments(
+                `${dbCollectionKeys.STOCKS_COLLECTION_KEY}`
+            ).pipe(
+                map(response => holdingsEffectsActions.fetchStockProfilesSuccess({
+                    data: response as StockProfile[]
+                })),
+                catchError(() =>
+                    of(holdingsEffectsActions.fetchStockProfilesFailed({ error: 'Fetch Stock Profiles failed to Load' }))
+                )
+            )
+        )
     ));
 
     // ==================================================================================================
