@@ -10,6 +10,8 @@ const PORTFOLIOS_TITLE = 'Portfolios';
 const GENERAL_TITLE = 'General';
 const STATS_TITLE = 'Statistics';
 
+const EQUITY_VALUE = 'Equity';
+
 export const dbCollectionKeys = {
     HOLDINGS_COLLECTION_KEY,
     PORTFOLIO_COLLECTION_KEY,
@@ -26,4 +28,8 @@ export const sibebarKeys = {
 export const tabKeys = {
     GENERAL_TITLE,
     STATS_TITLE
+};
+
+export const dbCollectionValues = {
+    EQUITY_VALUE
 };

@@ -11,7 +11,7 @@ import { registerPurchaseActions } from '../../components/dialogs/register-purch
 import { updateContributionsActions } from '../../components/dialogs/update-contributions/update-contributions.actions';
 import { authSelectors } from '../auth/auth.selector';
 import { FirebaseService } from '../firebase.service';
-import { dbCollectionKeys } from '../key-string.store';
+import { dbCollectionKeys, dbCollectionValues } from '../key-string.store';
 import { LoadingState, StockInformation, StockProfile } from '../models';
 import { portfolioSelectors } from '../portfolio/portfolio.selector';
 import { StockService } from '../stock.service';
@@ -199,7 +199,7 @@ export class HoldingsEffects {
                     data: (response as StockInformation[]).map(item => {
                         // eslint-disable-next-line @typescript-eslint/no-unused-vars
                         const { id, ...itemObj } = item;
-                        return { ...itemObj, typeDisp: item.typeDisp ? item.typeDisp : 'Equity' };
+                        return { ...itemObj, typeDisp: item.typeDisp ? item.typeDisp : dbCollectionValues.EQUITY_VALUE };
                     })
                 })),
                 catchError(() =>
