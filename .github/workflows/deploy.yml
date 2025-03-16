@@ -54,9 +54,9 @@ jobs:
                 mkdir -p src/environments
                 echo "" > src/environments/environment.ts
                 if [ "$ENVIRONMENT" == "prod" ]; then
-                    node ./scripts/set-environment-vars.js
-                else
                     node ./scripts/set-prod-environment-vars.js
+                else
+                    node ./scripts/set-environment-vars.js
                 fi
 
             - name: Run lint and build
