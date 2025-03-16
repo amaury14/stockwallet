@@ -1,6 +1,17 @@
 {
-    "hosting": {
-        "public": "public/browser",
-        "ignore": ["firebase.json", "**/.*", "**/node_modules/**"]
-    }
+    "projects": {
+        "default": "stockwalletang"
+    },
+    "hosting": [
+        {
+            "target": "stockwalletang",
+            "public": "public/browser",
+            "ignore": ["firebase.json", "**/.*", "**/node_modules/**"]
+        },
+        {
+            "target": "stockwallet",
+            "public": "public/browser",
+            "ignore": ["firebase.json", "**/.*", "**/node_modules/**"]
+        }
+    ]
 }
