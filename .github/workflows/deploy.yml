@@ -2,7 +2,9 @@ name: Deploy Angular in Firebase
 
 on:
     push:
-        branches: ["main", "release*"]
+        branches: 
+          - main
+          - release*
 
 jobs:
     build:
