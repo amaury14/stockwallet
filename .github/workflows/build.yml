@@ -52,6 +52,8 @@ jobs:
 
             - name: Inject environment variables into environment
               run: |
+                mkdir -p src/environments
+                echo "" > src/environments/environment.ts
                 if [ "$ENVIRONMENT" == "prod" ]; then
                     node ./scripts/set-prod-environment-vars.js
                 else
