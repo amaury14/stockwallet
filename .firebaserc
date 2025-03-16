@@ -1,5 +1,18 @@
 {
-    "projects": {
-        "default": "stockwalletang"
+  "projects": {
+    "default": "stockwalletang"
+  },
+  "targets": {
+    "stockwalletang": {
+      "hosting": {
+        "stockwalletang": [
+          "stockwalletang"
+        ],
+        "stockwallet": [
+          "stockwallet"
+        ]
+      }
     }
+  },
+  "etags": {}
 }
