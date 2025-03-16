@@ -5,8 +5,8 @@ const envFilePath = path.join(__dirname, '../src/environments/environment.ts');
 
 const environmentContent = `
 export const environment = {
-    name: 'development',
-    production: false,
+    name: 'prod',
+    production: true,
     firebaseConfig: {
         apiKey: '${process.env.DEV_FIREBASE_KEY}',
         authDomain: '${process.env.DEV_FIREBASE_AUTH_DOMAIN}',
