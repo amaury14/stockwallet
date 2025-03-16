@@ -62,5 +62,9 @@ jobs:
 
             - name: Run lint and build
               run: |
-                  npm run lint
-                  npm run build
+                npm run lint
+                if [ "$ENVIRONMENT" == "prod" ]; then
+                    npm run build:prod
+                else
+                    npm run build
+                fi
