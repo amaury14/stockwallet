@@ -46,6 +46,6 @@ Thumbs.db
 # Firebase deploy
 /.firebase
 
-src/environments/environment.local.ts
+#src/environments/environment.local.ts
 src/environments/environment.prod.ts
 src/environments/environment.ts
