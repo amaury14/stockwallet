@@ -2,7 +2,7 @@ name: Deploy Angular in Firebase
 
 on:
     push:
-        branches: ["main"]
+        branches: ["main", "release*"]
 
 jobs:
     build:
@@ -22,21 +22,51 @@ jobs:
               with:
                   node-version: ${{ matrix.node-version }}
 
+            - name: Set Environment Variable
+              run: |
+                if [[ "${GITHUB_REF#refs/heads/}" =~ ^release.* ]]; then
+                    echo "ENVIRONMENT=prod" >> $GITHUB_ENV
+                else
+                    echo "ENVIRONMENT=dev" >> $GITHUB_ENV
+                fi
+
             - name: Install dependencies
               run: npm install
 
             - name: Set environment variables from GitHub secrets
               run: |
-                echo "TEST_VAR=${{ secrets.TEST_VAR }}" >> $GITHUB_ENV
+                echo "DEV_FIREBASE_KEY=${{ secrets.DEV_FIREBASE_KEY }}" >> $GITHUB_ENV
+                echo "DEV_FIREBASE_AUTH_DOMAIN=${{ secrets.DEV_FIREBASE_AUTH_DOMAIN }}" >> $GITHUB_ENV
+                echo "DEV_FIREBASE_PROJECT_ID=${{ secrets.DEV_FIREBASE_PROJECT_ID }}" >> $GITHUB_ENV
+                echo "DEV_FIREBASE_STORAGE_BUCKET=${{ secrets.DEV_FIREBASE_STORAGE_BUCKET }}" >> $GITHUB_ENV
+                echo "DEV_FIREBASE_MESSAGING_SENDER_ID=${{ secrets.DEV_FIREBASE_MESSAGING_SENDER_ID }}" >> $GITHUB_ENV
+                echo "DEV_FIREBASE_APP_ID=${{ secrets.DEV_FIREBASE_APP_ID }}" >> $GITHUB_ENV
+                echo "DEV_FIREBASE_MEASUREMENT_ID=${{ secrets.DEV_FIREBASE_MEASUREMENT_ID }}" >> $GITHUB_ENV
+                echo "DEV_RAPID_API_URL=${{ secrets.DEV_RAPID_API_URL }}" >> $GITHUB_ENV
+                echo "DEV_RAPID_API_HOST_FIELD=${{ secrets.DEV_RAPID_API_HOST_FIELD }}" >> $GITHUB_ENV
+                echo "DEV_RAPID_API_HOST=${{ secrets.DEV_RAPID_API_HOST }}" >> $GITHUB_ENV
+                echo "DEV_RAPID_API_KEY_FIELD=${{ secrets.DEV_RAPID_API_KEY_FIELD }}" >> $GITHUB_ENV
+                echo "DEV_RAPID_API_KEY=${{ secrets.DEV_RAPID_API_KEY }}" >> $GITHUB_ENV
+                echo "DEV_LOGOS_URL=${{ secrets.DEV_LOGOS_URL }}" >> $GITHUB_ENV
 
-            - name: Inject environment variables into environment.js
+            - name: Inject environment variables into environment
               run: |
-                node ./scripts/set-environment-vars.js
+                mkdir -p src/environments
+                echo "" > src/environments/environment.ts
+                if [ "$ENVIRONMENT" == "prod" ]; then
+                    node ./scripts/set-prod-environment-vars.js
+                else
+                    node ./scripts/set-environment-vars.js
+                fi
 
             - name: Run lint and build
               run: |
                   npm run lint
-                  npm run build
+                  if [ "$ENVIRONMENT" == "prod" ]; then
+                    npm run build:prod
+                  else
+                    npm run build
+                  fi
 
             - name: Install Firebase CLI
               run: npm install -g firebase-tools

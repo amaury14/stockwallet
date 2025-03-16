@@ -14,7 +14,6 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { mainContainerActions } from './main-container.actions';
 import { MarketComponent } from './market/market.component';
 import { PortfolioComponent } from './portfolio/portfolio.component';
-import { environment } from '../../../environments/environment.local';
 
 @Component({
     selector: 'app-main-container',
@@ -34,7 +33,6 @@ import { environment } from '../../../environments/environment.local';
 })
 export class MainContainerComponent implements OnInit {
 
-    testVar = environment.testVar;
     isUserLogged: Signal<boolean> = signal(false);
     sectionInView: Signal<SectionView> = signal(SectionView.MARKET);
     sections = SectionView;
