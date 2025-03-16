@@ -31,9 +31,7 @@ jobs:
 
             - name: Inject environment variables into environment.js
               run: |
-                pwd
-                ls -l
-                node ./scripts/set-environment-vars.ts
+                node ./scripts/set-environment-vars.js
 
             - name: Run lint and build
               run: |
