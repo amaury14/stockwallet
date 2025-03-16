@@ -22,6 +22,14 @@ jobs:
               with:
                   node-version: ${{ matrix.node-version }}
 
+            - name: Set Environment Variable
+              run: |
+                if [[ "${GITHUB_REF#refs/heads/}" =~ ^release.* ]]; then
+                    echo "ENVIRONMENT=prod" >> $GITHUB_ENV
+                else
+                    echo "ENVIRONMENT=dev" >> $GITHUB_ENV
+                fi
+
             - name: Install dependencies
               run: npm install
 
