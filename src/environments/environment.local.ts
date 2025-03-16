@@ -1,4 +1,5 @@
 export const environment = {
     name: 'NGINX',
-    production: false
+    production: false,
+    testVar: 'test value'
 };

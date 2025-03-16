@@ -25,6 +25,14 @@ jobs:
             - name: Install dependencies
               run: npm install
 
+            - name: Set environment variables from GitHub secrets
+              run: |
+                echo "TEST_VAR=${{ secrets.TEST_VAR }}" >> $GITHUB_ENV
+
+            - name: Inject environment variables into environment.js
+              run: |
+                node ./scripts/set-environment-vars.ts
+
             - name: Run lint and build
               run: |
                   npm run lint
