@@ -41,6 +41,7 @@
                 [scrollable]="true" scrollHeight="400px" [resizableColumns]="true">
                 <ng-template pTemplate="header">
                     <tr>
+                        <th pTooltip="Add Contribution" tooltipPosition="top">Add</th>
                         <th pSortableColumn="ticker">Ticker<p-sortIcon field="ticker" /></th>
                         <th pSortableColumn="shares">Shares<p-sortIcon field="shares" /></th>
                         <th pTooltip="Invested Amount" tooltipPosition="top" pSortableColumn="totalCost">
@@ -54,6 +55,10 @@
                 </ng-template>
                 <ng-template pTemplate="body" let-stock>
                     <tr>
+                        <td><p-button aria-label="Add Contribution" icon="pi pi-plus-circle"
+                                pTooltip="Add Contribution" tooltipPosition="left" [rounded]="true" [raised]="true"
+                                severity="success" size="large" (click)="onAddHoldingClicked(stock)" />
+                        </td>
                         <td [pTooltip]="stock.name" tooltipPosition="top">
                             <img class="stock-image" [src]="stock.imgSource" alt=""
                                 onerror="this.style.display='none'" />

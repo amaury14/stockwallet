@@ -55,4 +55,9 @@ export class GeneralComponent implements OnInit {
         this._store.dispatch(generalActions.holdingEditSelected({ data }));
         this._store.dispatch(generalActions.showEditHoldingDialogUpdated({ data: true }));
     }
+
+    onAddHoldingClicked(data: Holding): void {
+        this._store.dispatch(generalActions.holdingEditSelected({ data }));
+        this._store.dispatch(generalActions.showHoldingDialogUpdated({ data: true }));
+    }
 }

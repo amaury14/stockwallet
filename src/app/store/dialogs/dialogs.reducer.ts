@@ -37,6 +37,7 @@ export const dialogsReducer: ActionReducer<DialogsStateData> = createReducer(
     on(
         mainTopBarActions.showHoldingDialogUpdated,
         registerPurchaseActions.showHoldingDialogUpdated,
+        generalActions.showHoldingDialogUpdated,
         (state, action) => {
             return {
                 ...state,

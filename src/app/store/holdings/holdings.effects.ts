@@ -195,8 +195,9 @@ export class HoldingsEffects {
             return this._firebaseService.getDocumentsByField(
                 `${dbCollectionKeys.TICKERS_COLLECTION_KEY}`,
                 'symbol',
-                'in',
-                [action.query]
+                'like',
+                [action.query],
+                10
             ).pipe(
                 map((response) => holdingsEffectsActions.filterStocksSuccess({
                     data: (response as StockInformation[]).map(item => {
