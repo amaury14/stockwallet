@@ -7,7 +7,7 @@ export interface HoldingStateData {
     error: unknown;
     loading: boolean;
     loadingState: LoadingState;
-    selectedHolding: Holding;
+    selectedHolding: Holding | null;
     selectedTab: TabData;
     tabs: TabData[];
 }

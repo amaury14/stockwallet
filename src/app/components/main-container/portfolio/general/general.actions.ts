@@ -6,7 +6,8 @@ export const generalActions = createActionGroup({
     source: 'General Component',
     events: {
         holdingEditSelected: props<{ data: Holding }>(),
-        showEditHoldingDialogUpdated: props<{ data: boolean }>()
+        showEditHoldingDialogUpdated: props<{ data: boolean }>(),
+        showHoldingDialogUpdated: props<{ data: boolean }>()
     }
 });
 
