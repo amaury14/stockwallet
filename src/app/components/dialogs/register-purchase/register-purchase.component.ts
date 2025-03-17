@@ -13,6 +13,7 @@ import { InputMaskModule } from 'primeng/inputmask';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
 import { TextareaModule } from 'primeng/textarea';
+import { TooltipModule } from 'primeng/tooltip';
 
 import { dialogsSelectors } from '../../../store/dialogs/dialogs.selector';
 import { Holding } from '../../../store/holdings/models';
@@ -37,7 +38,8 @@ import { registerPurchaseActions } from './register-purchase.actions';
         InputNumberModule,
         InputTextModule,
         ReactiveFormsModule,
-        TextareaModule
+        TextareaModule,
+        TooltipModule
     ],
     templateUrl: './register-purchase.component.html',
     styleUrls: ['./register-purchase.component.scss']
