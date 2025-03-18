@@ -52,6 +52,11 @@ const getStockProfiles = createSelector(
     state => state?.stockProfiles
 );
 
+const getSelectedHolding = createSelector(
+    selectedHoldingSelector,
+    state => state?.selectedHolding ?? null
+);
+
 const getAggregatedHoldings = createSelector(
     getHoldings,
     (data: Holding[]) => {
@@ -377,6 +382,7 @@ export const holdingsSelectors = {
     getPieChartHoldingsByAmount,
     getPieChartHoldingsBySector,
     getPortfolioStats,
+    getSelectedHolding,
     getSelectedHoldings,
     getSelectedTab,
     getStockProfiles,

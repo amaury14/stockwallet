@@ -5,10 +5,12 @@
         <p-iftalabel>
             <p-autocomplete class="uppercase" id="ticker" formControlName="ticker" delay="300"
                 [suggestions]="filteredStocks()" (completeMethod)="filterByTicker($event)" optionLabel="symbol"
-                appendTo="body" dataKey="symbol" [pAutoFocus]="true">
+                appendTo="body" dataKey="symbol" [pAutoFocus]="true" [disabled]="isEditing()">
                 <ng-template let-ticker #item>
                     <div class="flex items-center gap-2">
-                        <div>{{ ticker.symbol }} - {{ ticker.name }} ({{ ticker.typeDisp }})</div>
+                        <div [pTooltip]="ticker.name" tooltipPosition="top">
+                            {{ ticker.symbol }} - {{ ticker.name | slice:0:25 }} @if (ticker.name?.length > 25) { ... } ({{ ticker.typeDisp }})
+                        </div>
                     </div>
                 </ng-template>
             </p-autocomplete>

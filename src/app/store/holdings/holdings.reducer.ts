@@ -1,5 +1,7 @@
 import { ActionReducer, createReducer, on } from '@ngrx/store';
 
+import { registerPurchaseActions } from '../../components/dialogs/register-purchase/register-purchase.actions';
+import { updateContributionsActions } from '../../components/dialogs/update-contributions/update-contributions.actions';
 import { headerActions } from '../../components/header/header.actions';
 import { generalActions } from '../../components/main-container/portfolio/general/general.actions';
 import { mainContentActions } from '../../components/main-container/portfolio/main-content/main-content.actions';
@@ -123,6 +125,25 @@ export const holdingsReducer: ActionReducer<HoldingState> = createReducer(
             }
         };
     }),
+    on(
+        generalActions.showEditHoldingDialogUpdated,
+        registerPurchaseActions.showHoldingDialogUpdated,
+        updateContributionsActions.showEditHoldingDialogUpdated,
+        (state, action) => {
+            if (!action.data) {
+                return {
+                    ...state,
+                    data: {
+                        ...state?.data,
+                        [state?.selectedPortfolio]: {
+                            ...state?.data[state?.selectedPortfolio],
+                            selectedHolding: null
+                        }
+                    }
+                };
+            }
+            return state;
+        }),
     on(holdingsEffectsActions.holdingUpdatedSuccess, (state, action) => {
         return {
             ...state,

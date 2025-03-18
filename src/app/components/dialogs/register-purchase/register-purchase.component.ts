@@ -13,8 +13,10 @@ import { InputMaskModule } from 'primeng/inputmask';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
 import { TextareaModule } from 'primeng/textarea';
+import { TooltipModule } from 'primeng/tooltip';
 
 import { dialogsSelectors } from '../../../store/dialogs/dialogs.selector';
+import { Holding } from '../../../store/holdings/models';
 import { StockInformation } from '../../../store/models';
 import { holdingsSelectors } from '../../../store/holdings/holdings.selector';
 import { holdingDefaultFormValue, holdingDefaultValue } from './register-purchase.metadata';
@@ -36,7 +38,8 @@ import { registerPurchaseActions } from './register-purchase.actions';
         InputNumberModule,
         InputTextModule,
         ReactiveFormsModule,
-        TextareaModule
+        TextareaModule,
+        TooltipModule
     ],
     templateUrl: './register-purchase.component.html',
     styleUrls: ['./register-purchase.component.scss']
@@ -45,6 +48,8 @@ export class RegisterPurchaseComponent implements OnInit {
 
     filteredStocks: Signal<StockInformation[]> = signal([]);
     holdingForm!: UntypedFormGroup;
+    isEditing = signal(false);
+    selectedHolding: Signal<Holding | null> = signal(null);
     showHoldingDialog = signal(false);
     showHoldingDialog$: Signal<boolean> = signal(false);
 
@@ -52,11 +57,21 @@ export class RegisterPurchaseComponent implements OnInit {
         effect(() => {
             this.showHoldingDialog.set(this.showHoldingDialog$());
         });
+        effect(() => {
+            if (this.showHoldingDialog$() && !!this.selectedHolding()) {
+                this.isEditing.set(true);
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                const { id, ...holding } = this.selectedHolding()!;
+                this.holdingForm.get('ticker')?.patchValue(holding);
+                this.holdingForm.updateValueAndValidity();
+            }
+        });
     }
 
     ngOnInit(): void {
         this.filteredStocks = this._store.selectSignal(holdingsSelectors.getFilteredStocks);
         this.showHoldingDialog$ = this._store.selectSignal(dialogsSelectors.showHoldingDialog);
+        this.selectedHolding = this._store.selectSignal(holdingsSelectors.getSelectedHolding);
 
         this.holdingForm = this._fb.group(holdingDefaultFormValue);
     }
@@ -68,6 +83,7 @@ export class RegisterPurchaseComponent implements OnInit {
     onHoldingCancelClicked(): void {
         this._store.dispatch(registerPurchaseActions.showHoldingDialogUpdated({ data: false }));
         this.holdingForm.reset(holdingDefaultValue);
+        this.isEditing.set(false);
     }
 
     onHoldingSaveClicked(): void {
@@ -84,6 +100,7 @@ export class RegisterPurchaseComponent implements OnInit {
                 }
             }));
             this.holdingForm.reset(holdingDefaultValue);
+            this.isEditing.set(false);
         }
     }
 }

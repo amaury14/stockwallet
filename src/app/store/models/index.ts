@@ -1,4 +1,5 @@
 export * from './loading-state.enum';
+export * from './operators.type';
 export * from './portfolio-bar-data.model';
 export * from './portfolio-line-data.model';
 export * from './portfolio-pie-data.model';
