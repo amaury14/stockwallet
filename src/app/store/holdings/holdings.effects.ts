@@ -19,6 +19,7 @@ import { LoadingState, StockInformation, StockProfile } from '../models';
 import { portfolioSelectors } from '../portfolio/portfolio.selector';
 import { StockService } from '../stock.service';
 import { holdingsEffectsActions } from './holdings.actions';
+import { investmentTypes } from './holdings.metadata';
 import { holdingsSelectors } from './holdings.selector';
 import { Holding } from './models';
 
@@ -58,7 +59,8 @@ export class HoldingsEffects {
                     data: (response as Holding[])?.map(item => ({
                         ...item,
                         dateOfPurchase: (item.dateOfPurchase as Timestamp).toDate(),
-                        imgSource: `${environment.logosUrl}${item.ticker}.png`
+                        imgSource: `${environment.logosUrl}${item.ticker}.png`,
+                        investmentType: item.investmentType ? item.investmentType : investmentTypes[0].name
                     }))
                 })),
                 catchError(() =>
@@ -107,7 +109,8 @@ export class HoldingsEffects {
                     data: (response as Holding[])?.map(item => ({
                         ...item,
                         dateOfPurchase: (item.dateOfPurchase as Timestamp).toDate(),
-                        imgSource: `${environment.logosUrl}${item.ticker}.png`
+                        imgSource: `${environment.logosUrl}${item.ticker}.png`,
+                        investmentType: item.investmentType ? item.investmentType : investmentTypes[0].name
                     }))
                 })),
                 catchError(() =>
