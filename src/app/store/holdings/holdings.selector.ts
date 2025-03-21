@@ -369,6 +369,52 @@ const getLineChartPortfolioHistory = createSelector(
     }
 );
 
+const getPieChartHoldingsByInvestmentType = createSelector(
+    getAggregatedHoldings,
+    data => {
+        if (data?.length) {
+            const aggregated = data.reduce((acc, stock) => {
+                if (!acc[stock.investmentType]) {
+                    acc[stock.investmentType] = { ...stock, ticker: stock.ticker, shares: 0, totalCost: 0, transactions: 0 };
+
+                }
+                acc[stock.investmentType].shares += stock.shares;
+                acc[stock.investmentType].totalCost! += stock.shares * stock.price;
+                acc[stock.investmentType].transactions! += 1;
+                return acc;
+            }, {} as Record<string, Holding>);
+
+            const stocks = Object.values(aggregated)?.map(stock => ({ ...stock }));
+            const totalValue = stocks.reduce((sum, item) => sum + item.totalCost!, 0);
+            return {
+                labels: stocks.map(item => `${item.investmentType} - ${((item.totalCost! * 100) / totalValue).toFixed(2)}%`),
+                datasets: [
+                    {
+                        data: stocks.map(item => (item.totalCost! * 100) / totalValue),
+                        backgroundColor: stocks.map((_, index) => backgroundColors[index] ?? getRandomColor())
+                    }
+                ],
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            align: 'center',
+                            position: 'top',
+                            labels: {
+                                usePointStyle: true,
+                                color: 'white'
+                            }
+                        }
+                    }
+                }
+            };
+        }
+        return null;
+    }
+);
+
 export const holdingsSelectors = {
     getAggregatedHoldings,
     getAggregatedShareTypes,
@@ -380,6 +426,7 @@ export const holdingsSelectors = {
     getLineChartPortfolioHistory,
     getLoadingState,
     getPieChartHoldingsByAmount,
+    getPieChartHoldingsByInvestmentType,
     getPieChartHoldingsBySector,
     getPortfolioStats,
     getSelectedHolding,

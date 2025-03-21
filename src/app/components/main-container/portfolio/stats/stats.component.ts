@@ -5,7 +5,7 @@ import { CardModule } from 'primeng/card';
 import { ChartModule } from 'primeng/chart';
 
 import { holdingsSelectors } from '../../../../store/holdings/holdings.selector';
-import { PortfolioBarData, PortfolioLineData } from '../../../../store/models';
+import { PortfolioBarData, PortfolioLineData, PortfolioPieData } from '../../../../store/models';
 
 @Component({
     selector: 'app-stats',
@@ -50,11 +50,13 @@ export class StatsComponent implements OnInit {
         }
     };
     lineChartPortfolioHistory: Signal<PortfolioLineData | null> = signal(null);
+    pieChartHoldingsByInvestmentType: Signal<PortfolioPieData | null> = signal(null);
 
     constructor(private _store: Store) { }
 
     ngOnInit(): void {
         this.barChartPortfolioContributions = this._store.selectSignal(holdingsSelectors.getBarChartPortfolioContributions);
         this.lineChartPortfolioHistory = this._store.selectSignal(holdingsSelectors.getLineChartPortfolioHistory);
+        this.pieChartHoldingsByInvestmentType = this._store.selectSignal(holdingsSelectors.getPieChartHoldingsByInvestmentType);
     }
 }

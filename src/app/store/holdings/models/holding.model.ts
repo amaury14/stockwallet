@@ -9,6 +9,7 @@ export interface Holding extends StockInformation {
     id?: string;
     imgSource?: string;
     investAmount?: number;
+    investmentType: string;
     notes?: string;
     percent?: number;
     price: number;
