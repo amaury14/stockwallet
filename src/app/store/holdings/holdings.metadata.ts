@@ -1,5 +1,5 @@
 import { tabKeys } from '../key-string.store';
-import { TabData, TabType } from './models';
+import { InvestmentType, TabData, TabType } from './models';
 
 export const backgroundColors = [
     '#42A5F5', // Blue
@@ -30,4 +30,10 @@ export const tabData: TabData[] = [
         title: tabKeys.STATS_TITLE,
         tabType: TabType.stats
     }
+];
+
+export const investmentTypes: InvestmentType[] = [
+    { key: 'long_term', name: 'Long Term' },
+    { key: 'dividends', name: 'Dividends' },
+    { key: 'speculative', name: 'Speculative' }
 ];

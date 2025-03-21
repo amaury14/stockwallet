@@ -1,6 +1,6 @@
 <!-- add holding dialog -->
 <p-dialog class="register-purchase-dialog" header="Register Purchase" [modal]="true" [(visible)]="showHoldingDialog"
-    [style]="{ width: '40rem', height: '45rem' }" (onHide)="onHoldingCancelClicked()">
+    [style]="{ width: '40rem', height: '50rem' }" (onHide)="onHoldingCancelClicked()">
     <ng-container [formGroup]="holdingForm">
         <p-iftalabel>
             <p-autocomplete class="uppercase" id="ticker" formControlName="ticker" delay="300"
@@ -9,7 +9,8 @@
                 <ng-template let-ticker #item>
                     <div class="flex items-center gap-2">
                         <div [pTooltip]="ticker.name" tooltipPosition="top">
-                            {{ ticker.symbol }} - {{ ticker.name | slice:0:25 }} @if (ticker.name?.length > 25) { ... } ({{ ticker.typeDisp }})
+                            {{ ticker.symbol }} - {{ ticker.name | slice:0:25 }} @if (ticker.name?.length > 25) { ... }
+                            ({{ ticker.typeDisp }})
                         </div>
                     </div>
                 </ng-template>
@@ -30,6 +31,14 @@
                 [maxFractionDigits]="5" />
             <label for="price">Price</label>
         </p-iftalabel>
+        <span class="radio-button-label">Investment Type</span>
+        <div class="radio-button-container">
+            <div *ngFor="let investmentType of investmentTypesArray" class="radio-button">
+                <p-radiobutton [inputId]="investmentType.key" [value]="investmentType.name"
+                    formControlName="investmentType" />
+                <label [for]="investmentType.key" class="ml-2">{{ investmentType.name }}</label>
+            </div>
+        </div>
         <p-iftalabel>
             <textarea rows="5" cols="30" pTextarea formControlName="notes" style="resize: none"></textarea>
             <label for="notes">Notes</label>

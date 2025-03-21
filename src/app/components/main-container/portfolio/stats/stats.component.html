@@ -1,3 +1,7 @@
+<p-card class="chart-card" header="Investments by Type">
+    <p-chart type="pie" [data]="pieChartHoldingsByInvestmentType()"
+        [options]="pieChartHoldingsByInvestmentType()?.options" height="300px" width="100%" />
+</p-card>
 <p-card class="chart-card" header="Portfolio History">
     <p-chart type="line" [data]="lineChartPortfolioHistory()" [options]="chartOptions" height="300px" width="100%" />
 </p-card>

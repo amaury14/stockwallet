@@ -17,6 +17,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
 import { MeterGroupModule } from 'primeng/metergroup';
 import { PanelModule } from 'primeng/panel';
+import { RadioButtonModule } from 'primeng/radiobutton';
 import { SkeletonModule } from 'primeng/skeleton';
 import { TableModule } from 'primeng/table';
 import { TextareaModule } from 'primeng/textarea';
@@ -24,6 +25,7 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { TooltipModule } from 'primeng/tooltip';
 
 import { dialogsSelectors } from '../../../store/dialogs/dialogs.selector';
+import { investmentTypes } from '../../../store/holdings/holdings.metadata';
 import { holdingsSelectors } from '../../../store/holdings/holdings.selector';
 import { Holding } from '../../../store/holdings/models';
 import { holdingDefaultEditFormValue } from '../register-purchase/register-purchase.metadata';
@@ -36,6 +38,7 @@ import { updateContributionsActions } from './update-contributions.actions';
         AutoFocusModule,
         ButtonModule,
         CardModule,
+        ChartModule,
         ChipModule,
         CommonModule,
         DatePickerModule,
@@ -47,11 +50,11 @@ import { updateContributionsActions } from './update-contributions.actions';
         InputNumberModule,
         InputTextModule,
         MeterGroupModule,
-        ReactiveFormsModule,
         TableModule,
         TextareaModule,
-        ChartModule,
         PanelModule,
+        RadioButtonModule,
+        ReactiveFormsModule,
         SkeletonModule,
         ToolbarModule,
         TooltipModule
@@ -62,6 +65,7 @@ import { updateContributionsActions } from './update-contributions.actions';
 export class UpdateContributionsComponent implements OnInit {
 
     editHoldingItemForm!: UntypedFormGroup;
+    investmentTypesArray = investmentTypes;
     selectedHoldings: Signal<Holding[]> = signal([]);
     showEditHoldingDialog = signal(false);
     showEditHoldingDialog$: Signal<boolean> = signal(false);
@@ -100,6 +104,7 @@ export class UpdateContributionsComponent implements OnInit {
             shares: [data.shares, Validators.required],
             dateOfPurchase: [{ value: new Date(data.dateOfPurchase as Date), disabled: false }, Validators.required],
             price: [{ value: data.price, disabled: true }, Validators.required],
+            investmentType: [{ value: data.investmentType, disabled: false }, Validators.required],
             notes: [{ value: data.notes, disabled: false }]
         });
     }
@@ -113,6 +118,7 @@ export class UpdateContributionsComponent implements OnInit {
                     ticker: this.editHoldingItemForm.get('ticker')?.value,
                     shares: this.editHoldingItemForm.get('shares')?.value,
                     price: this.editHoldingItemForm.get('price')?.value,
+                    investmentType: this.editHoldingItemForm.get('investmentType')?.value,
                     notes: this.editHoldingItemForm.get('notes')?.value
                 }
             }));
@@ -129,6 +135,7 @@ export class UpdateContributionsComponent implements OnInit {
                     ticker: this.editHoldingItemForm.get('ticker')?.value,
                     shares: this.editHoldingItemForm.get('shares')?.value,
                     price: this.editHoldingItemForm.get('price')?.value,
+                    investmentType: this.editHoldingItemForm.get('investmentType')?.value,
                     notes: this.editHoldingItemForm.get('notes')?.value
                 }
             }));

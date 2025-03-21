@@ -12,13 +12,15 @@ import { IftaLabelModule } from 'primeng/iftalabel';
 import { InputMaskModule } from 'primeng/inputmask';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
+import { RadioButtonModule } from 'primeng/radiobutton';
 import { TextareaModule } from 'primeng/textarea';
 import { TooltipModule } from 'primeng/tooltip';
 
 import { dialogsSelectors } from '../../../store/dialogs/dialogs.selector';
+import { investmentTypes } from '../../../store/holdings/holdings.metadata';
 import { Holding } from '../../../store/holdings/models';
-import { StockInformation } from '../../../store/models';
 import { holdingsSelectors } from '../../../store/holdings/holdings.selector';
+import { StockInformation } from '../../../store/models';
 import { holdingDefaultFormValue, holdingDefaultValue } from './register-purchase.metadata';
 import { registerPurchaseActions } from './register-purchase.actions';
 
@@ -37,6 +39,7 @@ import { registerPurchaseActions } from './register-purchase.actions';
         InputMaskModule,
         InputNumberModule,
         InputTextModule,
+        RadioButtonModule,
         ReactiveFormsModule,
         TextareaModule,
         TooltipModule
@@ -48,6 +51,7 @@ export class RegisterPurchaseComponent implements OnInit {
 
     filteredStocks: Signal<StockInformation[]> = signal([]);
     holdingForm!: UntypedFormGroup;
+    investmentTypesArray = investmentTypes;
     isEditing = signal(false);
     selectedHolding: Signal<Holding | null> = signal(null);
     showHoldingDialog = signal(false);
@@ -96,6 +100,7 @@ export class RegisterPurchaseComponent implements OnInit {
                     ticker: this.holdingForm.get('ticker')?.value?.symbol,
                     shares: this.holdingForm.get('shares')?.value,
                     price: this.holdingForm.get('price')?.value,
+                    investmentType: this.holdingForm.get('investmentType')?.value,
                     notes: this.holdingForm.get('notes')?.value
                 }
             }));

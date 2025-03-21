@@ -1,6 +1,6 @@
 <!-- edit ticker contributions dialog -->
 <p-dialog class="edit-contributions" header="Update Contributions" [modal]="true" [(visible)]="showEditHoldingDialog"
-    [style]="{ width: '100rem', height: '55rem' }" (onHide)="onEditHoldingCancel()">
+    [style]="{ width: '100rem', height: '58rem' }" (onHide)="onEditHoldingCancel()">
     <p-card class="edit-holding-card">
         <p-table [value]="selectedHoldings()" size="small" stripedRows sortField="dateOfPurchase" [sortOrder]="-1"
             [scrollable]="true" scrollHeight="300px">
@@ -11,6 +11,7 @@
                     <th pSortableColumn="totalCost">Invested<p-sortIcon field="totalCost" /></th>
                     <th pSortableColumn="price">Price<p-sortIcon field="price" /></th>
                     <th pSortableColumn="dateOfPurchase">Date of Purchase<p-sortIcon field="dateOfPurchase" /></th>
+                    <th pSortableColumn="investmentType">Type<p-sortIcon field="investmentType" /></th>
                     <th pSortableColumn="notes">Notes<p-sortIcon field="notes" /></th>
                     <th>Edit Contributions</th>
                 </tr>
@@ -24,6 +25,7 @@
                     <td>{{ stock.totalCost | currency }}</td>
                     <td>{{ stock.price | currency }}</td>
                     <td>{{ stock.dateOfPurchase | date: 'MM/dd/yyyy' }}</td>
+                    <td>{{ stock.investmentType }}</td>
                     <td [pTooltip]="stock.notes" tooltipPosition="top">
                         {{ stock.notes | slice:0:30 }}
                         @if (stock.notes?.length > 30) { ... }
@@ -58,8 +60,15 @@
             </p-iftalabel>
         </div>
         <div class="edit-form">
+            <div class="radio-button-container">
+                <div *ngFor="let investmentType of investmentTypesArray" class="radio-button">
+                    <p-radiobutton [inputId]="investmentType.key" [value]="investmentType.name"
+                        formControlName="investmentType" />
+                    <label [for]="investmentType.key" class="ml-2">{{ investmentType.name }}</label>
+                </div>
+            </div>
             <p-iftalabel>
-                <textarea rows="2" cols="80" pTextarea formControlName="notes" style="resize: none"></textarea>
+                <textarea rows="2" cols="67" pTextarea formControlName="notes" style="resize: none"></textarea>
                 <label for="notes">Notes</label>
             </p-iftalabel>
             <p-button aria-label="Register Sale" severity="warn" label="Register Sale" icon="pi pi-tag"
