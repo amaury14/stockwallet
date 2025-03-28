@@ -1,5 +1,4 @@
 <!-- calculate contribution dialog -->
-<p-toast position="center" />
 <p-dialog class="calculate-contribution" header="Calculate Contribution" [modal]="true"
     [(visible)]="showCalculateContributionDialog" [style]="{ width: '100rem', height: '55rem' }"
     (onHide)="onCloseClicked()">
@@ -15,7 +14,7 @@
                 pTooltip="Fill in the amount, select the symbols you are interested in and edit the percentage cell for each row, then click Calculate"
                 tooltipPosition="bottom" class="right-button" icon="pi pi-question-circle" [rounded]="true" severity="secondary" />
         </div>
-        <p-table [value]="holdings()" [(selection)]="selectedTicker" dataKey="id" [tableStyle]="{ 'width': '100%' }"
+        <p-table [value]="holdings()" [(selection)]="selectedTickers" dataKey="id" [tableStyle]="{ 'width': '100%' }"
             size="small" stripedRows [scrollable]="true" scrollHeight="400px">
             <ng-template #header>
                 <tr>

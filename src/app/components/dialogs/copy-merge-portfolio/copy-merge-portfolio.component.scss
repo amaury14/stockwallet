@@ -1,0 +1,40 @@
+@use '../../styles/index.scss' as cssVariables;
+
+:host {
+    p-dialog.copy-merge-portfolio::ng-deep {
+        div.p-dialog-content {
+            overflow: hidden;
+            overflow-wrap: break-word;
+            width: 100%;
+            word-wrap: break-word;
+
+            div.copy-merge-content {
+                align-items: flex-start;
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+                justify-content: flex-start;
+                width: 100%;
+
+                div.top-bar-content {
+                    align-items: center;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: flex-start;
+                }
+
+                p-iftalabel {
+                    margin: 5px;
+                }
+
+                p-table {
+                    width: 100%;
+                }
+            }
+        }
+
+        .right-button {
+            margin-left: 10px;
+        }
+    }
+}

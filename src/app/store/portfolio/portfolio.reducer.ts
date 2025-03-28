@@ -9,6 +9,7 @@ import { PortfolioState } from './models';
 import { portfolioEffectsActions } from './portfolio.actions';
 
 export const initialState: PortfolioState = {
+    copyMergeSelected: null,
     error: null,
     data: [],
     deleteStack: [],
@@ -87,6 +88,12 @@ export const portfolioReducer: ActionReducer<PortfolioState> = createReducer(
                 return item;
             }),
             selected: action.data
+        };
+    }),
+    on(portfolioBarActions.copyMergePortfolioSelected, (state, action) => {
+        return {
+            ...state,
+            copyMergeSelected: action.data
         };
     })
 );

@@ -32,8 +32,14 @@ const showCalculateContributionDialog = createSelector(
     state => state?.showCalculateContributionDialog
 );
 
+const showCopyMergePortfoliosDialog = createSelector(
+    dialogsFeatureSelector,
+    state => state?.showCopyMergePortfoliosDialog
+);
+
 export const dialogsSelectors = {
     showCalculateContributionDialog,
+    showCopyMergePortfoliosDialog,
     showEditHoldingDialog,
     showHoldingDialog,
     showPortfolioDeleteDialog,

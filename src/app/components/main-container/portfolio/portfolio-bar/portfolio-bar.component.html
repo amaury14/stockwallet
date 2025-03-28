@@ -4,9 +4,10 @@
         @if (isLoading()) {
         <p-skeleton shape="circle" size="3rem" styleClass="mr-2" />
         }
-        @for (item of portfolio(); track $index) {
+        @for (item of portfolios(); track $index) {
         <p-chip [class.selected]="portfolioSelected()?.id === item.id" [label]="item.name" icon="pi pi-wallet"
-            (click)="onPortfolioSelected(item)" />
+            (click)="onPortfolioSelected(item)" (contextmenu)="onContextMenuClicked($event, item)" />
+        <p-contextmenu #cm [model]="items" (onHide)="onContextMenuHideClicked()" />
         }
         <p-button aria-label="Add" icon="pi pi-plus" [rounded]="true" [raised]="true" severity="contrast" size="large"
             [disabled]="!isUserLogged()" (click)="onAddClicked()" />
