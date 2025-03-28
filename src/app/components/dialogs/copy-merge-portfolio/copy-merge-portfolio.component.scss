@@ -30,6 +30,14 @@
                 p-table {
                     width: 100%;
                 }
+
+                p-floatlabel {
+                    margin-right: 8px;
+
+                    &.description input {
+                        width: 380px;
+                    }
+                }
             }
         }
 

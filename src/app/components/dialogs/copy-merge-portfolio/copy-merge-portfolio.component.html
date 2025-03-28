@@ -8,8 +8,12 @@
                 <input type="name" pInputText [(ngModel)]="name" />
                 <label for="name">Name</label>
             </p-floatlabel>
+            <p-floatlabel class="description" variant="in">
+                <input type="description" pInputText [(ngModel)]="description" />
+                <label for="description">Description</label>
+            </p-floatlabel>
             <p-button [label]="selectedPortfolios().length <= 1 ? 'Copy' : 'Merge'" class="right-button"
-                severity="success" [disabled]="selectedPortfolios().length < 1 || name().length === 0" (click)="onCopyMergeClicked()" />
+                severity="success" [disabled]="isCopyMergeDisabled()" (click)="onCopyMergeClicked()" />
             <p-button
                 pTooltip="Fill in the name, select the portfolios you are interested in copy/merge into a new one, then click Copy/Merge."
                 tooltipPosition="bottom" class="right-button" icon="pi pi-question-circle" [rounded]="true" severity="secondary" />

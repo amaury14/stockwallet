@@ -6,7 +6,7 @@ export const copyMergePortfolioActions = createActionGroup({
     source: 'Copy Merge Portfolio Component',
     events: {
         showCopyMergePortfoliosDialogUpdated: props<{ data: boolean }>(),
-        copyMergeSubmitted: props<{ data: Portfolio[]; name: string }>()
+        copyMergeSubmitted: props<{ data: Portfolio[]; portfolio: Portfolio }>()
     }
 });
 

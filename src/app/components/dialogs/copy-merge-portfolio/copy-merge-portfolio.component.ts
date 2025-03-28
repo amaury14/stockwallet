@@ -37,6 +37,7 @@ import { copyMergePortfolioActions } from './copy-merge-portfolio.actions';
 export class CopyMergePortfolioComponent implements OnInit, OnDestroy {
 
     copyMergeSelected$: Signal<Portfolio | null> = signal(null);
+    description = signal('');
     name = signal('');
     portfolios: Signal<Portfolio[]> = signal([]);
     selectedPortfolios: WritableSignal<Portfolio[]> = signal([]);
@@ -50,6 +51,7 @@ export class CopyMergePortfolioComponent implements OnInit, OnDestroy {
         effect(() => {
             if (this.showCopyMergePortfoliosDialog()) {
                 this.name.set('');
+                this.description.set('');
             } else {
                 this._messageService.clear();
             }
@@ -58,6 +60,8 @@ export class CopyMergePortfolioComponent implements OnInit, OnDestroy {
             this.selectedPortfolios.set(this.copyMergeSelected$() ? [this.copyMergeSelected$()!] : []);
         });
     }
+
+    isCopyMergeDisabled = () => this.selectedPortfolios().length < 1 || this.name().length === 0 || this.description().length === 0;
 
     ngOnInit(): void {
         this.showCopyMergePortfoliosDialog$ = this._store.selectSignal(dialogsSelectors.showCopyMergePortfoliosDialog);
@@ -74,6 +78,13 @@ export class CopyMergePortfolioComponent implements OnInit, OnDestroy {
     }
 
     onCopyMergeClicked(): void {
-        this._store.dispatch(copyMergePortfolioActions.copyMergeSubmitted({ data: this.selectedPortfolios(), name: this.name() }));
+        this._store.dispatch(copyMergePortfolioActions.copyMergeSubmitted({
+            data: this.selectedPortfolios(),
+            portfolio: {
+                description: this.description(),
+                name: this.name(),
+                createdAt: new Date()
+            }
+        }));
     }
 }
