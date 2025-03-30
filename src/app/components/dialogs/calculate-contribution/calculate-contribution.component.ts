@@ -39,14 +39,14 @@ export class CalculateContributionComponent implements OnInit, OnDestroy {
     amount = signal(0);
     holdings: WritableSignal<Holding[]> = signal([]);
     holdings$: Signal<Holding[]> = signal([]);
-    selectedTicker: WritableSignal<Holding[]> = signal([]);
+    selectedTickers: WritableSignal<Holding[]> = signal([]);
     showCalculateContributionDialog = signal(false);
     showCalculateContributionDialog$: Signal<boolean> = signal(false);
 
     constructor(private _store: Store, private _fb: UntypedFormBuilder, private _messageService: MessageService) {
         effect(() => {
             this.holdings.set(this.holdings$());
-            this.selectedTicker.set(this.holdings$());
+            this.selectedTickers.set(this.holdings$());
         });
         effect(() => {
             this.showCalculateContributionDialog.set(this.showCalculateContributionDialog$());
@@ -70,10 +70,10 @@ export class CalculateContributionComponent implements OnInit, OnDestroy {
     }
 
     onCalculateClicked(): void {
-        const isPercentageOk = this.selectedTicker().reduce((sum, item) => sum + item.percent!, 0) <= 100;
-        if (this.amount() > 0 && this.selectedTicker().length > 0 && isPercentageOk) {
+        const isPercentageOk = this.selectedTickers().reduce((sum, item) => sum + item.percent!, 0) <= 100;
+        if (this.amount() > 0 && this.selectedTickers().length > 0 && isPercentageOk) {
             const updatedHoldings = this.holdings().map(item => {
-                if (this.selectedTicker()?.find(ticker => ticker.symbol === item.symbol)) {
+                if (this.selectedTickers()?.find(ticker => ticker.symbol === item.symbol)) {
                     return ({ ...item, investAmount: (item.percent! / 100) * this.amount() });
                 }
                 return ({ ...item, investAmount: 0 });

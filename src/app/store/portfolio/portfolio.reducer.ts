@@ -1,5 +1,6 @@
 import { ActionReducer, createReducer, on } from '@ngrx/store';
 
+import { deletePortfolioActions } from '../../components/dialogs/delete-portfolio/delete-portfolio.actions';
 import { headerActions } from '../../components/header/header.actions';
 import { portfolioBarActions } from '../../components/main-container/portfolio/portfolio-bar/portfolio-bar.actions';
 import { authEffectsActions } from '../auth/auth.actions';
@@ -9,6 +10,7 @@ import { PortfolioState } from './models';
 import { portfolioEffectsActions } from './portfolio.actions';
 
 export const initialState: PortfolioState = {
+    copyMergeSelected: null,
     error: null,
     data: [],
     deleteStack: [],
@@ -64,7 +66,7 @@ export const portfolioReducer: ActionReducer<PortfolioState> = createReducer(
                 selected: action.data
             };
         }),
-    on(portfolioEffectsActions.portfolioDeleteSuccess, (state, action) => {
+    on(deletePortfolioActions.portfolioDeleted, (state, action) => {
         return {
             ...state,
             selected: null,
@@ -87,6 +89,12 @@ export const portfolioReducer: ActionReducer<PortfolioState> = createReducer(
                 return item;
             }),
             selected: action.data
+        };
+    }),
+    on(portfolioBarActions.copyMergePortfolioSelected, (state, action) => {
+        return {
+            ...state,
+            copyMergeSelected: action.data
         };
     })
 );

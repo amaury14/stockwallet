@@ -42,8 +42,14 @@ const getCashAmount = createSelector(
     state => state?.cashAmount ?? 0
 );
 
+const getCopyMergeSelected = createSelector(
+    portfolioFeatureSelector,
+    state => state?.copyMergeSelected
+);
+
 export const portfolioSelectors = {
     getCashAmount,
+    getCopyMergeSelected,
     getData,
     getDeleteStack,
     getError,

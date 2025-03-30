@@ -1,6 +1,7 @@
 import { ActionReducer, createReducer, on } from '@ngrx/store';
 
 import { calculateContributionActions } from '../../components/dialogs/calculate-contribution/calculate-contribution.actions';
+import { copyMergePortfolioActions } from '../../components/dialogs/copy-merge-portfolio/copy-merge-portfolio.actions';
 import { createPortfolioActions } from '../../components/dialogs/create-portfolio/create-portfolio.actions';
 import { deletePortfolioActions } from '../../components/dialogs/delete-portfolio/delete-portfolio.actions';
 import { registerPurchaseActions } from '../../components/dialogs/register-purchase/register-purchase.actions';
@@ -14,6 +15,7 @@ import { DialogsStateData } from './models';
 
 export const initialState: DialogsStateData = {
     showCalculateContributionDialog: false,
+    showCopyMergePortfoliosDialog: false,
     showEditHoldingDialog: false,
     showHoldingDialog: false,
     showPortfolioDeleteDialog: false,
@@ -70,5 +72,15 @@ export const dialogsReducer: ActionReducer<DialogsStateData> = createReducer(
                 ...state,
                 showCalculateContributionDialog: action.data
             };
-        })
+        }),
+    on(
+        portfolioBarActions.showCopyMergePortfoliosDialogUpdated,
+        copyMergePortfolioActions.showCopyMergePortfoliosDialogUpdated,
+        (state, action) => {
+            return {
+                ...state,
+                showCopyMergePortfoliosDialog: action.data
+            };
+        }
+    )
 );

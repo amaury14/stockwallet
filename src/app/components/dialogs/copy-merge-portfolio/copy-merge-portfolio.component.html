@@ -1,0 +1,56 @@
+<!-- copy merge portfolio dialog -->
+<p-dialog class="copy-merge-portfolio" header="Copy/Merge Portfolios" [modal]="true"
+    [(visible)]="showCopyMergePortfoliosDialog" [style]="{ width: '80rem', height: '45rem' }"
+    (onHide)="onCloseClicked()">
+    <div class="copy-merge-content">
+        <div class="top-bar-content">
+            <p-floatlabel variant="in">
+                <input type="name" pInputText [(ngModel)]="name" />
+                <label for="name">Name</label>
+            </p-floatlabel>
+            <p-floatlabel class="description" variant="in">
+                <input type="description" pInputText [(ngModel)]="description" />
+                <label for="description">Description</label>
+            </p-floatlabel>
+            <p-button [label]="selectedPortfolios().length <= 1 ? 'Copy' : 'Merge'" class="right-button"
+                severity="success" [disabled]="isCopyMergeDisabled()" (click)="onCopyMergeClicked()" />
+            <p-button
+                pTooltip="Fill in the name, select the portfolios you are interested in copy/merge into a new one, then click Copy/Merge."
+                tooltipPosition="bottom" class="right-button" icon="pi pi-question-circle" [rounded]="true" severity="secondary" />
+        </div>
+        <p-table [value]="portfolios()" [(selection)]="selectedPortfolios" dataKey="id"
+            [tableStyle]="{ 'width': '100%' }" size="small" stripedRows [scrollable]="true" scrollHeight="250px">
+            <ng-template #header>
+                <tr>
+                    <th style="width:2%"><p-tableHeaderCheckbox /></th>
+                    <th style="width:35%">
+                        Name
+                    </th>
+                    <th style="width:40%">
+                        Description
+                    </th>
+                    <th style="width:20%">
+                        Created
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template #body let-portfolio>
+                <tr>
+                    <td>
+                        <p-tableCheckbox [value]="portfolio" />
+                    </td>
+                    <td [pTooltip]="portfolio.name" tooltipPosition="top">
+                        {{ portfolio.name | slice:0:35 }} @if (portfolio.name?.length > 35) { ... }
+                    </td>
+                    <td>{{ portfolio.description }}</td>
+                    <td>{{ portfolio.createdAt | date: 'MM/dd/yyyy' }}</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+    <ng-template #footer>
+        <div class="dialog-flex justify-end gap-2">
+            <p-button label="Close" class="right-button" severity="secondary" (click)="onCloseClicked()" />
+        </div>
+    </ng-template>
+</p-dialog>

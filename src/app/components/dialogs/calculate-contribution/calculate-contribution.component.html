@@ -13,9 +13,10 @@
             <p-button label="Calculate" class="right-button" severity="success" (click)="onCalculateClicked()" />
             <p-button
                 pTooltip="Fill in the amount, select the symbols you are interested in and edit the percentage cell for each row, then click Calculate"
-                tooltipPosition="bottom" class="right-button" icon="pi pi-question-circle" [rounded]="true" severity="secondary" />
+                tooltipPosition="bottom" class="right-button" icon="pi pi-question-circle" [rounded]="true"
+                severity="secondary" />
         </div>
-        <p-table [value]="holdings()" [(selection)]="selectedTicker" dataKey="id" [tableStyle]="{ 'width': '100%' }"
+        <p-table [value]="holdings()" [(selection)]="selectedTickers" dataKey="id" [tableStyle]="{ 'width': '100%' }"
             size="small" stripedRows [scrollable]="true" scrollHeight="400px">
             <ng-template #header>
                 <tr>

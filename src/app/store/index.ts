@@ -1,3 +1,5 @@
+import { MessageService } from 'primeng/api';
+
 import { AuthEffects } from './auth/auth.effects';
 import { authReducer } from './auth/auth.reducer';
 import { dialogsReducer } from './dialogs/dialogs.reducer';
@@ -25,5 +27,6 @@ export const swEffects = [
 ];
 
 export const swServices = [
-    FirebaseService
+    FirebaseService,
+    MessageService
 ];
