@@ -6,3 +6,9 @@ export const getRandomColor = (): string => {
     }
     return color;
 };
+
+export const removeIdFromObject = (item: Partial<{ id: string; }>) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { id, ...itemObj } = item;
+    return { ...itemObj };
+};

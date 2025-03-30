@@ -1,5 +1,6 @@
 import { ActionReducer, createReducer, on } from '@ngrx/store';
 
+import { deletePortfolioActions } from '../../components/dialogs/delete-portfolio/delete-portfolio.actions';
 import { headerActions } from '../../components/header/header.actions';
 import { portfolioBarActions } from '../../components/main-container/portfolio/portfolio-bar/portfolio-bar.actions';
 import { authEffectsActions } from '../auth/auth.actions';
@@ -65,7 +66,7 @@ export const portfolioReducer: ActionReducer<PortfolioState> = createReducer(
                 selected: action.data
             };
         }),
-    on(portfolioEffectsActions.portfolioDeleteSuccess, (state, action) => {
+    on(deletePortfolioActions.portfolioDeleted, (state, action) => {
         return {
             ...state,
             selected: null,

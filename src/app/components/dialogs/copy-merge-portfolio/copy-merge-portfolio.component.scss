@@ -1,6 +1,16 @@
 @use '../../styles/index.scss' as cssVariables;
 
 :host {
+    p-toast::ng-deep {
+        div.p-toast-summary {
+            font-size: 12px;
+        }
+
+        div.p-toast-detail {
+            font-size: 20px;
+        }
+    }
+
     p-dialog.copy-merge-portfolio::ng-deep {
         div.p-dialog-content {
             overflow: hidden;

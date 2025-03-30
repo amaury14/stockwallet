@@ -8,6 +8,16 @@ $header-margin: 5px;
     font-size: 15px;
     height: 100%;
     width: 100%;
+
+    p-toast::ng-deep {
+        div.p-toast-summary {
+            font-size: 15px;
+        }
+
+        div.p-toast-detail {
+            font-size: 18px;
+        }
+    }
 }
 
 section#main-content {

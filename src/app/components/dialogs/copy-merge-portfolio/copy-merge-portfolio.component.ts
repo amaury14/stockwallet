@@ -86,5 +86,6 @@ export class CopyMergePortfolioComponent implements OnInit, OnDestroy {
                 createdAt: new Date()
             }
         }));
+        this.onCloseClicked();
     }
 }

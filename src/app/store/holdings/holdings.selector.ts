@@ -434,5 +434,6 @@ export const holdingsSelectors = {
     getSelectedTab,
     getStockProfiles,
     getTabs,
+    holdingsFeatureSelector,
     isLoading
 };

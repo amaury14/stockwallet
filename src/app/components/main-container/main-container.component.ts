@@ -4,6 +4,7 @@ import { Store } from '@ngrx/store';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { TableModule } from 'primeng/table';
+import { ToastModule } from 'primeng/toast';
 
 import { authSelectors } from '../../store/auth/auth.selector';
 import { mainSelectors } from '../../store/main/main.selector';
@@ -26,7 +27,8 @@ import { PortfolioComponent } from './portfolio/portfolio.component';
         MarketComponent,
         PortfolioComponent,
         SidebarComponent,
-        TableModule
+        TableModule,
+        ToastModule
     ],
     templateUrl: './main-container.component.html',
     styleUrls: ['./main-container.component.scss']
