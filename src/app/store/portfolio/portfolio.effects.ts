@@ -196,7 +196,7 @@ export class PortfolioEffects {
                     map((response) => portfolioEffectsActions.copyMergePortfoliosInfoLoaded({
                         data: action.portfolio,
                         holdings: [
-                            ...(response.flat() as Holding[])?.map(item => ({
+                            ...(response.flat() as Holding[]).map(item => ({
                                 ...item,
                                 dateOfPurchase: (item.dateOfPurchase as Timestamp).toDate(),
                                 imgSource: `${environment.logosUrl}${item.ticker}.png`,
