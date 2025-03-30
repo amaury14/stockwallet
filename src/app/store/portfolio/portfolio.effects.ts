@@ -29,7 +29,12 @@ import { removeIdFromObject } from '../utils';
 @Injectable()
 export class PortfolioEffects {
 
-    constructor(private _actions$: Actions, private _messageService: MessageService, private _store: Store, private _firebaseService: FirebaseService) { }
+    constructor(
+        private _actions$: Actions,
+        private _firebaseService: FirebaseService,
+        private _messageService: MessageService,
+        private _store: Store
+    ) { }
 
     loadDataOnStart$ = createEffect(() => this._actions$.pipe(
         ofType(
