@@ -225,7 +225,16 @@ export class PortfolioEffects {
                 map(() => portfolioEffectsActions.copyMergePortfoliosInfoLoaded({
                     data: action.portfolio,
                     holdings: onSitePortfolioRecords.flat().map(record => removeIdFromObject(record) as Holding)
-                }))
+                })),
+                catchError(() => {
+                    this._messageService.add({
+                        severity: 'danger',
+                        summary: 'Error',
+                        detail: 'Copy/Merge failed to complete.',
+                        sticky: false
+                    });
+                    return of(portfolioEffectsActions.copyMergePortfoliosInfoFailed({ error: 'Copy/Merge failed to complete' }))
+                })
             );
         })
     ));
