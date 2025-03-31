@@ -1,9 +1,11 @@
 <!-- eslint-disable @angular-eslint/template/interactive-supports-focus -->
 <!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
-<div *ngIf="isVisible" class="ld-toast" [class]="type">
+@if (isVisible) {
+<div class="ld-toast" [class]="type">
     <div class="ld-toast-header">
         <strong class="ld-toast-title">{{ title }}</strong>
         <i class="fa fa-times-circle ld-close" (click)="closeToast()"></i>
     </div>
     <div class="ld-toast-body" [innerHTML]="message"></div>
 </div>
+}
