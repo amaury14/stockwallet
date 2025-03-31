@@ -82,7 +82,7 @@ const getAggregatedHoldings = createSelector(
                 shares: stock.shares,
                 avgPrice: stock.shares ? stock.totalCost! / stock.shares! : 0,
                 transactions: stock.transactions,
-                percent: (stock.totalCost! * 100) / totalValue
+                percent: Math.round((stock.totalCost! * 100) / totalValue)
             }));
         }
         return [];

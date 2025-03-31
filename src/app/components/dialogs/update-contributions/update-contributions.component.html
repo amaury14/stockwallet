@@ -61,11 +61,13 @@
         </div>
         <div class="edit-form">
             <div class="radio-button-container">
-                <div *ngFor="let investmentType of investmentTypesArray" class="radio-button">
+                @for (investmentType of investmentTypesArray; track $index) {
+                <div class="radio-button">
                     <p-radiobutton [inputId]="investmentType.key" [value]="investmentType.name"
                         formControlName="investmentType" />
                     <label [for]="investmentType.key" class="ml-2">{{ investmentType.name }}</label>
                 </div>
+                }
             </div>
             <p-iftalabel>
                 <textarea rows="2" cols="67" pTextarea formControlName="notes" style="resize: none"></textarea>

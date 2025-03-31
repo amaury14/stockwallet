@@ -1,51 +1,33 @@
 <!-- eslint-disable @angular-eslint/template/interactive-supports-focus -->
 <!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
 <p-toast position="top-right" />
-<form class="sw-login-container" [formGroup]="loginForm" *ngIf="showLogin()">
-    <button
-        class="btn btn-primary btn-lg btn-block google-button"
-        (click)="loginWithGoogle()"
-    >
+@if (showLogin()) {
+<form class="sw-login-container" [formGroup]="loginForm">
+    <button class="btn btn-primary btn-lg btn-block google-button" (click)="loginWithGoogle()">
         <i class="pi pi-google fa-1x google-icon" style="font-size: 1.5rem"></i>
         Login with Google
     </button>
     <p class="login-or">OR</p>
     <div class="sw-input-group">
         <i class="pi pi-at" style="font-size: 1.5rem"></i>
-        <input
-            class="sw-form-control"
-            placeholder="Mail"
-            type="email"
-            id="email"
-            formControlName="email"
-            required
-        />
+        <input class="sw-form-control" placeholder="Mail" type="email" id="email" formControlName="email" required />
     </div>
     <div class="sw-input-group">
         <i class="pi pi-key" style="font-size: 1.5rem"></i>
-        <input
-            type="password"
-            class="sw-form-control"
-            placeholder="Password"
-            id="password"
-            formControlName="password"
-            required
-        />
+        <input type="password" class="sw-form-control" placeholder="Password" id="password" formControlName="password"
+            required />
     </div>
     <span class="sw-forgot">
         <a (click)="sendPasswordResetEmail()">Forgot Password?</a>
     </span>
-    <button
-        class="btn btn-primary btn-lg btn-block sw-action-buttons"
-        (click)="loginWithEmailPassword()"
-    >
+    <button class="btn btn-primary btn-lg btn-block sw-action-buttons" (click)="loginWithEmailPassword()">
         Login
     </button>
-    <button
-        class="btn btn-info btn-lg btn-block sw-action-buttons"
-        (click)="createWithEmailPassword()"
-    >
+    <button class="btn btn-info btn-lg btn-block sw-action-buttons" (click)="createWithEmailPassword()">
         Signup
     </button>
-    <app-ui-loader *ngIf="loading()"></app-ui-loader>
+    @if (loading()) {
+    <app-ui-loader></app-ui-loader>
+    }
 </form>
+}
