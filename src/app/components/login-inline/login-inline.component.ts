@@ -12,8 +12,9 @@ import {
     sendPasswordResetEmail
 } from 'firebase/auth';
 import { Store } from '@ngrx/store';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 
-import { ToastService } from '../../store/toast.service';
 import { UiLoaderComponent } from '../shared/ui-loader/ui-loader.component';
 import { loginInlineActions } from './login-inline.actions';
 
@@ -23,8 +24,10 @@ import { loginInlineActions } from './login-inline.actions';
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
+        ToastModule,
         UiLoaderComponent
     ],
+    providers: [MessageService],
     templateUrl: './login-inline.component.html',
     styleUrls: ['./login-inline.component.scss']
 })
@@ -38,7 +41,7 @@ export class LoginInlineComponent {
         @Inject(PLATFORM_ID) platformId: object,
         private _store: Store,
         private _fb: FormBuilder,
-        private _toastService: ToastService
+        private _messageService: MessageService
     ) {
         if (!isPlatformServer(platformId)) {
             onAuthStateChanged(getAuth(), (user) => {
@@ -105,7 +108,13 @@ export class LoginInlineComponent {
             this.loading.set(true);
             const email = this.loginForm.value.email;
             sendPasswordResetEmail(getAuth(), email).then(() => {
-                this._toastService.showToast('The reset email was sent successfully!', 'success', 'Information', 5000);
+                this._messageService.add({
+                    severity: 'success',
+                    summary: 'Information',
+                    detail: 'The reset email was sent successfully!',
+                    sticky: false,
+                    life: 5000
+                });
                 this.loginForm.get('password')?.markAsTouched();
                 this.loading.set(false);
             }).catch(() => {
@@ -117,12 +126,17 @@ export class LoginInlineComponent {
 
     private _error(): void {
         this.loading.set(false);
-        this._toastService.showToast('There was an error, please try again!', 'error', 'Error', 3000);
+        this._messageService.add({
+            severity: 'danger',
+            summary: 'Error',
+            detail: 'There was an error, please try again!',
+            sticky: false,
+            life: 3000
+        });
     }
 
     private _success(): void {
         this.loading.set(false);
-        this._toastService.showToast('Logged in successfully!', 'success', 'Information', 3000);
     }
 
     private _checkLoginForm(): void {
@@ -147,7 +161,13 @@ export class LoginInlineComponent {
             }
         }
         if (messages?.length) {
-            this._toastService.showToast(messages.join('<br>'), 'error', 'Errors', 8000);
+            this._messageService.add({
+                severity: 'danger',
+                summary: 'Errors',
+                detail: messages.join('<br>'),
+                sticky: false,
+                life: 8000
+            });
         }
     }
 
