@@ -43,6 +43,9 @@ export const portfolioReducer: ActionReducer<PortfolioState> = createReducer(
     on(
         portfolioEffectsActions.portfolioLoadFailed,
         portfolioEffectsActions.portfolioDeleteFailed,
+        portfolioEffectsActions.copyMergePortfoliosInfoFailed,
+        portfolioEffectsActions.copyMergePortfolioAddedFailed,
+        portfolioEffectsActions.copyMergeSaveHoldingsInfoFailed,
         (state, action) => {
             return {
                 ...state,
