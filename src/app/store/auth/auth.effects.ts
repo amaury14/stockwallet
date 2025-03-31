@@ -5,6 +5,7 @@ import { concatLatestFrom } from '@ngrx/operators';
 import { Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
+import { MessageService } from 'primeng/api';
 
 import { mainContainerActions } from '../../components/main-container/main-container.actions';
 import { loginInlineActions } from '../../components/login-inline/login-inline.actions';
@@ -15,7 +16,7 @@ import { authEffectsActions } from './auth.actions';
 @Injectable()
 export class AuthEffects {
 
-    constructor(private _actions$: Actions, private _store: Store) { }
+    constructor(private _actions$: Actions, private _messageService: MessageService, private _store: Store) { }
 
     loadUserInfo$ = createEffect(() => this._actions$.pipe(
         ofType(
@@ -35,6 +36,13 @@ export class AuthEffects {
         }),
         map((userInfo: User | null) => {
             if (userInfo) {
+                this._messageService.add({
+                    severity: 'success',
+                    summary: 'Information',
+                    detail: 'Logged in successfully!',
+                    sticky: false,
+                    life: 3000
+                });
                 return authEffectsActions.userLoggedIn({
                     user: {
                         ...userInfo?.providerData?.[0],

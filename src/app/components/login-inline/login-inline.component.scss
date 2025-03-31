@@ -5,6 +5,16 @@
     height: 30px;
     width: 100%;
 
+    p-toast::ng-deep {
+        div.p-toast-summary {
+            font-size: 15px;
+        }
+
+        div.p-toast-detail {
+            font-size: 18px;
+        }
+    }
+
     form.sw-login-container {
         align-items: center;
         display: flex;
