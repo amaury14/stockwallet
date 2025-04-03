@@ -5,4 +5,17 @@
     display: block;
     height: 100%;
     width: 100%;
+
+    div.no-portfolio-content {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        font-size: 16px;
+        height: calc(100% - #{cssVariables.$portfolio-bar-height});
+        justify-content: center;
+
+        div a {
+            cursor: pointer;
+        }
+    }
 }

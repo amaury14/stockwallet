@@ -1,90 +1,57 @@
-<div class="alert alert-block alert-danger fade in" *ngIf="errorSubject$ | async">
+@if (errorSubject$ | async) {
+<div class="alert alert-block alert-danger fade in">
     <strong>Login Failed</strong> Update email and/or password and try submitting again.
 </div>
 <div class="login-img3-body" [class.login-error]="errorSubject$ | async">
     <div class="container">
         <form class="login-form" [formGroup]="loginForm">
             <div class="login-wrap">
-                <button
-                    class="btn btn-primary btn-lg btn-block google-button"
-                    (click)="loginWithGoogle()"
-                    *ngIf="showLoginButton"
-                >
+                @if (showLoginButton) {
+                <button class="btn btn-primary btn-lg btn-block google-button" (click)="loginWithGoogle()">
                     <i class="fa fa-google fa-2x google-icon"></i>
                     Login with Google
                 </button>
+                }
                 <p class="login-or">OR</p>
                 <div class="input-group">
                     <span class="input-group-addon">
                         <i class="fa fa-at"></i>
                     </span>
-                    <input
-                        class="form-control"
-                        placeholder="Email"
-                        type="email"
-                        id="email"
-                        formControlName="email"
-                        required
-                    />
-                    <div
-                        class="form-error"
-                        *ngIf="
-                            loginForm.get('email')?.hasError('required') &&
-                            loginForm.get('email')?.touched
-                        "
-                    >
+                    <input class="form-control" placeholder="Email" type="email" id="email" formControlName="email"
+                        required />
+                    @if (loginForm.get('email')?.hasError('required') && loginForm.get('email')?.touched) {
+                    <div class="form-error">
                         Email is required.
                     </div>
-                    <div
-                        class="form-error"
-                        *ngIf="
-                            loginForm.get('email')?.hasError('email') &&
-                            loginForm.get('email')?.touched
-                        "
-                    >
+                    }
+                    @if (loginForm.get('email')?.hasError('email') && loginForm.get('email')?.touched) {
+                    <div class="form-error">
                         Please enter a valid email address.
                     </div>
+                    }
                 </div>
                 <div class="input-group">
                     <span class="input-group-addon">
                         <i class="fa fa-key"></i>
                     </span>
-                    <input
-                        type="password"
-                        class="form-control"
-                        placeholder="Password"
-                        id="password"
-                        formControlName="password"
-                        required
-                    />
-                    <div
-                        class="form-error"
-                        *ngIf="
-                            loginForm.get('password')?.hasError('required') &&
-                            loginForm.get('password')?.touched
-                        "
-                    >
+                    <input type="password" class="form-control" placeholder="Password" id="password"
+                        formControlName="password" required />
+                    @if (loginForm.get('password')?.hasError('required') && loginForm.get('password')?.touched) {
+                    <div class="form-error">
                         Password is required.
                     </div>
-                    <div
-                        class="form-error"
-                        *ngIf="
-                            loginForm.get('password')?.hasError('minlength') &&
-                            loginForm.get('password')?.touched
-                        "
-                    >
+                    }
+                    @if (loginForm.get('password')?.hasError('minlength') && loginForm.get('password')?.touched) {
+                    <div class="form-error">
                         Password must be at least 8 characters long.
                     </div>
-                    <div
-                        class="form-error"
-                        *ngIf="
-                            loginForm.get('password')?.hasError('pattern') &&
-                            loginForm.get('password')?.touched
-                        "
-                    >
+                    }
+                    @if (loginForm.get('password')?.hasError('pattern') && loginForm.get('password')?.touched) {
+                    <div class="form-error">
                         Password must contain at least one uppercase letter, one
                         lowercase letter, and one special character.
                     </div>
+                    }
                 </div>
                 <!-- <label class="checkbox">
                     <input type="checkbox" value="remember-me" /> Remember me
@@ -92,21 +59,18 @@
                         <a href="#"> Forgot Password?</a></span
                     >
                 </label> -->
-                <button
-                    class="btn btn-primary btn-lg btn-block"
-                    *ngIf="showLoginButton"
-                    (click)="loginWithEmailPassword()"
-                >
+                @if (showLoginButton) {
+                <button class="btn btn-primary btn-lg btn-block"
+                    (click)="loginWithEmailPassword()">
                     Login
                 </button>
-                <button
-                    class="btn btn-info btn-lg btn-block"
-                    *ngIf="showLoginButton"
-                    (click)="createWithEmailPassword()"
-                >
+                <button class="btn btn-info btn-lg btn-block"
+                    (click)="createWithEmailPassword()">
                     Signup
                 </button>
+                }
             </div>
         </form>
     </div>
 </div>
+}

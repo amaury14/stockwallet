@@ -9,6 +9,7 @@ import { updateContributionsActions } from '../../components/dialogs/update-cont
 import { headerActions } from '../../components/header/header.actions';
 import { generalActions } from '../../components/main-container/portfolio/general/general.actions';
 import { mainTopBarActions } from '../../components/main-container/portfolio/main-top-bar/main-top-bar.actions';
+import { portfolioActions } from '../../components/main-container/portfolio/portfolio.actions';
 import { portfolioBarActions } from '../../components/main-container/portfolio/portfolio-bar/portfolio-bar.actions';
 import { authEffectsActions } from '../auth/auth.actions';
 import { DialogsStateData } from './models';
@@ -30,6 +31,7 @@ export const dialogsReducer: ActionReducer<DialogsStateData> = createReducer(
     on(
         portfolioBarActions.showPortfolioDialogUpdated,
         createPortfolioActions.showPortfolioDialogUpdated,
+        portfolioActions.showPortfolioDialogUpdated,
         (state, action) => {
             return {
                 ...state,
