@@ -1,11 +1,24 @@
 <!-- portfolio bar -->
 <app-portfolio-bar></app-portfolio-bar>
 
+@if (portfolios().length) {
 <!-- main top portfolio panel -->
 <app-main-top-bar></app-main-top-bar>
 
 <!-- main content panel -->
 <app-main-content></app-main-content>
+}
+@else {
+<div class="no-portfolio-content">
+    <i class="pi pi-inbox" style="font-size: 4.5rem"></i>
+    <div>
+        You have not created a portfolio.
+    </div>
+    <div>
+        You can create one clicking <a (click)="onAddClicked()">here</a>
+    </div>
+</div>
+}
 
 <!-- create portfolio dialog -->
 <app-create-portfolio-dialog></app-create-portfolio-dialog>
