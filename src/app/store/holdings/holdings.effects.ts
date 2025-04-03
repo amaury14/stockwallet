@@ -177,7 +177,7 @@ export class HoldingsEffects {
         ]),
         filter(([, user]) => !!user?.uid),
         concatMap(([deleteStack, user, holdings]) => {
-            if (!!holdings?.length) {
+            if (holdings?.length) {
                 this._messageService.add({
                     severity: 'warn',
                     summary: 'Warning',
