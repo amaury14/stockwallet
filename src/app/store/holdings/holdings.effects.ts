@@ -175,26 +175,31 @@ export class HoldingsEffects {
             this._store.select(authSelectors.getUser),
             this._store.select(holdingsSelectors.getHoldingsByPortfolioId(deleteStack[0]))
         ]),
-        filter(([, user, holdings]) => !!user?.uid && !!holdings?.length),
+        filter(([, user]) => !!user?.uid),
         concatMap(([deleteStack, user, holdings]) => {
-            this._messageService.add({
-                severity: 'warn',
-                summary: 'Warning',
-                detail: 'Removing transactions in the background, please do not close the app.',
-                sticky: false
-            });
-            const deleteRequests = holdings.map(holding =>
-                this._firebaseService.deleteDocument(
-                    `${dbCollectionKeys.USERS_COLLECTION_KEY}/${user?.uid}/${dbCollectionKeys.PORTFOLIO_COLLECTION_KEY}/${deleteStack[0]!}/${dbCollectionKeys.HOLDINGS_COLLECTION_KEY}`,
-                    holding.id!
-                )
-            );
-            return zip(...deleteRequests).pipe(
-                observeOn(asyncScheduler), // Run deletions in a separate async context
-                map(() => holdingsEffectsActions.holdingsDeleteSuccess({ portfolioId: deleteStack[0] })),
-                catchError(() =>
-                    of(holdingsEffectsActions.holdingsDeleteFailed({ error: 'Holdings delete failed' }))
-                )
+            if (holdings?.length) {
+                this._messageService.add({
+                    severity: 'warn',
+                    summary: 'Warning',
+                    detail: 'Removing transactions in the background, please do not close the app.',
+                    sticky: false
+                });
+                const deleteRequests = holdings.map(holding =>
+                    this._firebaseService.deleteDocument(
+                        `${dbCollectionKeys.USERS_COLLECTION_KEY}/${user?.uid}/${dbCollectionKeys.PORTFOLIO_COLLECTION_KEY}/${deleteStack[0]!}/${dbCollectionKeys.HOLDINGS_COLLECTION_KEY}`,
+                        holding.id!
+                    )
+                );
+                return zip(...deleteRequests).pipe(
+                    observeOn(asyncScheduler), // Run deletions in a separate async context
+                    map(() => holdingsEffectsActions.holdingsDeleteSuccess({ portfolioId: deleteStack[0] })),
+                    catchError(() =>
+                        of(holdingsEffectsActions.holdingsDeleteFailed({ error: 'Holdings delete failed' }))
+                    )
+                );
+            }
+            return zip(of([])).pipe(
+                map(() => holdingsEffectsActions.holdingsDeleteSuccess({ portfolioId: deleteStack[0] }))
             );
         })
     ));
