@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, signal, Signal } from '@angular/core';
+import { Component, OnInit, signal, Signal } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import { Portfolio } from '../../../store/portfolio/models';
@@ -32,7 +32,7 @@ import { portfolioActions } from './portfolio.actions';
     templateUrl: './portfolio.component.html',
     styleUrls: ['./portfolio.component.scss']
 })
-export class PortfolioComponent {
+export class PortfolioComponent implements OnInit {
     portfolios: Signal<Portfolio[]> = signal([]);
 
     constructor(private _store: Store) { }

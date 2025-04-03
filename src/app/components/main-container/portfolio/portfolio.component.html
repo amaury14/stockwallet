@@ -10,6 +10,8 @@
 }
 @else {
 <div class="no-portfolio-content">
+    <!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
+    <!-- eslint-disable @angular-eslint/template/interactive-supports-focus -->
     <i class="pi pi-inbox" style="font-size: 4.5rem"></i>
     <div>
         You have not created a portfolio.
@@ -17,6 +19,8 @@
     <div>
         You can create one clicking <a (click)="onAddClicked()">here</a>
     </div>
+    <!-- eslint-enable @angular-eslint/template/click-events-have-key-events -->
+    <!-- eslint-enable @angular-eslint/template/interactive-supports-focus -->
 </div>
 }
 
