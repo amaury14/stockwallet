@@ -5,7 +5,7 @@
         <p-iftalabel>
             <p-autocomplete class="uppercase" id="ticker" formControlName="ticker" delay="300"
                 [suggestions]="filteredStocks()" (completeMethod)="filterByTicker($event)" optionLabel="symbol"
-                appendTo="body" dataKey="symbol" [pAutoFocus]="true" [disabled]="isEditing()">
+                appendTo="body" dataKey="symbol" [pAutoFocus]="true" [disabled]="isEditing()" placeholder="Type: AAPL, MSFT, VOO...">
                 <ng-template let-ticker #item>
                     <div class="flex items-center gap-2">
                         <div [pTooltip]="ticker.name" tooltipPosition="top">
