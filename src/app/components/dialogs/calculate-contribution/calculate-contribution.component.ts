@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, effect, OnDestroy, OnInit, signal, Signal, WritableSignal } from '@angular/core';
-import { FormsModule, ReactiveFormsModule, UntypedFormBuilder } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
@@ -43,7 +43,7 @@ export class CalculateContributionComponent implements OnInit, OnDestroy {
     showCalculateContributionDialog = signal(false);
     showCalculateContributionDialog$: Signal<boolean> = signal(false);
 
-    constructor(private _store: Store, private _fb: UntypedFormBuilder, private _messageService: MessageService) {
+    constructor(private _store: Store, private _messageService: MessageService) {
         effect(() => {
             this.holdings.set(this.holdings$());
             this.selectedTickers.set(this.holdings$());
