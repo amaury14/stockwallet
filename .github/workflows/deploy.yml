@@ -77,11 +77,11 @@ jobs:
 
             - name: Deploy to Firebase
               env:
-                STOCKWALLET_FIREBASE_CLIENT_SECRET_ENV: ${{ secrets.STOCKWALLET_FIREBASE_CLIENT_SECRET }}
+                STOCKWALLET_FIREBASE_CLIENT_SECRET: ${{ secrets.STOCKWALLET_FIREBASE_CLIENT_SECRET }}
               run: |
-                echo $STOCKWALLET_FIREBASE_CLIENT_SECRET_ENV
-                echo "$STOCKWALLET_FIREBASE_CLIENT_SECRET_ENV" > $HOME/firebase_key.json
-                export GOOGLE_APPLICATION_CREDENTIALS="$HOME/firebase_key.json"
+                echo $STOCKWALLET_FIREBASE_CLIENT_SECRET
+                echo "$STOCKWALLET_FIREBASE_CLIENT_SECRET" > $HOME/firebase_key.json
+                echo "GOOGLE_APPLICATION_CREDENTIALS=$HOME/firebase_key.json" >> $GITHUB_ENV
                 echo $GOOGLE_APPLICATION_CREDENTIALS
                 firebase deploy --only hosting:$TARGET
 
