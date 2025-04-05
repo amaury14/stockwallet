@@ -78,7 +78,7 @@ jobs:
             - name: Deploy to Firebase
               run: |
                 echo "STOCKWALLET_FIREBASE_CLIENT_SECRET=${{ secrets.STOCKWALLET_FIREBASE_CLIENT_SECRET }}" >> $GITHUB_ENV
-                echo "$STOCKWALLET_FIREBASE_CLIENT_SECRET" > $HOME/firebase_key.json
+                echo "$STOCKWALLET_FIREBASE_CLIENT_SECRET" | base64 -d > $HOME/firebase_key.json
                 echo "GOOGLE_APPLICATION_CREDENTIALS=$HOME/firebase_key.json" >> $GITHUB_ENV
                 cat $HOME/firebase_key.json
                 firebase deploy --only hosting:$TARGET
