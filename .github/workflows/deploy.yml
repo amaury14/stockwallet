@@ -81,6 +81,7 @@ jobs:
                 args: deploy --only hosting:$TARGET
               env:
                 GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+                # PROJECT_ID: stockwalletang
 
             # - name: Deploy to Firebase
             #   run: |
@@ -89,4 +90,8 @@ jobs:
             #     echo "GOOGLE_APPLICATION_CREDENTIALS=$HOME/firebase_key.json" >> $GITHUB_ENV
             #     cat $HOME/firebase_key.json
             #     firebase deploy --only hosting:$TARGET
+
+            # - name: Deploy to Firebase
+            #   run: |
+            #     firebase deploy --only hosting:$TARGET --token "${{ secrets.STOCKWALLET_TOKEN }}"
 
