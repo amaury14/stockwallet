@@ -79,6 +79,5 @@ jobs:
               env:
                 GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.STOCKWALLET_FIREBASE_CLIENT_SECRET }}
               run: |
-                echo "$GOOGLE_APPLICATION_CREDENTIALS" > $HOME/firebase_key.json
-                firebase deploy --only hosting:$TARGET --token "$HOME/firebase_key.json"
+                firebase deploy --only hosting:$TARGET
 
