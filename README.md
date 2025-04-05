@@ -43,3 +43,7 @@ Cuando tengas todo listo, implementa tu app web
 Ubica los archivos estáticos (p. ej., HTML, CSS y JS) en el directorio de implementación de la app (el directorio predeterminado es “public”). Luego, ejecuta este comando desde el directorio raíz de tu app:
 
 ``firebase deploy``
+
+Login to get deploy token
+
+``firebase login:ci``
